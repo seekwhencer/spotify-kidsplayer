@@ -4,6 +4,8 @@
 node_modules
 server/config/*
 package-lock.json
+spotifyd/spotifyd.conf
 
 !server/config/example.conf
 !.env.example
+!spotifyd/spotifyd.default.conf
