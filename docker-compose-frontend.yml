@@ -1,0 +1,22 @@
+version: "3.6"
+
+services:
+
+  kidsplayer_frontend:
+    build:
+      context: .
+      dockerfile: frontend/Dockerfile
+    image: ${PROJECT_NAME}_frontend
+    working_dir: /home/node/project/frontend
+    command: 'npm run dev'
+    container_name: ${PROJECT_NAME}-frontend
+    volumes:
+      - .:/home/node/project
+      - /home/node/project/server/node_modules
+      - /home/node/project/shared/node_modules
+    environment:
+      - DEBUG=true
+      - ENVIRONMENT=default
+      - NODE_ENV=development
+      - PROXY_TARGET_HOST=kidsplayer_server
+      - PROXY_TARGET_PORT=${SERVER_PORT}

@@ -1,0 +1,11 @@
+{
+  "boolean": [
+    "DEBUG",
+    "MQTT_ENABLE"
+  ],
+  "int": [
+    "VERBOSE",
+    "SERVER_PORT",
+    "MQTT_PORT"
+  ]
+}

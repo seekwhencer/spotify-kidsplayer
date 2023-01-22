@@ -1,0 +1,21 @@
+version: "3.6"
+
+volumes:
+  spotifyd_tmp:
+    external: true
+    name: ${PROJECT_NAME}_spotifyd-tmp
+
+services:
+  spotifyd:
+    image: ${PROJECT_NAME}_spotifyd
+    build:
+      context: .
+      dockerfile: spotifyd/Dockerfile
+    container_name: ${PROJECT_NAME}_spotifyd
+    restart: always
+    volumes:
+      - /usr/share/alsa:/usr/share/alsa
+      - ./spotifyd/spotifyd.conf:/etc/spotifyd.conf
+      - spotifyd_tmp:/tmp
+    devices:
+      - "/dev/snd"

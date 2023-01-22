@@ -1,0 +1,30 @@
+@mixin font-face($style-name, $file, $family, $weight) {
+    $filepath: "./fonts/" + $family + "/" + $file;
+
+    @font-face {
+        font-family: "#{$style-name}";
+        font-weight: $weight;
+        font-display: swap;
+        src: url($filepath + ".woff2") format("woff2");
+    }
+}
+
+// includes
+@include font-face("Oswald", "Oswald-ExtraLight", "Oswald", 100);
+@include font-face("Oswald", "Oswald-Light", "Oswald", 200);
+@include font-face("Oswald", "Oswald-Medium", "Oswald", 300);
+@include font-face("Oswald", "Oswald-Regular", "Oswald", 400);
+@include font-face("Oswald", "Oswald-SemiBold", "Oswald", 500);
+@include font-face("Oswald", "Oswald-Bold", "Oswald", 600);
+
+// sizes
+$fs-xxs: 0.6em;
+$fs-xs: 0.7em;
+$fs-s: 1em;
+$fs-m: 1.25em;
+$fs-l: 1.5em;
+$fs-xl: 2em;
+$fs-xxl: 3em;
+$fs-huge: 4em;
+$fs-omg: 6em;
+$fs-jesus: 8em;

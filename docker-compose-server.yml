@@ -1,0 +1,34 @@
+version: "3.6"
+
+volumes:
+  pkg-cache:
+    external: true
+    name: ${PROJECT_NAME}_pkg-cache
+
+services:
+
+  kidsplayer_server:
+    build:
+      context: .
+      dockerfile: server/Dockerfile
+    image: ${PROJECT_NAME}_server
+    restart: always
+    container_name: ${PROJECT_NAME}_server
+    working_dir: /kidsplayer/server
+    command: 'tail -f /dev/null'
+    #command: "--experimental-modules --experimental-json-modules index.js"
+    user: root
+    ports:
+      - "3000:3000"
+    volumes:
+      - .:/kidsplayer
+      - /kidsplayer/server/node_modules
+      - /kidsplayer/shared/node_modules
+      - pkg-cache:/root/.pkg-cache
+    environment:
+      - DEBUG=true
+      - VERBOSE=2
+      - ENVIRONMENT=default
+      - NODE_ENV=development
+      - PWD=/kidsplayer/server
+

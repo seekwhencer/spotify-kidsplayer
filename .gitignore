@@ -1,0 +1,9 @@
+.idea
+.env
+*.conf
+node_modules
+server/config/*
+package-lock.json
+
+!server/config/example.conf
+!.env.example
