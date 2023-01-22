@@ -1,5 +1,9 @@
 #!/bin/bash
 
+#
+#
+#
+#
 
 # load .env file and config file
 loadConfig() {
@@ -11,7 +15,7 @@ loadConfig() {
 update() {
   sudo apt-get update -y
   sudo apt-get upgrade -y
-  sudo apt-get install dnsutils -y
+#  sudo apt-get install dnsutils -y
 }
 
 # docker installation
