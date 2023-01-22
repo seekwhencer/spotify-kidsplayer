@@ -15,3 +15,11 @@
 - [Database](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/docs/DATABASE.md)
 - [spotifyd](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/docs/SPOTIFYD.md)
 
+## Goal
+
+> This will be a simplified UI for kids to use spotify.  
+> At the moment, the setup is done and the spotify authentication works from the server app.
+
+## Todo
+
+- ... a lot ;)
