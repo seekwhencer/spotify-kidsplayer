@@ -1,6 +1,13 @@
-# ...
+# spotify-kidsplayer
 
-https://pypi.org/project/Mopidy-Spotify/
+## Ingredients
+- [Raspberry Pi 4](https://geizhals.de/raspberry-pi-4-modell-b-v54547.html)
+- [Desktop Image](https://www.raspberrypi.com/software/operating-systems/)
+- [spotifyd](https://github.com/Spotifyd/spotifyd) - An open source Spotify client running as a UNIX daemon.
+- [mariadb](https://docs.linuxserver.io/images/docker-mariadb) - From *linuxserver*
+- [phpMyAdmin](https://docs.linuxserver.io/images/docker-phpmyadmin) - From *linuxserver*
+- [Docker](https://get.docker.com/) and [Docker Compose](https://github.com/docker/compose/releases/)
+- 
 
 ## Development
 
