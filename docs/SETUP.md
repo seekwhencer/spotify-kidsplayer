@@ -20,7 +20,7 @@ nano .env
 
 - `server/config/default.conf`
 ```bash
-cp server/config/example.con server/config/default.conf
+cp server/config/example.conf server/config/default.conf
 nano server/config/default.conf
 ```
 
