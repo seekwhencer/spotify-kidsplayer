@@ -5,6 +5,9 @@ export default class extends Route {
         super(parent, options);
 
         this.router.get('/', (req, res) => {
+
+
+
             res.json({
                 home: "test"
             });

@@ -20,7 +20,7 @@ export default class Spotify extends MODULECLASS {
              */
             this.on('auth', () => {
                 this.getDevices();
-                this.useDevices([this.deviceId]);
+                //this.useDevices([this.deviceId]);
             });
 
 
@@ -35,9 +35,11 @@ export default class Spotify extends MODULECLASS {
             this.storage = new SpotifyStorage(this);
 
             // authentication
-            this.auth = new SpotifyAuth(this);
+            new SpotifyAuth(this).then(auth => {
+                this.auth = auth;
+                resolve(this);
+            });
 
-            resolve(this);
         });
     }
 
@@ -71,5 +73,9 @@ export default class Spotify extends MODULECLASS {
             .then((data, err) => {
                 LOG(this.label, 'USING DEVICES:', ids, 'abc');
             });
+    }
+
+    resetSession() {
+        this.auth.reset();
     }
 }

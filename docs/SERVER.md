@@ -21,3 +21,6 @@ docker exec -it kidsplayer_server /bin/sh -c "/usr/local/bin/node --experimental
 - `docker exec -it kidsplayer_server -c "/kidsplayer/build.sh"`
 - then a file `kidsplayer_server` was created in the `server/` folder
 - use this binary
+
+> at the first time the build process takes a lot of time. maybe an hour or two?!
+> after that, the node binary is cached and the bundling is much faster. 

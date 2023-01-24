@@ -54,7 +54,7 @@ export default class SpotifyAuth extends MODULECLASS {
             this.on('auth', () => {
                 LOG(this.label, 'AUTH CHECK OK.');
                 this.parent.emit('auth');
-                this.refreshCycle = setInterval(() => this.refreshAccessToken(), this.expireToken / 2 * 1000);
+                this.startRefreshCycle();
             });
 
 
@@ -87,12 +87,13 @@ export default class SpotifyAuth extends MODULECLASS {
                 })
                 .then(auth => {
                     auth ? this.emit('auth') : null;
+                    resolve(this);
                 })
                 .catch(e => {
                     ERROR(this.label, 'SOMETHING WENT ABSOLUTELY WRONG, DUDE...', e);
                 });
 
-            resolve(this);
+
         });
     }
 
@@ -118,23 +119,22 @@ export default class SpotifyAuth extends MODULECLASS {
         return Promise.resolve(this.authorizeURL);
     }
 
-/*grant() {
-        return this.api.clientCredentialsGrant().then((data, err) => {
-            if (err) {
-                ERROR(this.label, err);
-                return Promise.reject(false);
-            }
+    createURL() {
+        if (this.code)
+            return;
 
-            this.accessToken = data.body.access_token;
-            this.refreshToken = data.body.refresh_token;
-
-            LOG(this.label, 'The access token is', this.accessToken);
-            LOG(this.label, 'The refresh token is', this.refreshToken);
-
-            return Promise.resolve();
-        });
+        return this.authorizeURL = this.api.createAuthorizeURL(this.scopes, this.state);
     }
-*/
+
+    startRefreshCycle() {
+        const ms = this.expireToken / 2 * 1000;
+        LOG(this.label, 'STARTING ACCESS TOKEN REFRESH CYCLE IN', ms / 1000, 'SECONDS');
+        if (this.refreshCycle)
+            clearInterval(this.refreshCycle);
+
+        this.refreshCycle = setInterval(() => this.refreshAccessToken(), ms);
+    }
+
     grantCode() {
         if (!this.code)
             return;
@@ -148,7 +148,7 @@ export default class SpotifyAuth extends MODULECLASS {
 
             this.accessToken = data.body.access_token;
             this.refreshToken = data.body.refresh_token;
-            this.expireToken = data.body.expires_in;
+            this.expireToken = parseInt(data.body.expires_in);
 
             LOG(this.label, 'The access token is', this.accessToken);
             LOG(this.label, 'The refresh token is', this.refreshToken);
@@ -170,8 +170,8 @@ export default class SpotifyAuth extends MODULECLASS {
         ]);
     }
 
-    refreshAccessToken(){
-        return this.api.refreshAccessToken().then((data,err) => {
+    refreshAccessToken() {
+        return this.api.refreshAccessToken().then((data, err) => {
             if (err) {
                 ERROR(this.label, err);
                 return Promise.reject(false);
@@ -188,7 +188,7 @@ export default class SpotifyAuth extends MODULECLASS {
 
     writeFile(fileName, data) {
         return fs.writeFile(fileName, data).catch(e => {
-            LOG(this.label, 'FILE NOT RED', fileName);
+            LOG(this.label, 'FILE NOT WRITTEN', fileName);
         });
     }
 
@@ -220,5 +220,49 @@ export default class SpotifyAuth extends MODULECLASS {
                 this.readToken(),
                 this.readExpire()
             ]);
+    }
+
+    reset() {
+        LOG(this.label, 'RESET SESSION');
+        this.code = false;
+        this.accessToken = false;
+        this.refreshToken = false;
+        this.expireToken = false;
+    }
+
+    get code() {
+        return this._code;
+    }
+
+    set code(val) {
+        this.writeFile(this.fileNames.code, val === false ? '' : val);
+        this._code = val;
+    }
+
+    get accessToken() {
+        return this._accessToken;
+    }
+
+    set accessToken(val) {
+        this.writeFile(this.fileNames.accessToken, val === false ? '' : val);
+        this._accessToken = val;
+    }
+
+    get refreshToken() {
+        return this._refreshToken;
+    }
+
+    set refreshToken(val) {
+        this.writeFile(this.fileNames.refreshToken, val === false ? '' : val);
+        this._refreshToken = val;
+    }
+
+    get expireToken() {
+        return this._expireToken;
+    }
+
+    set expireToken(val) {
+        this.writeFile(this.fileNames.expireToken, val === false ? '' : val.toString());
+        this._expireToken = val;
     }
 }
