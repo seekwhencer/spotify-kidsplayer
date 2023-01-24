@@ -28,7 +28,7 @@ export default class Spotify extends MODULECLASS {
             this.api = new SpotifyWebApi({
                 clientId: this.clientId,
                 clientSecret: this.clientSecret,
-                redirectUri: this.redirectUri
+                redirectUri: this.redirectUri,
             });
 
             // storage

@@ -20,17 +20,27 @@ export default class extends Route {
             }
         });
 
+        this.router.get('/auth/reset', (req, res) => {
+            const spotify = global.APP.SPOTIFY;
+            spotify.resetSession();
+            res.json({
+                message: 'session reset'
+            });
+        });
+
         /**
          * trigger to get the code from spotify
          */
         this.router.get('/auth/code/get', (req, res) => {
             let url;
             const spotify = global.APP.SPOTIFY;
-
-            spotify.resetSession();
             url = spotify.auth.createURL();
 
-            res.redirect(url);
+            if(url) {
+                res.redirect(url);
+            } else {
+                res.redirect('/auth');
+            }
         });
 
 

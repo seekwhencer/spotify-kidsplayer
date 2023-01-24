@@ -63,7 +63,7 @@ export default class SpotifyAuth extends MODULECLASS {
              */
             this
                 .readFiles()
-                .then(() => {
+/*                .then(() => {
 
                     LOG('---');
                     LOG(this.label, 'CODE:', this.code);
@@ -78,8 +78,9 @@ export default class SpotifyAuth extends MODULECLASS {
                         return this.grantCode();
                     }
                     return Promise.resolve();
-                })
+                })*/
                 .then(() => {
+                    LOG('>WHAT', this.accessToken, this.refreshToken);
                     if (this.accessToken && this.refreshToken) {
                         return this.auth();
                     }
@@ -199,21 +200,22 @@ export default class SpotifyAuth extends MODULECLASS {
     }
 
     readCode() {
-        return this.readFile(this.fileNames.code).then(code => code ? this.code = code.toString() : null);
+        return this.readFile(this.fileNames.code).then(code => code && code !== '' ? this.code = code.toString() : this.code = false);
     }
 
     readToken() {
         return Promise.all([
-            this.readFile(this.fileNames.accessToken).then(accessToken => accessToken ? this.accessToken = accessToken.toString() : null),
-            this.readFile(this.fileNames.refreshToken).then(refreshToken => refreshToken ? this.refreshToken = refreshToken.toString() : null)]
+            this.readFile(this.fileNames.accessToken).then(accessToken => accessToken && accessToken !== '' ? this.accessToken = accessToken.toString() : this.accessToken = false),
+            this.readFile(this.fileNames.refreshToken).then(refreshToken => refreshToken && refreshToken !== '' ? this.refreshToken = refreshToken.toString() : this.refreshToken = false)]
         );
     }
 
     readExpire() {
-        return this.readFile(this.fileNames.expireToken).then(expireToken => expireToken ? this.expireToken = parseInt(expireToken) : null);
+        return this.readFile(this.fileNames.expireToken).then(expireToken => expireToken && expireToken !== '' ? this.expireToken = parseInt(expireToken) : this.expireToken = false);
     }
 
     readFiles() {
+        LOG(this.label, 'READING SESSION CREDENTIALS');
         return Promise
             .all([
                 this.readCode(),
@@ -228,6 +230,11 @@ export default class SpotifyAuth extends MODULECLASS {
         this.accessToken = false;
         this.refreshToken = false;
         this.expireToken = false;
+
+        /*this.api.resetAccessToken();
+        this.api.resetRefreshToken();
+        this.api.resetRedirectURI();
+        this.api.resetCode();*/
     }
 
     get code() {
