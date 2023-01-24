@@ -18,6 +18,21 @@ SPOTIFY_REDIRECT_URI=http://RASPBERRYPI:PORT/auth/code
 docker-compose -f docker-compose-server.yml up -d
 ```
 
+
+## Spotify authentication
+
+Open:
+
+> [http://RASPBERRYPI:PORT/auth](http://RASPBERRYPI:PORT/auth)
+
+- If no session is alive, the request will be redirected to spotify's authentication page.
+- Please login to your spotify account and grand the access request.
+- When you submit the request, spotify will redirect the page back to: the **redirectURI** - BUT with `the code` as get parameters.
+- The server app receives that code and getting an access- and refresh token with a lifetime from spotify.
+- Every X seconds the access token will be refreshed.
+
+
+
 - the server app
 ```bash
 docker exec -it kidsplayer_server /bin/sh -c "/usr/local/bin/node --experimental-modules --experimental-json-modules index.js"
@@ -35,4 +50,4 @@ docker exec -it kidsplayer_server /bin/sh -c "/usr/local/bin/node --experimental
 - use this binary
 
 > at the first time the build process takes a lot of time. maybe an hour or two?!
-> after that, the node binary is cached and the bundling is much faster. 
+> after that, the node binary is cached and the bundling is much faster.
