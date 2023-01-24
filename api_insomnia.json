@@ -1,0 +1,105 @@
+{
+  "_type": "export",
+  "__export_format": 4,
+  "__export_date": "2023-01-22T12:44:13.227Z",
+  "__export_source": "insomnia.desktop.app:v2022.2.1",
+  "resources": [
+    {
+      "_id": "req_7a72d70fa20e47eebde106f74e21c6c0",
+      "parentId": "fld_db9c4051b73f4eb29678e155ef0fdbb8",
+      "modified": 1674391393168,
+      "created": 1674389301008,
+      "url": "",
+      "name": "code",
+      "description": "",
+      "method": "GET",
+      "body": {},
+      "parameters": [
+        {
+          "id": "pair_1e6c771ddb0c4457b99ad06a18549ffd",
+          "name": "code",
+          "value": "abc",
+          "description": ""
+        }
+      ],
+      "headers": [],
+      "authentication": {},
+      "metaSortKey": -1674389301008,
+      "isPrivate": false,
+      "settingStoreCookies": true,
+      "settingSendCookies": true,
+      "settingDisableRenderRequestBody": false,
+      "settingEncodeUrl": true,
+      "settingRebuildPath": true,
+      "settingFollowRedirects": "global",
+      "_type": "request"
+    },
+    {
+      "_id": "fld_db9c4051b73f4eb29678e155ef0fdbb8",
+      "parentId": "wrk_5f27be87717643478bc582597b82788a",
+      "modified": 1674389310746,
+      "created": 1674389310746,
+      "name": "code",
+      "description": "",
+      "environment": {},
+      "environmentPropertyOrder": null,
+      "metaSortKey": -1674389310746,
+      "_type": "request_group"
+    },
+    {
+      "_id": "wrk_5f27be87717643478bc582597b82788a",
+      "parentId": null,
+      "modified": 1674389223775,
+      "created": 1674389223775,
+      "name": "kidsplayer",
+      "description": "",
+      "scope": "collection",
+      "_type": "workspace"
+    },
+    {
+      "_id": "env_3fded33d1b6375c6be61a0e0d0e5367c886841be",
+      "parentId": "wrk_5f27be87717643478bc582597b82788a",
+      "modified": 1674391405112,
+      "created": 1674389223781,
+      "name": "Base Environment",
+      "data": {},
+      "dataPropertyOrder": {},
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1674389223781,
+      "_type": "environment"
+    },
+    {
+      "_id": "jar_3fded33d1b6375c6be61a0e0d0e5367c886841be",
+      "parentId": "wrk_5f27be87717643478bc582597b82788a",
+      "modified": 1674389223782,
+      "created": 1674389223782,
+      "name": "Default Jar",
+      "cookies": [],
+      "_type": "cookie_jar"
+    },
+    {
+      "_id": "spc_a1040657257d4ce9b1bc8ad8d6207dee",
+      "parentId": "wrk_5f27be87717643478bc582597b82788a",
+      "modified": 1674389223777,
+      "created": 1674389223777,
+      "fileName": "kidsplayer",
+      "contents": "",
+      "contentType": "yaml",
+      "_type": "api_spec"
+    },
+    {
+      "_id": "env_8f90c53065cb4149bb93e0609794fc2b",
+      "parentId": "env_3fded33d1b6375c6be61a0e0d0e5367c886841be",
+      "modified": 1674391430622,
+      "created": 1674391409757,
+      "name": "kidsplayer environment",
+      "data": {},
+      "dataPropertyOrder": {},
+      "color": null,
+      "isPrivate": false,
+      "metaSortKey": 1674391409757,
+      "_type": "environment"
+    }
+  ]
+}
