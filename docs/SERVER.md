@@ -1,5 +1,17 @@
 # spotify-kidsplayer | *Server* | [back](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/README.md)
 
+## Config
+
+Edit the file: `server/config/default.conf`
+
+```bash
+SPOTIFY_REDIRECT_URI=http://RASPBERRYPI:PORT/auth/code
+```
+
+> The **redirect uri** is THE SAME how you entered on the spotify developer dashboard for your application.  
+>   
+> This is an important thing. The URL MUST BE REACHABLE with your browser - BUT MUST NOT reachable for spotify.
+
 ## Run it
 - the container
 ```bash
