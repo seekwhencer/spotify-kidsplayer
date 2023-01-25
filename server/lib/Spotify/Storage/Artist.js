@@ -34,7 +34,20 @@ export default class StorageArtist extends MODULECLASS {
                 resolve(result);
             });
         });
+    }
 
+    getArtistById(id) {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT *
+                           FROM ${this.table}
+                           WHERE id = ${id}`;
+
+            this.storage.connection.query(query, (error, result, fields) => {
+                if (error) throw error;
+
+                resolve(result[0]);
+            });
+        });
     }
 
     getSpotify(spotifyId) {
@@ -62,8 +75,7 @@ export default class StorageArtist extends MODULECLASS {
                 return this.getSpotify(spotifyId);
             })
             .then(artist => {
-                if (!artist)
-                    return Promise.resolve(false);
+                if (!artist) return Promise.resolve(false);
 
                 LOG(this.label, 'ARTIST FETCHED', artist, '');
                 return this.create(artist);
@@ -76,9 +88,7 @@ export default class StorageArtist extends MODULECLASS {
     create(artist) {
         return new Promise((resolve, reject) => {
             const data = {
-                name: artist.name,
-                spotify_id: artist.id,
-                dt_create: nowDateTime()
+                name: artist.name, spotify_id: artist.id, dt_create: nowDateTime()
             }
 
             const query = `INSERT INTO ${this.table}
@@ -87,8 +97,7 @@ export default class StorageArtist extends MODULECLASS {
                 if (error) throw error;
                 LOG(this.label, results.insertId);
 
-                if (artist.images)
-                    return this.addImages(results.insertId, artist.images).then(() => resolve(results.insertId));
+                if (artist.images) return this.addImages(results.insertId, artist.images).then(() => resolve(results.insertId));
 
                 resolve(results.insertId);
             });
@@ -133,5 +142,32 @@ export default class StorageArtist extends MODULECLASS {
                 });
             });
         }).catch(err => ERROR(this.label, err));
+    }
+
+    update(artistId, params) {
+        return this
+            .getArtistById(artistId)
+            .then(artist => {
+                if (!artist)
+                    return Promise.resolve(false);
+
+                return new Promise((resolve, reject) => {
+                    const data = {
+                        name: params.name, dt_update: nowDateTime()
+                    }
+
+                    const query = `UPDATE ${this.table}
+                                   SET ?
+                                   WHERE id = ${artistId}`;
+
+                    this.storage.connection.query(query, data, (error, results, fields) => {
+                        if (error) throw error;
+                        const result = {...artist, ...data};
+                        LOG(this.label, 'UPDATED:', result, '');
+
+                        resolve(result);
+                    });
+                });
+            });
     }
 }
