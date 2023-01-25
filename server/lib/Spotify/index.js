@@ -1,6 +1,7 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 import SpotifyAuth from "./Auth.js";
 import SpotifyStorage from "./Storage/index.js";
+import SpotifyArtist from "./Artist.js";
 
 export default class Spotify extends MODULECLASS {
     constructor(parent, options) {
@@ -33,6 +34,7 @@ export default class Spotify extends MODULECLASS {
 
             // storage
             this.storage = new SpotifyStorage(this);
+            this.artist = new SpotifyArtist(this);
 
             // authentication
             new SpotifyAuth(this).then(auth => {

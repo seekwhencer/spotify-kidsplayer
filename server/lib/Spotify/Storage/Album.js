@@ -1,13 +1,50 @@
-import StorageClass from './StorageClass.js';
-
-export default class StorageArtist extends StorageClass {
+export default class StorageArtist extends MODULECLASS {
     constructor(parent, options) {
         super(parent, options);
 
         this.label = 'SPOTIFY STORAGE ARTIST';
         LOG(this.label, 'INIT');
 
+        this.storage = parent;
+        this.spotify = this.storage.spotify;
+        this.api = this.spotify.api;
+
         this.table = 'artist';
+        this.imagePath = `${STORAGE_CONTAINER_PATH}/images`;
+    }
+
+    wrapIdFromURI(artistURI) {
+        const splitA = artistURI.split('?');
+        const splitB = splitA[0].split('/');
+        return splitB[splitB.length - 1];
+    }
+
+    getBySpotifyId(spotifyId) {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT *
+                           FROM ${this.table}
+                           WHERE spotify_id = '${spotifyId}'`;
+
+            this.storage.connection.query(query, (error, result, fields) => {
+                if (error) throw error;
+
+                resolve(result);
+            });
+        });
+    }
+
+    getById(id) {
+        return new Promise((resolve, reject) => {
+            const query = `SELECT *
+                           FROM ${this.table}
+                           WHERE id = ${id}`;
+
+            this.storage.connection.query(query, (error, result, fields) => {
+                if (error) throw error;
+
+                resolve(result[0]);
+            });
+        });
     }
 
     add(artistURI) {
@@ -23,17 +60,10 @@ export default class StorageArtist extends StorageClass {
                 return this.spotify.artist.getById(spotifyId);
             })
             .then(artist => {
-                if (!artist)
-                    return Promise.resolve(false);
+                if (!artist) return Promise.resolve(false);
 
                 LOG(this.label, 'ARTIST FETCHED', artist, '');
-
-                return this.create({
-                    name: artist.name,
-                    spotify_id: artist.id,
-                    dt_create: nowDateTime()
-                }, artist.images);
-
+                return this.create(artist);
             })
             .then(id => {
 
@@ -44,12 +74,7 @@ export default class StorageArtist extends StorageClass {
             });
     }
 
-    create(data, images) {
-        LOG('>>>>', images, '');
-        return super.create(data, images, 'artist_id');
-    }
-
-    /*create(artist) {
+    create(artist) {
         return new Promise((resolve, reject) => {
             const data = {
                 name: artist.name, spotify_id: artist.id, dt_create: nowDateTime()
@@ -67,10 +92,10 @@ export default class StorageArtist extends StorageClass {
                 resolve(results.insertId);
             });
         });
-    }*/
+    }
 
     addImages(id, images) {
-        return super.addImages(id, images, 'artist_id');
+        return this.storage.image.add(this.table, id, 'artist_id', images);
     }
 
     update(artistId, params) {

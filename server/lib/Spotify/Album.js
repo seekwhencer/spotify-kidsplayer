@@ -1,16 +1,23 @@
-export default class SpotifyArtist extends MODULECLASS {
+export default class SpotifyAlbum extends MODULECLASS {
     constructor(parent, options) {
         super(parent, options);
 
-        this.label = 'SPOTIFY ARTIST';
+        this.label = 'SPOTIFY ALBUM';
         LOG(this.label, 'INIT');
         this.spotify = parent;
         this.api = parent.api;
     }
 
-    getById(spotifyId) {
+    getArtistAlbums(id) {
+        /*const options = {
+            limit: 10,
+            offset: 20
+        };*/
+
+        const options = {}
+
         return this.api
-            .getArtist(spotifyId)
+            .getArtistAlbums(id, options)
             .then(data => {
                 //..
                 return Promise.resolve(data.body);

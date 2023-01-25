@@ -11,7 +11,6 @@ export default class extends Route {
         });
 
         this.router.post('/artist/add', this.jsonParser);
-
         this.router.post('/artist/add', (req, res) => {
             const params = req.body;
 
@@ -32,7 +31,6 @@ export default class extends Route {
         });
 
         this.router.post('/artist/update/:id', this.jsonParser);
-
         this.router.post('/artist/update/:id', (req, res) => {
             const params = req.body;
             const artistId = req.params.id;
