@@ -4,6 +4,7 @@ import fs from 'fs-extra';
 import expressWs from 'express-ws';
 import * as Routes from './routes/index.js';
 
+
 export default class WebServer extends MODULECLASS {
     constructor(parent) {
         super(parent);
@@ -43,6 +44,8 @@ export default class WebServer extends MODULECLASS {
 
         // statics
         this.engine.use(express.static(this.documentRoot));
+
+        //this.engine.use();
 
         // favicon
         this.engine.get('/favicon.ico', (req, res) => {

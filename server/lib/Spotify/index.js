@@ -1,6 +1,6 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 import SpotifyAuth from "./Auth.js";
-import SpotifyStorage from "./Storage.js";
+import SpotifyStorage from "./Storage/index.js";
 
 export default class Spotify extends MODULECLASS {
     constructor(parent, options) {
@@ -77,5 +77,9 @@ export default class Spotify extends MODULECLASS {
 
     resetSession() {
         this.auth.reset();
+    }
+
+    addArtist(artistURI) {
+        return this.storage.artist.add(artistURI);
     }
 }

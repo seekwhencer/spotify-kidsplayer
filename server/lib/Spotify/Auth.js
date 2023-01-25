@@ -80,7 +80,6 @@ export default class SpotifyAuth extends MODULECLASS {
                     return Promise.resolve();
                 })*/
                 .then(() => {
-                    LOG('>WHAT', this.accessToken, this.refreshToken);
                     if (this.accessToken && this.refreshToken) {
                         return this.auth();
                     }

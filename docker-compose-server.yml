@@ -25,6 +25,7 @@ services:
       - /kidsplayer/server/node_modules
       - /kidsplayer/shared/node_modules
       - pkg-cache:/root/.pkg-cache
+      - ${STORAGE_HOST_PATH}:${STORAGE_CONTAINER_PATH}
     environment:
       - DEBUG=true
       - VERBOSE=2

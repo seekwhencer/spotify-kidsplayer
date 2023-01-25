@@ -45,3 +45,11 @@ global.ksortObjArray = (array, key) => {
     };
     return array.sort(compare);
 };
+
+global.nowDateTime = () => {
+    let ts = new Date();
+    ts.setMinutes(ts.getMinutes() - ts.getTimezoneOffset());
+    return ts.toISOString().slice(0, 19).replace('T', ' ');
+}
+
+
