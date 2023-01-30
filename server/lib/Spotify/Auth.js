@@ -1,13 +1,14 @@
 import fs from 'fs-extra';
+//import https from 'https';
+//import http from 'http';
+
+import followRedirects from 'follow-redirects';
+
+const http = followRedirects.http;
+const https = followRedirects.https;
 
 /**
- * Steps:
  *
- * 1) Run the app the first time
- * 2) open the displayed url in your browser
- * 3) copy the "code" from the get parameter from the received redirect page
- * 4) create a file: "server/config/.code" and paste the code in it
- * 5) restart the app
  *
  */
 
@@ -57,31 +58,42 @@ export default class SpotifyAuth extends MODULECLASS {
                 this.startRefreshCycle();
             });
 
+            this.on('access-token-expired', () => {
+                LOG(this.label, 'ACCESS TOKEN EXPIRED');
+
+                this.reset();
+                this.createURL();
+                this.requestAuth();
+
+            });
+
 
             /**
              * Start here
              */
             this
                 .readFiles()
-/*                .then(() => {
+                /*                .then(() => {
 
-                    LOG('---');
-                    LOG(this.label, 'CODE:', this.code);
-                    LOG(this.label, 'ACCESS TOKEN:', this.accessToken);
-                    LOG(this.label, 'REFRESH TOKEN:', this.refreshToken);
-                    LOG('---');
+                                    LOG('---');
+                                    LOG(this.label, 'CODE:', this.code);
+                                    LOG(this.label, 'ACCESS TOKEN:', this.accessToken);
+                                    LOG(this.label, 'REFRESH TOKEN:', this.refreshToken);
+                                    LOG('---');
 
-                    if (!this.code) {
-                        return this.getCode();
-                    }
-                    if (!this.accessToken && this.code) {
-                        return this.grantCode();
-                    }
-                    return Promise.resolve();
-                })*/
+                                    if (!this.code) {
+                                        return this.getCode();
+                                    }
+                                    if (!this.accessToken && this.code) {
+                                        return this.grantCode();
+                                    }
+                                    return Promise.resolve();
+                                })*/
                 .then(() => {
                     if (this.accessToken && this.refreshToken) {
                         return this.auth();
+                    } else {
+                        this.emit('access-token-expired');
                     }
                     return Promise.resolve(false);
                 })
@@ -95,6 +107,25 @@ export default class SpotifyAuth extends MODULECLASS {
 
 
         });
+    }
+
+
+    auth() {
+        LOG('>>>>', this.accessToken, this.refreshToken);
+
+        this.api.setAccessToken(this.accessToken, (err) => {
+            ERROR(this.label, err);
+
+            this.refreshAccessToken();
+            this.api.setRefreshToken(this.refreshToken);
+        });
+
+
+        return Promise.all([
+            this.writeFile(this.fileNames.accessToken, this.accessToken),
+            this.writeFile(this.fileNames.refreshToken, this.refreshToken),
+            this.writeFile(this.fileNames.expireToken, this.expireToken.toString())
+        ]);
     }
 
     getCode() {
@@ -125,6 +156,28 @@ export default class SpotifyAuth extends MODULECLASS {
 
         return this.authorizeURL = this.api.createAuthorizeURL(this.scopes, this.state);
     }
+
+    requestURL() {
+        LOG(this.label, 'REQUESTING AUTHORIZE URL', this.authorizeURL);
+        https.get(this.authorizeURL, res => {
+            let body = '';
+            res.on('data', chunk => body += chunk);
+            res.on('end', () => LOG(body));
+
+            LOG('>>> JUHU', res.responseUrl, res.headers,'');
+        });
+    }
+
+    requestAuth() {
+        http.get('http://kidsplayer:3000/auth', res => {
+            let body = '';
+            res.on('data', chunk => body += chunk);
+            res.on('end', () => LOG(body));
+
+            LOG('>>> JUHU', res.responseUrl, res.headers,'');
+        });
+    }
+
 
     startRefreshCycle() {
         const ms = this.expireToken / 2 * 1000;
@@ -159,16 +212,6 @@ export default class SpotifyAuth extends MODULECLASS {
         });
     }
 
-    auth() {
-        this.api.setAccessToken(this.accessToken);
-        this.api.setRefreshToken(this.refreshToken);
-
-        return Promise.all([
-            this.writeFile(this.fileNames.accessToken, this.accessToken),
-            this.writeFile(this.fileNames.refreshToken, this.refreshToken),
-            this.writeFile(this.fileNames.expireToken, this.expireToken.toString())
-        ]);
-    }
 
     refreshAccessToken() {
         return this.api.refreshAccessToken().then((data, err) => {
@@ -199,18 +242,30 @@ export default class SpotifyAuth extends MODULECLASS {
     }
 
     readCode() {
-        return this.readFile(this.fileNames.code).then(code => code && code !== '' ? this.code = code.toString() : this.code = false);
+        return this.readFile(this.fileNames.code).then(code => {
+            code && code !== '' ? this.code = code.toString() : this.code = false;
+            return Promise.resolve();
+        });
     }
 
     readToken() {
         return Promise.all([
-            this.readFile(this.fileNames.accessToken).then(accessToken => accessToken && accessToken !== '' ? this.accessToken = accessToken.toString() : this.accessToken = false),
-            this.readFile(this.fileNames.refreshToken).then(refreshToken => refreshToken && refreshToken !== '' ? this.refreshToken = refreshToken.toString() : this.refreshToken = false)]
+            this.readFile(this.fileNames.accessToken).then(accessToken => {
+                accessToken && accessToken !== '' ? this.accessToken = accessToken.toString() : this.accessToken = false;
+                return Promise.resolve();
+            }),
+            this.readFile(this.fileNames.refreshToken).then(refreshToken => {
+                refreshToken && refreshToken !== '' ? this.refreshToken = refreshToken.toString() : this.refreshToken = false;
+                return Promise.resolve();
+            })]
         );
     }
 
     readExpire() {
-        return this.readFile(this.fileNames.expireToken).then(expireToken => expireToken && expireToken !== '' ? this.expireToken = parseInt(expireToken) : this.expireToken = false);
+        return this.readFile(this.fileNames.expireToken).then(expireToken => {
+            expireToken && expireToken !== '' ? this.expireToken = parseInt(expireToken) : this.expireToken = false;
+            return Promise.resolve();
+        });
     }
 
     readFiles() {
@@ -237,7 +292,7 @@ export default class SpotifyAuth extends MODULECLASS {
     }
 
     get code() {
-        return this._code;
+        return this._code === '' ? false : this._code;
     }
 
     set code(val) {
@@ -246,7 +301,7 @@ export default class SpotifyAuth extends MODULECLASS {
     }
 
     get accessToken() {
-        return this._accessToken;
+        return this._accessToken === '' ? false : this._accessToken;
     }
 
     set accessToken(val) {
@@ -255,7 +310,7 @@ export default class SpotifyAuth extends MODULECLASS {
     }
 
     get refreshToken() {
-        return this._refreshToken;
+        return this._refreshToken === '' ? false : this._refreshToken;
     }
 
     set refreshToken(val) {
@@ -264,11 +319,11 @@ export default class SpotifyAuth extends MODULECLASS {
     }
 
     get expireToken() {
-        return this._expireToken;
+        return this._expireToken === '' ? false : this._expireToken;
     }
 
     set expireToken(val) {
-        this.writeFile(this.fileNames.expireToken, val === false ? '' : val.toString());
+        this.writeFile(this.fileNames.expireToken, val === false ? '' : val);
         this._expireToken = val;
     }
 }

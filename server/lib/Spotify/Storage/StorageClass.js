@@ -7,44 +7,51 @@ export default class StorageClass extends MODULECLASS {
         this.imagePath = `${STORAGE_CONTAINER_PATH}/images`;
     }
 
-    wrapIdFromURI(uri) {
-        const splitA = uri.split('?');
-        const splitB = splitA[0].split('/');
-        return splitB[splitB.length - 1];
+    query(query, data) {
+        return this.storage
+            .connect()
+            .then(() => {
+                return new Promise((resolve, reject) => {
+                    if (data) {
+                        this.storage.connection.query(query, (error, result) => {
+                            if (error) throw error;
+
+                            this.storage.disconnect();
+                            resolve(result);
+                        });
+                    } else {
+                        this.storage.connection.query(query, data, (error, result) => {
+                            if (error) throw error;
+                            this.storage.disconnect();
+
+                            resolve(result);
+                        });
+                    }
+                });
+            });
     }
 
     getBySpotifyId(spotifyId) {
-        return new Promise((resolve, reject) => {
-            const query = `SELECT *
-                           FROM ${this.table}
-                           WHERE spotify_id = '${spotifyId}'`;
+        const query = `SELECT *
+                       FROM ${this.table}
+                       WHERE spotify_id = '${spotifyId}'`;
 
-            this.storage.connection.query(query, (error, result, fields) => {
-                if (error) throw error;
-
-                resolve(result);
-            });
-        });
+        return this.query(query).then(result => Promise.resolve(result[0]));
     }
 
     getById(id) {
-        return new Promise((resolve, reject) => {
-            const query = `SELECT *
-                           FROM ${this.table}
-                           WHERE id = ${id}`;
+        const query = `SELECT *
+                       FROM ${this.table}
+                       WHERE id = ${id}`;
 
-            this.storage.connection.query(query, (error, result, fields) => {
-                if (error) throw error;
-
-                resolve(result[0]);
-            });
-        });
+        return this.query(query).then(result => Promise.resolve(result[0]));
     }
 
-    create(data, images, field) {
+    create(data, images) {
         return new Promise((resolve, reject) => {
             const query = `INSERT INTO ${this.table}
                            SET ?`;
+
             this.storage.connection.query(query, data, (error, results, fields) => {
                 if (error) throw error;
                 LOG(this.label, results.insertId);
@@ -59,6 +66,26 @@ export default class StorageClass extends MODULECLASS {
 
     addImages(id, images, field) {
         return this.storage.image.add(this.table, id, field, images);
+    }
+
+    update(id, data) {
+        const fields = Object.keys(data);
+
+        const set = fields.map(f => `${f} = ?`).join(', ');
+
+        const query = `UPDATE ${this.table}
+                       SET ?
+                       WHERE id = ${this.storage.mysql.escape(id)}`;
+
+        const sql = this.storage.mysql.format(query, data);
+
+        LOG('>>>>', sql);
+        LOG();
+        LOG();
+        LOG();
+
+
+        return this.query(query, data);
     }
 
 }

@@ -16,8 +16,6 @@ export default class StorageImage extends MODULECLASS {
     }
 
     add(table, id, field, images) {
-        //LOG('>>>', table, '|', id, '|', field, '|', images, '');
-
         return new Promise((resolve, reject) => {
             const data = [];
             images.forEach(image => {
@@ -37,6 +35,7 @@ export default class StorageImage extends MODULECLASS {
     }
 
     downloadImage(url, hash) {
+        LOG(this.label, 'DOWNLOADING IMAGE', url, 'as', hash);
         return new Promise((resolve, reject) => {
             https.get(url, response => {
                 const statusCode = response.statusCode;
@@ -50,7 +49,7 @@ export default class StorageImage extends MODULECLASS {
 
                 writeStream.on('error', () => reject('Error writing to file!'));
                 writeStream.on('finish', () => {
-                    writeStream.close(resolve)
+                    writeStream.close(resolve);
                     resolve();
                 });
             });

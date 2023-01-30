@@ -7,4 +7,4 @@ loadConfig() {
 
 loadConfig
 
-cat backup.sql | docker exec -i ${PROJECT_NAME}_mysql /usr/bin/mysql -u ${DB_USER} --password=${DB_ROOT_PASS} ${DB_NAME}
+cat ./mysql/backup.sql | docker exec -i ${PROJECT_NAME}_mysql /usr/bin/mysql -u ${DB_USER} --password=${DB_ROOT_PASS} ${DB_NAME}

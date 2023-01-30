@@ -1,7 +1,7 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 import SpotifyAuth from "./Auth.js";
 import SpotifyStorage from "./Storage/index.js";
-import SpotifyArtist from "./Artist.js";
+import SpotifyArtist from "./Controller/Artist.js";
 
 export default class Spotify extends MODULECLASS {
     constructor(parent, options) {
@@ -21,7 +21,10 @@ export default class Spotify extends MODULECLASS {
              */
             this.on('auth', () => {
                 this.getDevices();
-                //this.useDevices([this.deviceId]);
+            });
+
+            this.on('access-token-expired', () =>{
+                this.auth.emit('access-token-expired');
             });
 
 
@@ -34,7 +37,12 @@ export default class Spotify extends MODULECLASS {
 
             // storage
             this.storage = new SpotifyStorage(this);
+
+            // Artist
             this.artist = new SpotifyArtist(this);
+
+            // Album
+            // ...
 
             // authentication
             new SpotifyAuth(this).then(auth => {
@@ -45,27 +53,16 @@ export default class Spotify extends MODULECLASS {
         });
     }
 
-    test() {
-        this.api
-            .getArtistAlbums('4qhaHyCtCaFugTqT9LzuKp')
-            .then((data, err) => {
-                if (err)
-                    return Promise.reject();
-
-                console.log('Artist albums', data.body);
-            })
-            .then((data, err) => {
-                console.log('Artist albums', data.body);
-                return Promise.resolve(data.body);
-            });
-    }
-
+    // THIS IS THE CHECK METHOD!!!
     getDevices() {
         this.api
             .getMyDevices()
-            .then((data, err) => {
+            .then(data => {
                 this.availableDevices = data.body.devices;
                 LOG(this.label, data.body.devices, 'abc');
+            }).catch(error => {
+                if(error.body.error.status === 401)
+                    this.emit('access-token-expired');
             });
     }
 
@@ -81,11 +78,16 @@ export default class Spotify extends MODULECLASS {
         this.auth.reset();
     }
 
+    //
+    // called from the webserver routes
+    //
+
+
     addArtist(artistURI) {
-        return this.storage.artist.add(artistURI);
+        return this.artist.add(artistURI);
     }
 
-    updateArtist(artistId, data){
-        return this.storage.artist.update(artistId, data);
+    updateArtist(artistId, data) {
+        return this.artist.update(artistId, data);
     }
 }

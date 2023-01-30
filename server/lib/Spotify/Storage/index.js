@@ -14,35 +14,49 @@ export default class SpotifyStorage extends MODULECLASS {
         this.spotify = parent;
         this.api = this.spotify.api;
 
+        this.image = new StorageImage(this);
+        this.artist = new StorageArtist(this);
+        //this.album = new StorageAlbum(this);
+
+        this.mysql = mysql;
+
+    }
+
+    createConnection() {
         this.connection = mysql.createConnection({
-            host: 'mysql',
+            host: 'localhost',
             user: `${DB_USER}`,
             password: `${DB_PASS}`,
             database: `${DB_NAME}`
         });
-
-        //this.connect();
-        this.image = new StorageImage(this);
-        this.artist = new StorageArtist(this);
-        //this.album = new StorageAlbum(this);
+        LOG(this.label, 'CREATE DATABASE CONNECTION');
     }
 
     connect() {
-        this.connection.connect(err => {
-            if (err) {
-                ERROR(this.label, 'MYSQL CONNECTING: ' + err.stack);
-                return;
-            }
+        this.createConnection();
 
-            LOG(this.label, 'MYSQL CONNECTED AS ID', this.connection.threadId);
+        return new Promise((resolve, reject) => {
+            this.connection.connect(err => {
+                if (err) throw err;
+                resolve();
+            });
         });
     }
+
+    disconnect() {
+        this.connection.end((err) => {
+            if (err)
+                throw err;
+            LOG(this.label, 'DISCONNECT DATABASE');
+        });
+    }
+
 
     addArtist(artistURI) {
         return this.artist.add(artistURI);
     }
 
-    updateArtist(artistId, data){
+    updateArtist(artistId, data) {
         return this.artist.update(artistId, data);
     }
 }

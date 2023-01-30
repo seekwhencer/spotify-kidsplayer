@@ -27,6 +27,12 @@ export default class extends Route {
                             params: params
                         });
                     }
+                }).catch(e => {
+                    res.json({
+                        message: 'error',
+                        params: params,
+                        error: e
+                    });
                 });
         });
 
@@ -60,6 +66,36 @@ export default class extends Route {
                 message: ''
             });
         });
+
+        /**
+         * Albums
+         */
+        this.router.get('/artist/albums/:id', this.jsonParser);
+        this.router.get('/artist/albums/:id', (req, res) => {
+            const params = req.body;
+            const artistId = req.params.id;
+
+            if (params.artistURI)
+                APP.SPOTIFY.getArtistAlbums(params.artistURI).then(albums => {
+                    if (albums) {
+                        res.json({
+                            artistId: albums,
+                            params: params
+                        });
+                    } else {
+                        res.json({
+                            message: 'artist exists',
+                            params: params
+                        });
+                    }
+                });
+
+            res.json({
+                message: ''
+            });
+        });
+
+
 
         return this.router;
     }
