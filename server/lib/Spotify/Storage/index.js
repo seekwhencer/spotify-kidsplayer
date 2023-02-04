@@ -14,9 +14,21 @@ export default class SpotifyStorage extends MODULECLASS {
         this.spotify = parent;
         this.api = this.spotify.api;
 
+        this.pool = mysql.createPool({
+            host: 'localhost',
+            user: `${DB_USER}`,
+            password: `${DB_PASS}`,
+            database: `${DB_NAME}`,
+            waitForConnections: true,
+            connectionLimit: 10,
+            maxIdle: 10, // max idle connections, the default value is the same as `connectionLimit`
+            idleTimeout: 60000, // idle connections timeout, in milliseconds, the default value 60000
+            queueLimit: 0
+        });
+
         this.image = new StorageImage(this);
         this.artist = new StorageArtist(this);
-        //this.album = new StorageAlbum(this);
+        this.album = new StorageAlbum(this);
 
         this.mysql = mysql;
 
@@ -29,6 +41,7 @@ export default class SpotifyStorage extends MODULECLASS {
             password: `${DB_PASS}`,
             database: `${DB_NAME}`
         });
+
         LOG(this.label, 'CREATE DATABASE CONNECTION');
     }
 

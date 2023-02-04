@@ -13,23 +13,24 @@ export default class SpotifyArtist extends SpotifyController {
 
     add(artistURI) {
         const spotifyId = this.wrapIdFromURI(artistURI);
-        let artistDB, artistSpotify;
+        let artistSpotify, artistDB, albumsSpotify, albumsDB;
 
         return this.model
             .getBySpotifyId(spotifyId)
-            .then(data => {
+            .then(data => { // returns the artist data from spotify
                 artistDB = data;
 
-                if (!artistDB)
+                if (!artistDB) {
                     return this.getById(spotifyId);
-
-                if (Object.values(artistDB).length > 0) {
-                    return Promise.resolve();
                 }
+
+                LOG(this.label, 'EXISTS IN DB:', artistDB.spotify_id);
+
+                return Promise.resolve();
             })
-            .then(artist => {
+            .then(artist => { // returns the inserted or existing id
                 if (!artist)
-                    return Promise.resolve(artistDB.id);
+                    return Promise.resolve(artistDB);
 
                 artistSpotify = artist;
 
@@ -37,15 +38,25 @@ export default class SpotifyArtist extends SpotifyController {
                     name: artistSpotify.name,
                     spotify_id: artistSpotify.id,
                     dt_create: nowDateTime()
-                }, artistSpotify.images);
+                }).then(artistWritten => {
+                    artistDB = artistWritten;
+
+                    if (artistSpotify.images) {
+                        return this.model.addImages(artistDB.id, artistSpotify.images);
+                    }
+                    return Promise.resolve(artistDB);
+
+                }).then(() => {
+                    return Promise.resolve(artistDB);
+                });
             })
-            .then(artistId => {
-                return this.getAlbums(spotifyId);
+            .then(artist => { // this is the artist from the database
+                artistDB = artist;
+                return this.getAlbums(artistDB);
             })
-            .then(() => {
-                LOG(this.label,'GOT', this.albums.length, 'ALBUMS');
-                return Promise.resolve(this.albums);
-            })
+            .then(albums => {
+                return Promise.resolve(albums); // the end
+            });
     }
 
     update(artistId, params) {
@@ -74,37 +85,17 @@ export default class SpotifyArtist extends SpotifyController {
             });
     }
 
-    getAlbums(spotifyId, limit, offset) {
-        limit = limit || 10;
-        offset = offset || 0;
-
-        // reset album collection
-        this.albums = [];
-
-        LOG(this.label, 'GET ALBUMS');
-        return this.getAlbumPage(spotifyId, limit, offset);
+    getAlbums(artist, limit, offset) {
+        return this.album.getByArtist(artist, limit, offset);
     }
 
-    getAlbumPage(spotifyId, limit, offset) {
-        return new Promise((resolve, reject) => {
+    // ---------------
 
-            this.api
-                .getArtistAlbums(spotifyId, {
-                    limit: limit,
-                    offset: offset,
-                    market: 'DE'
-                })
-                .then((data, err) => {
-                    LOG(this.label, 'ALBUM INFORMATION', data.body.items.length, limit, offset);
-                    this.albums = [...this.albums, ...data.body.items];
-                    offset = offset + limit;
+    get album() {
+        return this.spotify.album;
+    }
 
-                    if (offset > data.body.total) {
-                        resolve(); // exit the recursion
-                    } else {
-                        resolve(this.getAlbumPage(spotifyId, limit, offset));
-                    }
-                });
-        });
+    set album(val) {
+
     }
 }

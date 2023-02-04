@@ -8,27 +8,25 @@ export default class StorageClass extends MODULECLASS {
     }
 
     query(query, data) {
-        return this.storage
-            .connect()
-            .then(() => {
-                return new Promise((resolve, reject) => {
-                    if (data) {
-                        this.storage.connection.query(query, (error, result) => {
-                            if (error) throw error;
 
-                            this.storage.disconnect();
-                            resolve(result);
-                        });
-                    } else {
-                        this.storage.connection.query(query, data, (error, result) => {
-                            if (error) throw error;
-                            this.storage.disconnect();
-
-                            resolve(result);
-                        });
-                    }
+        /*const sql = this.storage.mysql.format(query, data);
+        console.log('');
+        LOG(this.label, sql);
+        console.log('');
+        */
+        return new Promise((resolve, reject) => {
+            if (data) {
+                this.storage.pool.query(query, data, (error, result) => {
+                    if (error) throw error;
+                    resolve(result);
                 });
-            });
+            } else {
+                this.storage.pool.query(query, (error, result) => {
+                    if (error) throw error;
+                    resolve(result);
+                });
+            }
+        });
     }
 
     getBySpotifyId(spotifyId) {
@@ -47,25 +45,24 @@ export default class StorageClass extends MODULECLASS {
         return this.query(query).then(result => Promise.resolve(result[0]));
     }
 
-    create(data, images) {
+    create(data, table) {
+        !table ? table = this.table : null;
+
         return new Promise((resolve, reject) => {
-            const query = `INSERT INTO ${this.table}
+            const query = `INSERT INTO ${table}
                            SET ?`;
 
-            this.storage.connection.query(query, data, (error, results, fields) => {
-                if (error) throw error;
-                LOG(this.label, results.insertId);
-
-                if (images)
-                    return this.addImages(results.insertId, images).then(() => resolve(results.insertId));
-
-                resolve(results.insertId);
+            this.query(query, data).then(result => {
+                LOG(this.label, 'INSERTED:', result.insertId);
+                this.getById(result.insertId).then(data => resolve(data));
             });
         });
     }
 
-    addImages(id, images, field) {
-        return this.storage.image.add(this.table, id, field, images);
+    addImages(id, images, table) {
+        !table ? table = this.table : null;
+
+        return this.storage.image.addBulk(table, id, images);
     }
 
     update(id, data) {
@@ -83,7 +80,6 @@ export default class StorageClass extends MODULECLASS {
         LOG();
         LOG();
         LOG();
-
 
         return this.query(query, data);
     }
