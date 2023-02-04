@@ -72,7 +72,7 @@ export default class SpotifyTrack extends SpotifyController {
     }
 
     add(trackData) {
-        LOG('>>>> ADD TRACK', trackData.name);
+        LOG(this.label, 'ADD', trackData.name);
         return this.model
             .getBySpotifyId(trackData.id)
             .then(track => {

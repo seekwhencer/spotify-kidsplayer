@@ -85,7 +85,7 @@ export default class SpotifyAlbum extends SpotifyController {
             .then(tracks => {
                 albumDB.tracks = tracks;
 
-                LOG(this.label, 'GOT TRACKS', tracks, '');
+                LOG(this.label, 'GOT TRACKS', tracks.length);
                 return Promise.resolve(albumDB);
             });
     }
