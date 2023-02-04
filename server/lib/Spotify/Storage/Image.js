@@ -48,33 +48,6 @@ export default class StorageImage extends StorageClass {
         });
     }
 
-    /*add(table, id, images) {
-        return new Promise((resolve, reject) => {
-            const data = [];
-            const proms = [];
-
-            images.forEach(image => {
-                const hash = this.createHash(image.url);
-                this.downloadImage(image.url, hash);
-
-                data.push([id, image.height, image.width, image.url, hash]);
-
-                proms.push(this.create({
-                    id: artistSpotify.name,
-                    spotify_id: artistSpotify.id,
-                    dt_create: nowDateTime()
-                }));
-
-            });
-
-            //const query = `INSERT INTO ${table}_image (${table}_id, height, width, url, hash) VALUES ?`;
-
-            //LOG('>???', this.storage.mysql.format(query, data), data, '');
-
-            //this.query(query, data).then(() => resolve(id));
-        });
-    }*/
-
     downloadImage(url, hash) {
         LOG(this.label, 'DOWNLOADING IMAGE', url, 'as', hash);
         return new Promise((resolve, reject) => {

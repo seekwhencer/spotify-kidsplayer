@@ -15,10 +15,10 @@ export default class extends Route {
             const params = req.body;
 
             if (params.artistURI)
-                APP.SPOTIFY.addArtist(params.artistURI).then(artistId => {
-                    if (artistId) {
+                APP.SPOTIFY.addArtist(params.artistURI).then(data => {
+                    if (data) {
                         res.json({
-                            artistId: artistId,
+                            data: data,
                             params: params
                         });
                     } else {

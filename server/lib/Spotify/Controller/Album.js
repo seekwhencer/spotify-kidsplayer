@@ -8,8 +8,6 @@ export default class SpotifyAlbum extends SpotifyController {
         LOG(this.label, 'INIT');
 
         this.model = this.storage.album;
-        this.artist = () => this.spotify.artist;
-        this.track = () => this.spotify.track;
     }
 
     addBulk(items) {
@@ -37,23 +35,24 @@ export default class SpotifyAlbum extends SpotifyController {
         let albumDB, albumSpotify;
         const artist_id = albumData.artist_id;
 
-        LOG('>>>> ADD ALBUM', albumData.name);
+        LOG(this.label, 'ADD', albumData.name, albumData.id);
 
         return this.model
             .getBySpotifyId(albumData.id)
+            // get spotify data
             .then(data => {
                 albumDB = data;
 
                 if (!albumDB)
                     return this.getById(albumData.id);
 
-                if (Object.values(albumDB).length > 0) {
-                    return Promise.resolve();
-                }
+                LOG(this.label, 'EXISTS IN DB:', albumDB.spotify_id);
+                return Promise.resolve(false);
             })
+            // save it
             .then(album => {
                 if (!album)
-                    return Promise.resolve(albumDB.id);
+                    return Promise.resolve(albumDB);
 
                 albumSpotify = album;
 
@@ -65,25 +64,30 @@ export default class SpotifyAlbum extends SpotifyController {
                     total_tracks: albumSpotify.total_tracks,
                     dt_create: nowDateTime()
                 };
+                return this.model.create(data);
+            })
+            // images
+            .then(album => {
+                albumDB = album;
 
-                //return this.model.create(data);
+                if (!albumSpotify)
+                    return Promise.resolve();
 
-                return this.model.create(data)
-                    .then(albumWritten => {
-                        albumDB = albumWritten;
+                if (albumSpotify.images) {
+                    return this.model.addImages(albumDB.id, albumSpotify.images);
+                }
+                return Promise.resolve();
+            })
+            // tracks
+            .then(() => {
+                return this.getTracks(albumDB);
+            })
+            .then(tracks => {
+                albumDB.tracks = tracks;
 
-                        if (albumSpotify.images) {
-                            return this.model.addImages(albumDB.id, albumSpotify.images);
-                        }
-                        return Promise.resolve(albumDB);
-                    }).then(() => {
-                        return Promise.resolve(albumDB);
-                    });
-
+                LOG(this.label, 'GOT TRACKS', tracks, '');
+                return Promise.resolve(albumDB);
             });
-        /*.then(albumId => {
-            return this.getTracks(albumData.id);
-        })*/
     }
 
     update(albumId, params) {
@@ -127,7 +131,7 @@ export default class SpotifyAlbum extends SpotifyController {
             .then(albums => {
                 LOG(this.label, 'GOT', albums.length, 'ALBUMS');
                 return this.addBulk(albums);
-            })
+            });
     }
 
     getByArtistPage(spotifyId, limit, offset, items) {
@@ -157,7 +161,25 @@ export default class SpotifyAlbum extends SpotifyController {
         });
     }
 
-    getTracks(spotifyId, limit, offset) {
-        return this.track.getByAlbum(spotifyId, limit, offset);
+    getTracks(album, limit, offset) {
+        return this.track.getByAlbum(album, limit, offset);
+    }
+
+    // ---------------
+
+    get album() {
+        return this.spotify.album;
+    }
+
+    set album(val) {
+
+    }
+
+    get track() {
+        return this.spotify.track;
+    }
+
+    set track(val) {
+
     }
 }

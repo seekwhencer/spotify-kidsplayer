@@ -7,13 +7,13 @@ export default class SpotifyArtist extends SpotifyController {
         this.label = 'SPOTIFY ARTIST';
         LOG(this.label, 'INIT');
         this.model = this.storage.artist;
-
-        this.albums = [];
     }
 
     add(artistURI) {
         const spotifyId = this.wrapIdFromURI(artistURI);
         let artistSpotify, artistDB, albumsSpotify, albumsDB;
+
+        LOG(this.label, 'ADD', artistURI);
 
         return this.model
             .getBySpotifyId(spotifyId)
@@ -26,7 +26,7 @@ export default class SpotifyArtist extends SpotifyController {
 
                 LOG(this.label, 'EXISTS IN DB:', artistDB.spotify_id);
 
-                return Promise.resolve();
+                return Promise.resolve(false);
             })
             .then(artist => { // returns the inserted or existing id
                 if (!artist)
@@ -34,29 +34,34 @@ export default class SpotifyArtist extends SpotifyController {
 
                 artistSpotify = artist;
 
-                return this.model.create({
+                const data = {
                     name: artistSpotify.name,
                     spotify_id: artistSpotify.id,
                     dt_create: nowDateTime()
-                }).then(artistWritten => {
-                    artistDB = artistWritten;
+                };
 
-                    if (artistSpotify.images) {
-                        return this.model.addImages(artistDB.id, artistSpotify.images);
-                    }
-                    return Promise.resolve(artistDB);
-
-                }).then(() => {
-                    return Promise.resolve(artistDB);
-                });
+                return this.model.create(data);
             })
-            .then(artist => { // this is the artist from the database
+            .then(artist => {
                 artistDB = artist;
+
+                if (!artistSpotify)
+                    return Promise.resolve();
+
+                if (artistSpotify.images) {
+                    return this.model.addImages(artistDB.id, artistSpotify.images);
+                }
+                return Promise.resolve();
+            })
+            .then(() => {
                 return this.getAlbums(artistDB);
             })
             .then(albums => {
-                return Promise.resolve(albums); // the end
+                artistDB.albums = albums;
+
+                return Promise.resolve(artistDB); // the end
             });
+
     }
 
     update(artistId, params) {

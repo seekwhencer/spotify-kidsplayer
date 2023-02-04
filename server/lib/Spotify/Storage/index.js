@@ -3,6 +3,7 @@ import mysql from 'mysql';
 import StorageImage from './Image.js';
 import StorageArtist from './Artist.js';
 import StorageAlbum from './Album.js';
+import StorageTrack from './Track.js';
 
 export default class SpotifyStorage extends MODULECLASS {
     constructor(parent, options) {
@@ -29,6 +30,7 @@ export default class SpotifyStorage extends MODULECLASS {
         this.image = new StorageImage(this);
         this.artist = new StorageArtist(this);
         this.album = new StorageAlbum(this);
+        this.track = new StorageTrack(this);
 
         this.mysql = mysql;
 
