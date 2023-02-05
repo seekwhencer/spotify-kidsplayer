@@ -23,6 +23,9 @@ export default class WebpackRun {
             err ? console.log(err) : null;
             console.log('WebpackDevServer listening at:', this.port, ':', this.host);
         });*/
+
+        this.browserSync = new BrowserSync(this);
+
         this.bundler = webpack(this.config);
 
         const watching = this.bundler.watch(this.config.watchOptions, (err, stats) => {
@@ -30,7 +33,7 @@ export default class WebpackRun {
         });
 
 //        this.runProd();
-        this.browserSync = new BrowserSync(this);
+
     }
 
     runProd() {

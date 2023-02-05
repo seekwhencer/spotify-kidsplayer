@@ -16,7 +16,7 @@ export default class extends Route {
                     refreshToken: spotify.auth.refreshToken
                 });
             } else {
-                res.redirect('/auth/code/get');
+                res.redirect('/api/auth/code/get');
             }
         });
 
@@ -39,7 +39,7 @@ export default class extends Route {
             if(url) {
                 res.redirect(url);
             } else {
-                res.redirect('/auth');
+                res.redirect('/api/auth');
             }
         });
 
@@ -72,7 +72,7 @@ export default class extends Route {
                     })
                     .then(auth => {
                         auth ? spotify.auth.emit('auth') : null;
-                        res.redirect('/auth');
+                        res.redirect('/api/auth');
                     })
                     .catch(e => {
                         ERROR(this.label, 'SOMETHING WENT ABSOLUTELY WRONG, DUDE...', e);

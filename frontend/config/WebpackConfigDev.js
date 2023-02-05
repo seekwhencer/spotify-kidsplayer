@@ -3,15 +3,14 @@ import WebpackConfigClass from './WebpackConfigClass.js';
 import StyleLintPlugin from "stylelint-webpack-plugin";
 import ESLintPlugin from "eslint-webpack-plugin";
 
+
 class WebpackDev extends WebpackConfigClass {
     constructor(options) {
         super();
 
         this.options = options | {silent: false}
-        this.virtualHost = process.env.VIRTUAL_HOST;
-        this.proxyTargetHost = process.env.PROXY_TARGET_HOST || 'kidsplayer_server';
-        this.proxyTargetPort = process.env.PROXY_TARGET_PORT || '3050';
-        this.proxyPort = parseInt(process.env.VIRTUAL_PORT) || 9000;
+        this.proxyTargetHost = PROXY_TARGET_HOST || 'localhost';
+        this.proxyTargetPort = PROXY_TARGET_PORT || '3000';
 
         this.build();
         this.merge();
@@ -92,7 +91,7 @@ class WebpackDev extends WebpackConfigClass {
             watchOptions: {
                 aggregateTimeout: 300,
                 poll: 300,
-                ignored: ['**/*.js', '**/node_modules'],
+                ignored: ['**/node_modules'],
             }
         };
     }

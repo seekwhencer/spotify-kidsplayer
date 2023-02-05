@@ -1,6 +1,6 @@
 export default class Log {
     constructor() {
-        window.GALLERY_LOG = console.log;
+        window.LOG_PARENT = console.log;
         console.log = this.log;
     }
 
@@ -11,7 +11,7 @@ export default class Log {
         if (!window.OPTIONS.debug)
             return;
 
-        window.GALLERY_LOG.apply(this, arguments);
+        window.LOG_PARENT.apply(this, arguments);
     }
 }
 new Log();

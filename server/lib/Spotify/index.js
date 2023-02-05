@@ -40,13 +40,10 @@ export default class Spotify extends MODULECLASS {
             // storage
             this.storage = new SpotifyStorage(this);
 
-            // Artist
+            // controller
             this.artist = new SpotifyArtist(this);
             this.album = new SpotifyAlbum(this);
             this.track = new SpotifyTrack(this);
-
-            // Album
-            // ...
 
             // authentication
             new SpotifyAuth(this).then(auth => {
@@ -82,10 +79,10 @@ export default class Spotify extends MODULECLASS {
         this.auth.reset();
     }
 
+
     //
     // called from the webserver routes
     //
-
 
     addArtist(artistURI) {
         return this.artist.add(artistURI);

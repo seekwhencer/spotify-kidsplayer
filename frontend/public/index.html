@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
-    <title>Wetter</title>
+    <title>Kidsplayer</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="preload" href="css/app.css?hash" as="style">
     <link rel="preload" href="js/app.js?hash" as="script">
@@ -12,15 +12,14 @@
 <script src="js/app.js?hash"></script>
 <script type="module">
 
-    const options = {
+    window.OPTIONS = {
         debug: true,
         target: document.querySelector('body')
     };
-    new APP(options).then(app => {
+    new APP(window.OPTIONS).then(app => {
         window.APP = app;
         console.log('>>> ZACK FEDDICH. READY');
     });
-
 </script>
 </body>
 </html>

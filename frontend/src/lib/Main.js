@@ -13,17 +13,18 @@ export default class Main extends MODULECLASS {
             // @TODO
             this.options = options;
 
+
             this.apiBaseUrl = `${window.location.origin}`;
-            this.urlBase = `${this.apiBaseUrl}/v1`;
+            this.urlBase = `${this.apiBaseUrl}`;
 
             this.rootElement = this.options.target;
             this.target = this.rootElement;
 
-            // the main app ready trigger
-            // use it: this.app.on('ready' , ...) inside a MODULECLASS
+            console.log(this.label, this.apiBaseUrl, this.urlBase, 'YAY');
+
             this.on('ready', () => resolve());
 
-            // ..
+            // .. :-)
             this.emit('ready');
 
         });

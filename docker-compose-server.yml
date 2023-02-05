@@ -18,9 +18,9 @@ services:
     command: 'tail -f /dev/null'
     #command: "--experimental-modules --experimental-json-modules index.js"
     user: root
-#    ports:
-#      - "3000:3000"
-    network_mode: host
+    ports:
+      - "${SERVER_PORT}:${SERVER_PORT}"
+    #network_mode: host
     volumes:
       - .:/kidsplayer
       - /kidsplayer/server/node_modules
@@ -33,4 +33,5 @@ services:
       - ENVIRONMENT=default
       - NODE_ENV=development
       - PWD=/kidsplayer/server
+      - FRONTEND_BUNDLE=../frontend/dist/dev
 

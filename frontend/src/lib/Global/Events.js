@@ -21,3 +21,5 @@ export default class Events {
         this.event.removeAllListeners.apply(this.event, Array.from(arguments));
     }
 }
+
+

@@ -15,9 +15,6 @@ services:
       - ./mysql/performance-schema.cnf:/etc/mysql/conf.d/performance-schema.cnf
       - ./mysql/config:/config
       - database:/config/databases
-    #ports:
-    #  - "3306:3306"
-    network_mode: host
     environment:
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
       MYSQL_USER: ${DB_USER}
@@ -33,10 +30,8 @@ services:
     restart: always
     ports:
       - "${PMA_PORT}:80"
-    #network_mode: host
-
     environment:
-      PMA_HOST: ${HOST_IP}
+      PMA_HOST: ${PROJECT_NAME}_mysql
       PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
       HOST_IP: ${HOST_IP}

@@ -6,6 +6,7 @@ server/config/*
 package-lock.json
 spotifyd/spotifyd.conf
 mysql/config/databases
+frontend/dist/**/*
 
 !server/config/example.conf
 !.env.example

@@ -1,9 +1,5 @@
 /**
- * node-bilder-brause
- *
- * A image browser / gallery with thumbnail generator.
- *
- * Author: Matthias Kallenbach, Berlin 2020
+ * Author: Matthias Kallenbach, Berlin 2023
  *
  */
 import Main from './lib/Main.js';

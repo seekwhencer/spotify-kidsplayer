@@ -7,16 +7,20 @@ services:
       context: .
       dockerfile: frontend/Dockerfile
     image: ${PROJECT_NAME}_frontend
-    working_dir: /home/node/project/frontend
-    command: 'npm run dev'
+    working_dir: /kidsplayer/frontend
+    #command: 'npm run dev'
+    command: 'tail -f /dev/null'
     container_name: ${PROJECT_NAME}-frontend
     volumes:
-      - .:/home/node/project
-      - /home/node/project/server/node_modules
-      - /home/node/project/shared/node_modules
+      - .:/kidsplayer
+      - /kidsplayer/frontend/node_modules
+      - /kidsplayer/shared/node_modules
+    ports:
+      - '${FRONTEND_SERVER_PORT}:${FRONTEND_SERVER_PORT}'
     environment:
       - DEBUG=true
       - ENVIRONMENT=default
       - NODE_ENV=development
-      - PROXY_TARGET_HOST=kidsplayer_server
-      - PROXY_TARGET_PORT=${SERVER_PORT}
+      - PROXY_TARGET_HOST=${FRONTEND_PROXY_TARGET_HOST}
+      - PROXY_TARGET_PORT=${FRONTEND_PROXY_TARGET_PORT}
+      - SERVER_PORT=${FRONTEND_SERVER_PORT}

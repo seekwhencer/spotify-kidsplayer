@@ -18,7 +18,7 @@ export default class extends Route {
                 .then(auth => auth ? spotify.auth.emit('auth') : null);
         });
 
-        this.router.get('/code/request0', (req, res) => {
+        this.router.get('/code/request', (req, res) => {
             global.APP.SPOTIFY.auth
                 .getCode()
                 .then(authorizeURL => res.redirect(authorizeURL));

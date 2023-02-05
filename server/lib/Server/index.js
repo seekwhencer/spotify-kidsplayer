@@ -43,9 +43,8 @@ export default class WebServer extends MODULECLASS {
         });
 
         // statics
+        LOG(this.label, 'STATICS FOLDER', this.documentRoot);
         this.engine.use(express.static(this.documentRoot));
-
-        //this.engine.use();
 
         // favicon
         this.engine.get('/favicon.ico', (req, res) => {
@@ -58,7 +57,7 @@ export default class WebServer extends MODULECLASS {
         });
 
         // the routes
-        Object.keys(Routes).forEach(route => this.engine.use(`/`, new Routes[route](this)));
+        Object.keys(Routes).forEach(route => this.engine.use(`/api/`, new Routes[route](this)));
 
         // start
         return new Promise((resolve, reject) => {
