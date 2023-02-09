@@ -1,10 +1,10 @@
 import Tab from '../Tab.js';
 
-export default class Setup extends Tab {
+export default class Music extends Tab {
     constructor(parent, options) {
         super(parent, options);
-        this.label = 'SETUP'
-        this.tab = 'setup';
+        this.label = 'MUSIC'
+        this.tab = 'music';
     }
 
 }

@@ -14,4 +14,5 @@ export default class Log {
         window.LOG_PARENT.apply(this, arguments);
     }
 }
-new Log();
+
+window.LOG = new Log().log;
