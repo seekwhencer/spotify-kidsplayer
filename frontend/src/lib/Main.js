@@ -22,6 +22,7 @@ export default class Main extends MODULECLASS {
             this.app = this;
             this.options = options;
 
+            this.mediaBaseUrl = `${window.location.origin}/media`;
             this.apiBaseUrl = `${window.location.origin}/api`;
             this.urlBase = `${this.apiBaseUrl}`;
 
@@ -36,7 +37,7 @@ export default class Main extends MODULECLASS {
             // on a tab change
             this.on('tab', tab => {
                 // display a tab
-                this[tab].show();
+                this.showTab(tab);
 
                 // dummy
                 this.emit(`tab-${tab}`);
@@ -50,17 +51,24 @@ export default class Main extends MODULECLASS {
             this.browser = new Browser(this);
 
             // tabs
-            this.home = new Home(this);
-            this.artists = new Artists(this);
-            this.audiobooks = new Audiobooks(this);
-            this.music = new Music(this);
-            this.setup = new Setup(this);
+            this.tabs = {
+                home: new Home(this),
+                artists: new Artists(this),
+                audiobooks: new Audiobooks(this),
+                music: new Music(this),
+                setup: new Setup(this)
+            }
 
             // finally ;)
             this.emit('ready');
 
         });
     }
+
+    showTab(tab) {
+        this.tabs[tab].show();
+    }
+
 }
 
 

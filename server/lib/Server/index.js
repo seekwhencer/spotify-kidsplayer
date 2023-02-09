@@ -45,6 +45,8 @@ export default class WebServer extends MODULECLASS {
         // statics
         LOG(this.label, 'STATICS FOLDER', this.documentRoot);
         this.engine.use(express.static(this.documentRoot));
+        this.engine.use('/media', express.static(`${STORAGE_CONTAINER_PATH}/images`));
+
 
         // favicon
         this.engine.get('/favicon.ico', (req, res) => {

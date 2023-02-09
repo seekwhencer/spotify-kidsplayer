@@ -91,4 +91,8 @@ export default class Spotify extends MODULECLASS {
     updateArtist(artistId, data) {
         return this.artist.update(artistId, data);
     }
+
+    getArtists() {
+        return this.artist.getAll();
+    }
 }

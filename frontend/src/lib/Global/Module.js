@@ -8,7 +8,6 @@ export default class Module {
         this.options = options;
         this.defaults = {};
         this.event = new EventEmitter();
-        this.items = [];
 
         parent ? this.parent = parent : null;
         this.parent ? this.parent.app ? this.app = this.parent.app : null : null;

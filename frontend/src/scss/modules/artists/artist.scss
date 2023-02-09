@@ -1,0 +1,46 @@
+.artists {
+    &--listing {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        align-items: stretch;
+        justify-content: center;
+    }
+
+    .artist {
+        width: calc(10vw - 18px);
+        height: calc(10vw - 18px);
+        display: flex;
+        justify-content: center;
+        margin: 10px 10px 40px 10px;
+        border-radius: 30px;
+        background: black;
+        border: 4px solid $color-primary;
+        position: relative;
+
+
+
+        &--name {
+            position: absolute;
+            padding: 10px 30px;
+            display: block;
+            top: calc(10vw - 15px);
+            transform-origin: bottom;
+            font-size: $fs-xs;
+            width: 100%;
+            text-align: center;
+        }
+
+        &--image {
+            display: block;
+            overflow: hidden;
+            height: 100%;
+            width: 100%;
+            border-radius: 25px;
+
+            img {
+                height: 100%;
+            }
+        }
+    }
+}

@@ -12,14 +12,19 @@ export default class Navigation extends MODULECLASS {
         this.parent.target.append(this.target);
 
         this.addBehavior();
-        this.on('tab', tab => this.app.emit('tab', tab));
+
+        this.on('tab', tab => {
+            this.app.emit('tab', tab);
+        });
     }
 
     addBehavior() {
         this.menu = this.target.querySelectorAll('[data-navigation]');
-        this.menu.forEach(button => button.onclick = () => {
-            button.tab = button.getAttribute('data-navigation');
-            this.emit('tab', button.tab);
-        });
+        this.menu.forEach(button => button.onclick = () => this.emit('tab', button.getAttribute('data-navigation')));
+    }
+
+    select(tab) {
+        this.menu.forEach(b => b.classList.remove('active'));
+        this.target.querySelector(`[data-navigation=${tab}]`).classList.toggle('active');
     }
 }

@@ -94,6 +94,10 @@ export default class SpotifyArtist extends SpotifyController {
         return this.album.getByArtist(artist, limit, offset);
     }
 
+    getAll() {
+        return this.model.getAll();
+    }
+
     // ---------------
 
     get album() {

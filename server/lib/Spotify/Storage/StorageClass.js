@@ -84,4 +84,15 @@ export default class StorageClass extends MODULECLASS {
         return this.query(query, data);
     }
 
+    getAll() {
+        const query = `SELECT *,
+                              (SELECT hash
+                               from ${this.table}_image AS imgtable
+                               WHERE imgtable.artist_id = artist.id AND imgtable.height = 640 LIMIT 1) AS image
+                       FROM ${this.table}
+                       ORDER BY name ASC`;
+
+        return this.query(query);
+    }
+
 }

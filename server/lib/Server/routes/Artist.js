@@ -5,10 +5,13 @@ export default class extends Route {
         super(parent, options);
 
         this.router.get('/artists', (req, res) => {
-            res.json({
-                message: 'all artists',
-                data: {}
+            APP.SPOTIFY.getArtists().then(artists => {
+                res.json({
+                    message: 'all artists',
+                    data: artists
+                });
             });
+
         });
 
         this.router.get('/artist/:id', (req, res) => {
