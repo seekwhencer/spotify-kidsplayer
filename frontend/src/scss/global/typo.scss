@@ -1,21 +1,30 @@
-@mixin font-face($style-name, $file, $family, $weight) {
-    $filepath: "./fonts/" + $family + "/" + $file;
+$font-family-primary: "Oswald";
+$font-path-primary: "./fonts/Oswald";
+
+$font-family-secondary: "Oswald";
+$font-path-secondary: "./fonts/Oswald";
+
+$font-family: $font-family-primary;
+
+// woff2 mixin
+@mixin font-face($family, $file-name, $font-path, $weight) {
+    $filepath: $font-path + "/" + $file-name + ".woff2";
 
     @font-face {
-        font-family: "#{$style-name}";
+        font-family: "#{$family}";
         font-weight: $weight;
         font-display: swap;
-        src: url($filepath + ".woff2") format("woff2");
+        src: url($filepath) format("woff2");
     }
 }
 
 // includes
-@include font-face("Oswald", "Oswald-ExtraLight", "Oswald", 100);
-@include font-face("Oswald", "Oswald-Light", "Oswald", 200);
-@include font-face("Oswald", "Oswald-Medium", "Oswald", 300);
-@include font-face("Oswald", "Oswald-Regular", "Oswald", 400);
-@include font-face("Oswald", "Oswald-SemiBold", "Oswald", 500);
-@include font-face("Oswald", "Oswald-Bold", "Oswald", 600);
+@include font-face($font-family-primary, "Oswald-ExtraLight", $font-path-primary, 100);
+@include font-face($font-family-primary, "Oswald-Light", $font-path-primary, 200);
+@include font-face($font-family-primary, "Oswald-Medium", $font-path-primary, 300);
+@include font-face($font-family-primary, "Oswald-Regular", $font-path-primary, 400);
+@include font-face($font-family-primary, "Oswald-SemiBold", $font-path-primary, 500);
+@include font-face($font-family-primary, "Oswald-Bold", $font-path-primary, 600);
 
 // sizes
 $fs-xxs: 0.6em;

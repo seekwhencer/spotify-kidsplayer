@@ -1,0 +1,21 @@
+.navigation {
+    &--list {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: nowrap;
+        justify-content: center;
+        align-items: stretch;
+
+        &__item {
+            width: 20%;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 20px;
+            border-radius: 10px;
+            background: black;
+            border: 2px solid $color-primary;
+        }
+    }
+}

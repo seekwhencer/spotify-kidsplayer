@@ -4,6 +4,13 @@ export default class extends Route {
     constructor(parent, options) {
         super(parent, options);
 
+        this.router.get('/artists', (req, res) => {
+            res.json({
+                message: 'all artists',
+                data: {}
+            });
+        });
+
         this.router.get('/artist/:id', (req, res) => {
             res.json({
                 message: ''
@@ -94,7 +101,6 @@ export default class extends Route {
                 message: ''
             });
         });
-
 
 
         return this.router;
