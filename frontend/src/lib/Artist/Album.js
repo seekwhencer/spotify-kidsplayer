@@ -1,15 +1,15 @@
-import ArtistTemplate from "./Templates/artist.html";
+import AlbumTemplate from "./Templates/album.html";
 
-export default class Artists extends MODULECLASS {
+export default class Album extends MODULECLASS {
     constructor(parent, options) {
         super(parent);
-        this.label = 'ARTIST'
+        this.label = 'ARTIST ALBUM'
 
         LOG(this.label, options);
 
         this.id = options.id;
 
-        this.target = this.toDOM(ArtistTemplate({
+        this.target = this.toDOM(AlbumTemplate({
             scope: options
         }));
 
@@ -18,7 +18,7 @@ export default class Artists extends MODULECLASS {
 
     select() {
         LOG(this.label, this.id);
-        this.app.tabs.artist.show(this.id);
+        //this.app.tabs.artist.show(this.id);
     }
 
 }

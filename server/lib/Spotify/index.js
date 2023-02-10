@@ -25,7 +25,7 @@ export default class Spotify extends MODULECLASS {
                 this.getDevices();
             });
 
-            this.on('access-token-expired', () =>{
+            this.on('access-token-expired', () => {
                 this.auth.emit('access-token-expired');
             });
 
@@ -62,9 +62,9 @@ export default class Spotify extends MODULECLASS {
                 this.availableDevices = data.body.devices;
                 LOG(this.label, data.body.devices, 'abc');
             }).catch(error => {
-                if(error.body.error.status === 401)
-                    this.emit('access-token-expired');
-            });
+            if (error.body.error.status === 401)
+                this.emit('access-token-expired');
+        });
     }
 
     useDevices(ids) {
@@ -94,5 +94,9 @@ export default class Spotify extends MODULECLASS {
 
     getArtists() {
         return this.artist.getAll();
+    }
+
+    getArtist(id) {
+        return this.artist.getOne(id);
     }
 }

@@ -25,6 +25,7 @@ export default class Navigation extends MODULECLASS {
 
     select(tab) {
         this.menu.forEach(b => b.classList.remove('active'));
-        this.target.querySelector(`[data-navigation=${tab}]`).classList.toggle('active');
+        const target = this.target.querySelector(`[data-navigation=${tab}]`);
+        target ? target.classList.toggle('active') : null;
     }
 }

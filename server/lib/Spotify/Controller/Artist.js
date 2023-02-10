@@ -98,6 +98,19 @@ export default class SpotifyArtist extends SpotifyController {
         return this.model.getAll();
     }
 
+    getOne(id) {
+        let artist;
+        return this.model.getOne(id)
+            .then(data => {
+                artist = data;
+                return this.album.getByArtistId(id);
+            })
+            .then(albums => {
+                artist.albums = albums;
+                return Promise.resolve(artist);
+            });
+    }
+
     // ---------------
 
     get album() {

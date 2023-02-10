@@ -15,8 +15,12 @@ export default class extends Route {
         });
 
         this.router.get('/artist/:id', (req, res) => {
-            res.json({
-                message: ''
+            const artistId = req.params.id;
+            APP.SPOTIFY.getArtist(artistId).then(artist => {
+                res.json({
+                    message: 'one artists',
+                    data: artist
+                });
             });
         });
 

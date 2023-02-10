@@ -88,8 +88,34 @@ export default class StorageClass extends MODULECLASS {
         const query = `SELECT *,
                               (SELECT hash
                                from ${this.table}_image AS imgtable
-                               WHERE imgtable.artist_id = artist.id AND imgtable.height = 640 LIMIT 1) AS image
+                               WHERE imgtable.${this.table}_id = ${this.table}.id
+                                 AND imgtable.height = 640 LIMIT 1) AS image
                        FROM ${this.table}
+                       ORDER BY name ASC`;
+
+        return this.query(query);
+    }
+
+    getOne(id) {
+        const query = `SELECT *,
+                              (SELECT hash
+                               from ${this.table}_image AS imgtable
+                               WHERE imgtable.${this.table}_id = ${this.table}.id
+                                 AND imgtable.height = 640 LIMIT 1) AS image
+                       FROM ${this.table}
+                       WHERE id = ${id}`;
+
+        return this.query(query).then(result => Promise.resolve(result[0]));
+    }
+
+    getAllBy(field, value) {
+        const query = `SELECT *,
+                              (SELECT hash
+                               from ${this.table}_image AS imgtable
+                               WHERE imgtable.${this.table}_id = ${this.table}.id
+                                 AND imgtable.height = 640 LIMIT 1) AS image
+                       FROM ${this.table}
+                       WHERE ${field} = ${value}
                        ORDER BY name ASC`;
 
         return this.query(query);
