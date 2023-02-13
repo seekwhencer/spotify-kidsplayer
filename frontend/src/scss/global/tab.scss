@@ -1,7 +1,15 @@
 [data-tab] {
-    display: none;
+    transform: translateY(-100%);
+    transition: all ease-out 0.5s;
+    opacity: 0;
+    position: fixed;
+    top: 120px;
+    height: calc(100% - 120px);
 
     &.active {
+        opacity: 1;
         display: block;
+        transform: translateY(0);
+        transition: all ease-out 0.2s;
     }
 }

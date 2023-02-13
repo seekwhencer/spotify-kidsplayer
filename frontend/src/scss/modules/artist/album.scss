@@ -1,44 +1,139 @@
 .artist {
-    
+
     .album--listing {
+        $album-margin: 20px;
+        $album-border: 4px;
+
         display: flex;
         flex-direction: row;
         flex-wrap: wrap;
         align-items: stretch;
         justify-content: center;
+        overflow-Y: auto;
+        max-height: 100%;
 
         .album {
-            width: calc(10vw - 18px);
-            height: calc(10vw - 18px);
+
+            //width: calc(calc(100% / 6) - calc(4 * 2 * 6px) - calc(10px * 2 * 6));
+            //width: calc(calc(100% / 6) - (10px * 2) - (4px * 2));
+
             display: flex;
             justify-content: center;
-            margin: 10px 10px 40px 10px;
+            margin: $album-margin $album-margin 50px $album-margin;
             border-radius: 30px;
             background: black;
-            border: 4px solid $color-primary;
+            border: $album-border solid $color-primary;
             position: relative;
+            transition: all ease-in-out 0.5s;
+            opacity: 0;
+
+            &.loaded {
+                opacity: 1;
+            }
+
+            &.hidden {
+                display: none;
+            }
+
 
             &--name {
+                color: white;
                 position: absolute;
-                padding: 10px 30px;
+                padding: 5px 0;
                 display: block;
-                top: calc(10vw - 15px);
+                top: calc(10vw - 5px);
                 transform-origin: bottom;
-                font-size: $fs-xs;
+                font-size: $fs-xxs;
                 width: 100%;
                 text-align: center;
+                background: rgba(255, 255, 255, 0.1);
+                opacity: 0;
+                border-radius: 5px;
             }
 
             &--image {
                 display: block;
                 overflow: hidden;
-                height: 100%;
                 width: 100%;
                 border-radius: 25px;
+                background-color: transparent;
 
                 img {
-                    height: 100%;
+                    width: 100%;
+                    display: block;
+
+
                 }
+            }
+
+            &:hover {
+                transform: scale(1.05);
+                cursor: pointer;
+                transition: all ease-in-out 0.1s;
+                z-index: 100;
+
+                .album--name {
+                    opacity: 1;
+                    padding: 5px 10px;
+                    z-index: 100;
+                    background: rgba(0, 0, 0, 0.7);
+                }
+            }
+        }
+
+        &.per-row-1 {
+            .album {
+                width: calc(100% - (#{$album-margin} * 2) - (#{$album-border} * 2));
+            }
+        }
+
+        &.per-row-2 {
+            .album {
+                width: calc(calc(100% / 2) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+            }
+        }
+
+        &.per-row-3 {
+            .album {
+                width: calc(calc(100% / 3) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+            }
+        }
+
+        &.per-row-4 {
+            .album {
+                width: calc(calc(100% / 4) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+            }
+        }
+
+        &.per-row-5 {
+            .album {
+                width: calc(calc(100% / 5) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+            }
+        }
+
+        &.per-row-6 {
+            .album {
+                width: calc(calc(100% / 6) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+            }
+        }
+        &.per-row-7 {
+            .album {
+                width: calc(calc(100% / 7) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+            }
+        }
+        &.per-row-8 {
+            .album {
+                width: calc(calc(100% / 8) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+            }
+        }
+        &.per-row-9 {
+            .album {
+                width: calc(calc(100% / 9) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+            }
+        }
+        &.per-row-10 {
+            .album {
+                width: calc(calc(100% / 10) - (#{$album-margin} * 2) - (#{$album-border} * 2));
             }
         }
     }

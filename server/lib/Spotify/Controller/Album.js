@@ -169,13 +169,30 @@ export default class SpotifyAlbum extends SpotifyController {
         return this.model.getAllBy('artist_id', id);
     }
 
-    // ---------------
-
-    get album() {
-        return this.spotify.album;
+    getOne(id) {
+        let album;
+        return this.model.getOne(id)
+            .then(data => {
+                album = data;
+                return this.artist.getOne(album.artist_id);
+            })
+            .then(artist => {
+                album.artist = artist;
+                return this.track.getByAlbumId(id);
+            })
+            .then(tracks => {
+                album.tracks = tracks;
+                return Promise.resolve(album);
+            });
     }
 
-    set album(val) {
+    // ---------------
+
+    get artist() {
+        return this.spotify.artist;
+    }
+
+    set artist(val) {
 
     }
 

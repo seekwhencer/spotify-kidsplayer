@@ -8,7 +8,9 @@ export default class Tab extends MODULECLASS {
         this.app.navigation.select(this.tab);
 
         // hide all tabs
-        Object.keys(this.app.tabs).forEach(tab => this.app.tabs[tab].hide());
+        Object.keys(this.app.tabs).forEach(tab => {
+            tab !== this.tab ? this.app.tabs[tab].hide() : null;
+        });
         this.target.classList.add('active');
     }
 

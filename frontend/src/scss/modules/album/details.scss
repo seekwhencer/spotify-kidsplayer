@@ -1,14 +1,11 @@
-@import "./details.scss";
-@import "./album.scss";
-
-.artist {
+.album {
 
     &--details {
         position: fixed;
         left: 1vw;
         top: 10px;
 
-        .artist--image {
+        .album--image {
             text-align: center;
             display: block;
             overflow: hidden;
@@ -22,22 +19,12 @@
             }
         }
 
-        .artist--name {
+        .album--name {
             text-align: center;
             display: block;
             width: 14vw;
             overflow: hidden;
             height: 30px;
         }
-    }
-
-
-    &--played {
-        position: fixed;
-        top: calc(16vw + 160px);
-    }
-
-    .album--listing {
-        margin-left: 16vw;
     }
 }

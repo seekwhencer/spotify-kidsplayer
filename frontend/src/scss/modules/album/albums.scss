@@ -1,0 +1,29 @@
+.album {
+    width: 100%;
+
+    .artist--albums {
+        width: 80%;
+        height: 10vw;
+        overflow: hidden;
+        position: fixed;
+        right: 0;
+        bottom: 0;
+
+        .album {
+            width: 200px;
+            float: left;
+
+            &--image {
+                width: 100%;
+
+                img {
+                    width: 100%;
+                }
+            }
+
+            &--name {
+
+            }
+        }
+    }
+}

@@ -8,6 +8,7 @@ import Player from './Player/index.js';
 import Home from './Home/index.js';
 import Artists from './Artists/index.js';
 import Artist from './Artist/index.js';
+import Album from './Album/index.js';
 import Music from './Music/index.js';
 import Audiobooks from './Audiobooks/index.js';
 import Setup from './Setup/index.js';
@@ -56,6 +57,7 @@ export default class Main extends MODULECLASS {
                 home: new Home(this),
                 artists: new Artists(this),
                 artist: new Artist(this),
+                album: new Album(this),
                 audiobooks: new Audiobooks(this),
                 music: new Music(this),
                 setup: new Setup(this)

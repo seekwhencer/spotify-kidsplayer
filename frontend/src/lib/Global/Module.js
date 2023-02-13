@@ -40,7 +40,28 @@ export default class Module {
     }
 
     toDOM(string) {
-        return new DOMParser().parseFromString(string, "text/html").documentElement.querySelector('body').firstChild;
+        // @TODO - not the first -> all !!!.
+        const body = new DOMParser().parseFromString(string, "text/html").documentElement.querySelector('body');
+
+        if (body.children.length > 1) {
+            return body.children; // is a NodeList
+        }
+        return body.firstChild; // is a node
+    }
+
+    /**
+     * data could be a child or a HTMLCollection
+     * @param data
+     */
+    append(data, target) {
+        if (data.length > 1) {
+            data.forEach(i => target.append(i));
+        } else {
+            target.append(data);
+        }
+
+        return target;
+
     }
 
     fetch(url, requestOptions) {

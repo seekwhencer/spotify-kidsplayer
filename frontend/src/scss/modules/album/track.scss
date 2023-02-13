@@ -1,0 +1,50 @@
+.album {
+
+    .track--listing {
+        margin-left: 16vw;
+        overflow-X: hidden;
+        overflow-Y: auto;
+        max-height: 100%;
+
+        .track {
+            display: inline-block;
+            overflow: hidden;
+            margin-bottom: 10px;
+            border-radius: 40px;
+            font-size: $fs-xl;
+
+            &--number {
+                background: $color-primary;
+                width: 70px;
+                height: 70px;
+                line-height: 70px;
+                vertical-align: middle;
+                display: block;
+                text-align: center;
+                border-radius: 40px;
+                float: left;
+                margin-right: 10px;
+            }
+
+
+            &--name {
+                display: block;
+                color: white;
+                display: block;
+                width: 100%;
+                line-height: 3vw;
+                display: none;
+            }
+
+            &:hover {
+                cursor: pointer;
+                z-index: 100;
+
+                .track--name {
+                    z-index: 100;
+                }
+            }
+        }
+    }
+
+}

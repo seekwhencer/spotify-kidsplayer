@@ -2,14 +2,18 @@ body,
 html {
     margin: 0;
     color: #ddd;
-    height: 100%;
 }
 
 body {
+    font-size: $fs-m;
+    background-size: contain;
+    background-blend-mode: darken;
+}
+
+html {
     background-color: #000;
     background-image: linear-gradient(180deg, rgba(2, 0, 36, 1) 0%, rgba(181, 0, 255, 0.5) 100%);
-    font-size: $fs-m;
-    height:100%;
+    min-height: 100%;
 }
 
 * {

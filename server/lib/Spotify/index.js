@@ -99,4 +99,8 @@ export default class Spotify extends MODULECLASS {
     getArtist(id) {
         return this.artist.getOne(id);
     }
+
+    getAlbum(id) {
+        return this.album.getOne(id);
+    }
 }
