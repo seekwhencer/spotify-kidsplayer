@@ -1,5 +1,6 @@
 import './Global/Globals.js';
 import Translation from './Global/Translation/index.js';
+import * as Icons from './Icons/index.js';
 
 import Navigation from './Navigation/index.js';
 import Browser from './Browser/index.js';
@@ -23,6 +24,8 @@ export default class Main extends MODULECLASS {
 
             this.app = this;
             this.options = options;
+
+            this.icons = Icons;
 
             this.mediaBaseUrl = `${window.location.origin}/media`;
             this.apiBaseUrl = `${window.location.origin}/api`;

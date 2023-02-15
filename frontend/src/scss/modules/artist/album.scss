@@ -83,6 +83,76 @@
                         background: rgba(0, 0, 0, 0.7);
                     }
                 }
+
+                &--options {
+                    position: absolute;
+                    top: 0;
+                    width: 100%;
+
+                    button {
+                        cursor: pointer;
+
+                        &:hover {
+                            background-color: $color-primary;
+
+                            svg {
+                                path {
+                                    color: white;
+                                }
+                            }
+                        }
+                    }
+
+                    &__group {
+                        &.options-type {
+                            position: absolute;
+                            right: 2px;
+                            top: 30px;
+                            display: flex;
+                            flex-direction: column;
+                            flex-wrap: wrap;
+                            align-items: stretch;
+                            justify-content: center;
+
+                            button {
+                                margin-bottom: 5px;
+                            }
+                        }
+
+                        &.options-edit {
+                            position: absolute;
+                            left: 2px;
+                            top: 30px;
+                            display: flex;
+                            flex-direction: column;
+                            flex-wrap: wrap;
+                            align-items: stretch;
+                            justify-content: center;
+
+                            button {
+                                margin-bottom: 5px;
+                            }
+                        }
+
+                        &.options-public {
+                            position: absolute;
+                            width: 100%;
+                            left: 0;
+                            top: 2px;
+                            display: flex;
+                            flex-direction: row;
+                            flex-wrap: wrap;
+                            align-items: stretch;
+                            justify-content: center;
+
+                            button {
+                                margin-right: 5px;
+                            }
+                        }
+                    }
+
+
+                }
             }
 
             &.per-row-1 {

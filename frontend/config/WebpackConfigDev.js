@@ -21,7 +21,7 @@ class WebpackDev extends WebpackConfigClass {
     build() {
         this.config = {
             entry: {
-                app: ['./src/app.js','./src/scss/app.scss']
+                app: ['./src/app.js', './src/scss/app.scss']
             },
 
             target: 'web',
