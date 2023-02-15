@@ -2,22 +2,31 @@
     width: 100%;
 
     .artist--albums {
-        width: 80%;
-        height: 10vw;
+        width: calc(100% - 40px);
         overflow: hidden;
         position: fixed;
-        right: 0;
-        bottom: 0;
+        bottom: 20px;
+        left: 20px;
+
+        .album--listing {
+            display: block;
+            white-space: nowrap;
+        }
 
         .album {
             width: 200px;
-            float: left;
+            height: 200px;
+            display: inline-block;
+            overflow: hidden;
+            border-radius: 10px;
 
             &--image {
                 width: 100%;
+                overflow: hidden;
 
                 img {
                     width: 100%;
+                    overflow: hidden;
                 }
             }
 

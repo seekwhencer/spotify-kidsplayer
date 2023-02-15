@@ -5,14 +5,13 @@ export default class Album extends MODULECLASS {
         super(parent);
         this.label = 'ARTIST ALBUM'
 
-        //LOG(this.label, options);
-
         this.id = options.id;
 
         this.target = this.toDOM(AlbumTemplate({
             scope: options
         }));
 
+        parent.target.append(this.target);
         this.target.onclick = () => this.select();
 
         this.image = this.target.querySelector('img');

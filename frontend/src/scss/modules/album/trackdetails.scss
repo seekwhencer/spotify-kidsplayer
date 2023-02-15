@@ -1,0 +1,14 @@
+.album {
+    .track--details {
+        position: fixed;
+        right: 0;
+        top: 0;
+        width: calc(100% - 14vw - 20px);
+
+        .track--name {
+            margin:0 50px 0 50px;
+            font-size: $fs-xl;
+            line-height: $fs-s;
+        }
+    }
+}

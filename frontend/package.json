@@ -11,6 +11,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
+        "@glidejs/glide": "^3.6.0",
         "ajv": "^8.12.0",
         "browser-sync": "^2.27.11",
         "clean-webpack-plugin": "^4.0.0",

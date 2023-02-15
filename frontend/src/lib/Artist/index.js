@@ -1,9 +1,9 @@
 import Tab from '../Tab.js';
-import Album from './Album.js';
 import ArtistDetails from './Details.js';
 import ArtistPlayed from './Played.js';
+import ArtistAlbums from './Albums.js';
 
-import ArtistTemplate from "./Templates/artist.html";
+import LayoutTemplate from "./Templates/layout.html";
 
 export default class Artist extends Tab {
     constructor(parent, options) {
@@ -11,24 +11,23 @@ export default class Artist extends Tab {
         this.label = 'ARTIST'
         this.tab = 'artist';
 
-        this.target = this.toDOM(ArtistTemplate({
+        this.target = this.toDOM(LayoutTemplate({
             scope: {}
         }));
         this.parent.target.append(this.target);
 
         this.detailsElement = this.target.querySelector('[data-artist-details]');
         this.playedElement = this.target.querySelector('[data-artist-played]');
-        this.listingElement = this.target.querySelector('[data-album-listing]');
+        this.albumsElement = this.target.querySelector('[data-artist-albums]');
 
         this.on('raw', () => this.populate());
-        this.on('albums', () => this.draw());
     }
 
     show(id) {
-        if(!this.raw){
+        if (!this.raw) {
             this.getArtist(id);
         } else {
-            if(this.raw.id !== id){
+            if (this.raw.id !== id) {
                 this.getArtist(id);
             }
         }
@@ -44,33 +43,23 @@ export default class Artist extends Tab {
     }
 
     populate() {
-        const albums = [];
-        this.raw.albums.forEach(album => albums.push(new Album(this, album)));
         this.played = new ArtistPlayed(this, this.raw);
         this.details = new ArtistDetails(this, this.raw);
-        this.albums = albums;
+        this.albums = new ArtistAlbums(this, this.raw);
+
+        this.draw();
     }
 
     draw() {
         this.detailsElement.replaceChildren(this.details.target[0], this.details.target[1]);
         this.playedElement.replaceChildren(this.played.target);
-        this.setBackgroundImage();
-        this.listingElement.innerHTML = '';
-        this.listingElement.scroll(0,0);
-        this.albums.forEach(album => this.listingElement.append(album.target));
+        this.albumsElement.replaceChildren(this.albums.target);
+        this.albumsElement.scroll(0,0);
+
     }
 
     setBackgroundImage() {
         //document.querySelector('body').style.backgroundImage = `url(${APP.mediaBaseUrl}/${this.raw.image}.jpg)`;
-    }
-
-    get albums() {
-        return this._albums;
-    }
-
-    set albums(data) {
-        this._albums = data;
-        this.emit('albums');
     }
 
     get raw() {

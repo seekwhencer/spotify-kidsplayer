@@ -4,8 +4,9 @@ import LayoutTemplate from './Templates/layout.html';
 import AlbumDetails from './Details.js';
 import AlbumPlayed from './Played.js';
 import AlbumArtist from './Artist.js';
-import ArtistAlbums from './Albums.js';
 import AlbumTracks from './Tracks.js';
+import TrackDetails from './TrackDetails.js';
+import ArtistAlbums from './Albums.js';
 
 export default class Album extends Tab {
     constructor(parent, options) {
@@ -20,9 +21,9 @@ export default class Album extends Tab {
 
         this.detailsElement = this.target.querySelector('[data-album-details]');
         this.artistElement = this.target.querySelector('[data-album-artist]');
-        this.albumsElement = this.target.querySelector('[data-artist-albums]');
         this.playedElement = this.target.querySelector('[data-album-played]');
         this.tracksElement = this.target.querySelector('[data-album-tracks]');
+        this.albumsElement = this.target.querySelector('[data-artist-albums]');
 
         this.on('raw', () => this.populate());
     }
@@ -43,9 +44,9 @@ export default class Album extends Tab {
     populate() {
         this.details = new AlbumDetails(this, this.raw);
         this.artist = new AlbumArtist(this, this.raw.artist);
-        this.albums = new ArtistAlbums(this, this.raw.artist);
         this.played = new AlbumPlayed(this, this.raw);
         this.albumTracks = new AlbumTracks(this, this.raw);
+        //this.albums = new ArtistAlbums(this, this.raw.artist);
 
         this.draw();
     }
@@ -54,9 +55,19 @@ export default class Album extends Tab {
         this.setBackgroundImage();
         this.detailsElement.replaceChildren(this.details.target[0], this.details.target[1]);
         this.artistElement.replaceChildren(this.artist.target[0], this.artist.target[1]);
-        this.albumsElement.replaceChildren(this.albums.target);
         this.playedElement.replaceChildren(this.played.target);
         this.tracksElement.replaceChildren(this.albumTracks.target);
+        //this.albumsElement.replaceChildren(this.albums.target);
+
+        // select the first track
+        this.albumTracks.tracks[0].select();
+        //this.albums.addSlider();
+    }
+
+    showTrackDetails(track) {
+        this.trackDetailsElement = this.target.querySelector('[data-track-details]');
+        this.trackDetails = new TrackDetails(this, track);
+        this.trackDetailsElement.replaceChildren(this.trackDetails.target);
     }
 
     setBackgroundImage() {
