@@ -6,8 +6,19 @@ export default class Navigation extends MODULECLASS {
         this.label = 'NAV';
         LOG(this.label, 'INIT');
 
+
         this.target = this.toDOM(NavigationTemplate({
-            scope: {}
+            scope: {
+                icons: {
+                    home: this.app.icons.home(),
+                    options: this.app.icons.options(),
+                    user: this.app.icons.user(),
+                    book: this.app.icons.book(),
+                    music: this.app.icons.music(),
+                    podcast: this.app.icons.podcast(),
+                    like: this.app.icons.heart(),
+                },
+            }
         }));
         this.parent.target.append(this.target);
 

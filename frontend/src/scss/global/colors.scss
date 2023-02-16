@@ -12,6 +12,7 @@ $color-bg: #ddd;
 
 // dark, bright
 $color-primary-dark: desaturate(darken($color-primary, 5%), 5%);
+$color-primary-darkest: desaturate(darken($color-primary, 30%), 5%);
 $color-primary-bright: desaturate(lighten($color-primary, 3%), 3%);
 
 $color-ocean-dark: desaturate(darken($color-ocean, 5%), 5%);

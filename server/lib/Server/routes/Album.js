@@ -24,6 +24,40 @@ export default class extends Route {
             });
         });
 
+        this.router.get('/album/:id/type/:type', (req, res) => {
+            const albumId = req.params.id;
+            const type = req.params.type;
+
+            APP.SPOTIFY.setAlbumType(albumId, type).then(album => {
+                res.json({
+                    message: 'one albums',
+                    data: album
+                });
+            });
+        });
+
+        this.router.get('/album/:id/toggle-visibility', (req, res) => {
+            const albumId = req.params.id;
+
+            APP.SPOTIFY.toggleAlbumHidden(albumId).then(album => {
+                res.json({
+                    message: 'one albums',
+                    data: album
+                });
+            });
+        });
+
+        this.router.get('/album/:id/toggle-liked', (req, res) => {
+            const albumId = req.params.id;
+
+            APP.SPOTIFY.toggleAlbumLiked(albumId).then(album => {
+                res.json({
+                    message: 'one albums',
+                    data: album
+                });
+            });
+        });
+
         this.router.post('/album/add', this.jsonParser);
         this.router.post('/album/add', (req, res) => {
             const params = req.body;

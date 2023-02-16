@@ -14,15 +14,42 @@
         align-items: stretch;
 
         &__item {
-            width: calc(20% - 24px);
-            height: 60px;
             display: flex;
             align-items: center;
             justify-content: center;
             margin: 20px;
             border-radius: 10px;
             background: black;
-            border: 2px solid $color-primary;
+            border: 2px solid $color-primary-dark;
+            color: $color-primary;
+            cursor: pointer;
+
+            svg {
+                width: 40px;
+                height: 40px;
+                margin: 5px 20px;
+                transition: all ease-in-out 0.1s;
+            }
+
+            &:hover,&.active {
+                background-color: $color-primary-dark;
+                color: white;
+                margin: 10px 20px 0 20px;
+                border-bottom-left-radius: 0;
+                border-bottom-right-radius: 0;
+                transition: all ease-in-out 0.1s;
+                border-bottom: none;
+            }
+
+            &.active {
+                svg {
+                    transform:scale(1.2);
+                }
+            }
+
+            &:hover {
+                background-color: $color-primary-darkest;
+            }
         }
     }
 }

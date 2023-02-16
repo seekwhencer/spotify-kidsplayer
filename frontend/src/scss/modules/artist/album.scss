@@ -5,7 +5,7 @@
         height: 100%;
 
         .album--listing {
-            $album-margin: 20px;
+            $album-margin: 10px;
             $album-border: 4px;
 
             display: flex;
@@ -85,15 +85,13 @@
                 }
 
                 &--options {
-                    position: absolute;
-                    top: 0;
-                    width: 100%;
-
                     button {
                         cursor: pointer;
 
-                        &:hover {
-                            background-color: $color-primary;
+                        &:hover, &.active {
+                            background-color: $color-primary-dark;
+                            transform: scale(1.2);
+                            transition: all ease-in-out 0.1s;
 
                             svg {
                                 path {
@@ -101,12 +99,14 @@
                                 }
                             }
                         }
+
+
                     }
 
                     &__group {
                         &.options-type {
                             position: absolute;
-                            right: 2px;
+                            left: 2px;
                             top: 30px;
                             display: flex;
                             flex-direction: column;
@@ -121,7 +121,7 @@
 
                         &.options-edit {
                             position: absolute;
-                            left: 2px;
+                            right: 2px;
                             top: 30px;
                             display: flex;
                             flex-direction: column;
@@ -138,7 +138,7 @@
                             position: absolute;
                             width: 100%;
                             left: 0;
-                            top: 2px;
+                            bottom: 20px;
                             display: flex;
                             flex-direction: row;
                             flex-wrap: wrap;

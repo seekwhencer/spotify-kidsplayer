@@ -4,7 +4,9 @@ import AlbumOptions from './AlbumOptions.js';
 export default class Album extends MODULECLASS {
     constructor(parent, options) {
         super(parent);
-        this.label = 'ARTIST ALBUM'
+        this.label = 'ARTIST ALBUM';
+
+        this.data = options;
 
         this.id = options.id;
 
@@ -19,7 +21,7 @@ export default class Album extends MODULECLASS {
         this.image.onload = () => this.target.classList.add('loaded');
         this.image.onerror = () => this.target.classList.add('hidden');
 
-        this.optionsElement = new AlbumOptions(this);
+        this.albumOptions = new AlbumOptions(this);
 
     }
 
@@ -30,13 +32,43 @@ export default class Album extends MODULECLASS {
 
     toggleType(type) {
         LOG(this.label, 'TOGGLE TYPE', type, 'FOR ID', this.id);
+        return this.fetch(`${this.app.urlBase}/album/${this.id}/type/${type}`).then(response => {
+            const type = response.data.type;
+            const buttons = {
+                music: this.albumOptions.buttonMusic,
+                audiobook: this.albumOptions.buttonAudiobook,
+                podcast: this.albumOptions.buttonPodcast,
+            };
+            Object.values(buttons).forEach(button => button.classList.remove('active'));
+            buttons[type].classList.add('active');
+        });
     }
 
-    setHidden() {
-        LOG(this.label, 'SET HIDDEN FOR ID', this.id);
+    toggleHidden() {
+        LOG(this.label, 'TOGGLE VISIBILITY FOR ID', this.id);
+        return this.fetch(`${this.app.urlBase}/album/${this.id}/toggle-visibility`).then(response => {
+            if (response.data.is_hidden === 1) {
+                this.albumOptions.buttonHide.classList.add('active');
+                this.target.classList.add('hidden');
+            } else {
+                this.albumOptions.buttonHide.classList.remove('active');
+                this.target.classList.remove('hidden');
+            }
+        });
+    }
+
+    toggleLiked() {
+        LOG(this.label, 'TOGGLE LIKED FOR ID', this.id);
+        return this.fetch(`${this.app.urlBase}/album/${this.id}/toggle-liked`).then(response => {
+            response.data.is_liked === 1 ? this.albumOptions.buttonLike.classList.add('active') : this.albumOptions.buttonLike.classList.remove('active');
+        });
     }
 
     edit() {
+
+    }
+
+    read() {
 
     }
 

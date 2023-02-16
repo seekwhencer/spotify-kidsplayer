@@ -103,4 +103,16 @@ export default class Spotify extends MODULECLASS {
     getAlbum(id) {
         return this.album.getOne(id);
     }
+
+    setAlbumType(id, type) {
+        return this.album.setType(id, type);
+    }
+
+    toggleAlbumHidden(id) {
+        return this.album.toggleHidden(id);
+    }
+
+    toggleAlbumLiked(id) {
+        return this.album.toggleLiked(id);
+    }
 }

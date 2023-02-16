@@ -186,6 +186,56 @@ export default class SpotifyAlbum extends SpotifyController {
             });
     }
 
+    setType(id, type) {
+        const types = ['music', 'audiobook', 'podcast'];
+
+        if (!types.includes(type))
+            return Promise.resolve(false);
+
+        return this.model.getOne(id)
+            .then(data => {
+                if (!data)
+                    return Promise.resolve(false);
+
+                return this.model.update(id, {
+                    type: type,
+                    dt_update: nowDateTime()
+                });
+            }).then(insert => {
+                return this.model.getOne(id)
+            });
+    }
+
+    toggleHidden(id) {
+        return this.model.getOne(id)
+            .then(data => {
+                if (!data)
+                    return Promise.resolve(false);
+
+                return this.model.update(id, {
+                    is_hidden: !data.is_hidden,
+                    dt_update: nowDateTime()
+                });
+            }).then(insert => {
+                return this.model.getOne(id)
+            });
+    }
+
+    toggleLiked(id) {
+        return this.model.getOne(id)
+            .then(data => {
+                if (!data)
+                    return Promise.resolve(false);
+
+                return this.model.update(id, {
+                    is_liked: !data.is_liked,
+                    dt_update: nowDateTime()
+                });
+            }).then(insert => {
+                return this.model.getOne(id)
+            });
+    }
+
     // ---------------
 
     get artist() {
