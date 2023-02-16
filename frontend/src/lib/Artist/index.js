@@ -10,6 +10,7 @@ export default class Artist extends Tab {
         super(parent, options);
         this.label = 'ARTIST'
         this.tab = 'artist';
+        this.filter = [];
 
         this.target = this.toDOM(LayoutTemplate({
             scope: {}
@@ -32,6 +33,7 @@ export default class Artist extends Tab {
             }
         }
         super.show();
+        this.app.navigation.clearFilter();
     }
 
     hide() {
@@ -55,7 +57,11 @@ export default class Artist extends Tab {
         this.playedElement.replaceChildren(this.played.target);
         this.albumsElement.replaceChildren(this.albums.target);
         this.albumsElement.scroll(0,0);
+    }
 
+    toggleFilter(filter) {
+        LOG(this.label, 'TOGGLE FILTER:', filter);
+        this.albums.toggleFilter(filter);
     }
 
     setBackgroundImage() {

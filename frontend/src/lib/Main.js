@@ -1,5 +1,4 @@
 import './Global/Globals.js';
-import Translation from './Global/Translation/index.js';
 import * as Icons from './Icons/index.js';
 
 import Navigation from './Navigation/index.js';
@@ -48,7 +47,10 @@ export default class Main extends MODULECLASS {
                 this.emit(`tab-${tab}`);
             });
 
-            this.i3n = new Translation(this);
+            // on a filter change
+            this.on('filter', filter => {
+                this.toggleFilter(filter);
+            });
 
             // things
             this.navigation = new Navigation(this);
@@ -66,6 +68,8 @@ export default class Main extends MODULECLASS {
                 setup: new Setup(this)
             }
 
+            this.navigation.disableFilter();
+
             // finally ;)
             this.emit('ready');
 
@@ -74,6 +78,11 @@ export default class Main extends MODULECLASS {
 
     showTab(tab) {
         this.tabs[tab].show();
+    }
+
+    toggleFilter(filter) {
+        LOG(this.label, 'CHANGE FILTER', filter);
+        this.tabs.artist.toggleFilter(filter);
     }
 
 }

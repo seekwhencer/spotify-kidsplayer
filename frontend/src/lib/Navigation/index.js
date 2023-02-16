@@ -3,7 +3,7 @@ import NavigationTemplate from './Templates/navigation.html';
 export default class Navigation extends MODULECLASS {
     constructor(parent, options) {
         super(parent, options);
-        this.label = 'NAV';
+        this.label = 'NAVIGATION';
         LOG(this.label, 'INIT');
 
 
@@ -21,17 +21,19 @@ export default class Navigation extends MODULECLASS {
             }
         }));
         this.parent.target.append(this.target);
+        this.menu = this.target.querySelectorAll('[data-navigation]');
+        this.filter = this.target.querySelectorAll('[data-filter]');
 
-        this.addBehavior();
+        this.menu.forEach(button => button.onclick = () => this.emit('tab', button.getAttribute('data-navigation')));
+        this.filter.forEach(button => button.onclick = () => this.emit('filter', button.getAttribute('data-filter')));
 
         this.on('tab', tab => {
             this.app.emit('tab', tab);
         });
-    }
 
-    addBehavior() {
-        this.menu = this.target.querySelectorAll('[data-navigation]');
-        this.menu.forEach(button => button.onclick = () => this.emit('tab', button.getAttribute('data-navigation')));
+        this.on('filter', filter => {
+            this.app.emit('filter', filter);
+        });
     }
 
     select(tab) {
@@ -39,4 +41,32 @@ export default class Navigation extends MODULECLASS {
         const target = this.target.querySelector(`[data-navigation=${tab}]`);
         target ? target.classList.toggle('active') : null;
     }
+
+    enclose(filter) {
+        this.filter.filter(button => button.getAttribute('data-filter') === filter);
+    }
+
+    clearFilter() {
+        LOG(this.label, 'CLEAR FILTER');
+        this.filter.forEach(button => button.classList.remove('disabled'));
+        this.filter.forEach(button => button.classList.remove('active'));
+    }
+
+    disableFilter() {
+        LOG(this.label, 'DISABLE FILTER');
+        this.filter.forEach(button => {
+            button.classList.add('disabled');
+            button.classList.remove('active');
+        });
+    }
+
+    draw(filter) {
+        LOG(this.label, 'DRAW FILTER', filter);
+        this.filter.forEach(button => {
+            const filterName = button.getAttribute('data-filter');
+            filter[filterName] === true ? button.classList.add('active') : button.classList.remove('active');
+        });
+    }
+
+
 }

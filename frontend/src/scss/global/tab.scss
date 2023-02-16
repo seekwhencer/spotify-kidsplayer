@@ -5,6 +5,7 @@
     position: fixed;
     top: 120px;
     height: calc(100% - 120px);
+    width: 100%;
 
     &.active {
         opacity: 1;

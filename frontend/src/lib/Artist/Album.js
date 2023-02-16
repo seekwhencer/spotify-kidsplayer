@@ -10,6 +10,7 @@ export default class Album extends MODULECLASS {
 
         this.id = options.id;
 
+
         this.target = this.toDOM(AlbumTemplate({
             scope: options
         }));
@@ -30,10 +31,19 @@ export default class Album extends MODULECLASS {
         this.app.tabs.album.show(this.id);
     }
 
+    show() {
+        this.target.classList.remove('hidden');
+    }
+
+    hide() {
+        this.target.classList.add('hidden');
+    }
+
     toggleType(type) {
         LOG(this.label, 'TOGGLE TYPE', type, 'FOR ID', this.id);
         return this.fetch(`${this.app.urlBase}/album/${this.id}/type/${type}`).then(response => {
-            const type = response.data.type;
+            this.data = response.data;
+            const type = this.data.type;
             const buttons = {
                 music: this.albumOptions.buttonMusic,
                 audiobook: this.albumOptions.buttonAudiobook,
@@ -47,7 +57,8 @@ export default class Album extends MODULECLASS {
     toggleHidden() {
         LOG(this.label, 'TOGGLE VISIBILITY FOR ID', this.id);
         return this.fetch(`${this.app.urlBase}/album/${this.id}/toggle-visibility`).then(response => {
-            if (response.data.is_hidden === 1) {
+            this.data = response.data;
+            if (this.data.is_hidden === 1) {
                 this.albumOptions.buttonHide.classList.add('active');
                 this.target.classList.add('hidden');
             } else {
@@ -60,7 +71,8 @@ export default class Album extends MODULECLASS {
     toggleLiked() {
         LOG(this.label, 'TOGGLE LIKED FOR ID', this.id);
         return this.fetch(`${this.app.urlBase}/album/${this.id}/toggle-liked`).then(response => {
-            response.data.is_liked === 1 ? this.albumOptions.buttonLike.classList.add('active') : this.albumOptions.buttonLike.classList.remove('active');
+            this.data = response.data;
+            this.data.is_liked === 1 ? this.albumOptions.buttonLike.classList.add('active') : this.albumOptions.buttonLike.classList.remove('active');
         });
     }
 

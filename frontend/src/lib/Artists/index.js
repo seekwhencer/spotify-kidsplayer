@@ -37,6 +37,7 @@ export default class Artists extends Tab {
     draw() {
         this.listingElement.innerHTML = '';
         this.items.forEach(artist => this.listingElement.append(artist.target));
+        this.app.navigation.disableFilter();
     }
 
     get items() {

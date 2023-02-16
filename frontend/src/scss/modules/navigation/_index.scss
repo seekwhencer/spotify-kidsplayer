@@ -23,6 +23,7 @@
             border: 2px solid $color-primary-dark;
             color: $color-primary;
             cursor: pointer;
+            transition: opacity ease-in-out 0.4s;
 
             svg {
                 width: 40px;
@@ -38,7 +39,7 @@
                 border-bottom-left-radius: 0;
                 border-bottom-right-radius: 0;
                 transition: all ease-in-out 0.1s;
-                border-bottom: none;
+                border-bottom-width: 0;
             }
 
             &.active {
@@ -49,6 +50,23 @@
 
             &:hover {
                 background-color: $color-primary-darkest;
+            }
+
+            &.disabled {
+                opacity: 0.3;
+                cursor: initial;
+                transition: all ease-in-out 0.4s;
+
+                &:hover,&.active {
+                    margin: 20px;
+                    border-bottom-left-radius: 10px;
+                    border-bottom-right-radius: 10px;
+                    border-bottom-width: 2px;
+                    svg {
+                        transform: scale(1);
+                        color: $color-primary-dark;
+                    }
+                }
             }
         }
     }

@@ -31,6 +31,7 @@ export default class Album extends Tab {
     show(id) {
         this.getAlbum(id);
         super.show();
+        this.app.navigation.disableFilter();
     }
 
     hide() {
