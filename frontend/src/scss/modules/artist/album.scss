@@ -45,7 +45,7 @@
                     position: absolute;
                     padding: 5px 0;
                     display: block;
-                    top: calc(10vw - 5px);
+                    top: calc(100% + 10px);
                     transform-origin: bottom;
                     font-size: $fs-xxs;
                     width: 100%;

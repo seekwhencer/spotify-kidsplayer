@@ -57,6 +57,7 @@ export default class Artist extends Tab {
         this.playedElement.replaceChildren(this.played.target);
         this.albumsElement.replaceChildren(this.albums.target);
         this.albumsElement.scroll(0,0);
+        this.app.emit('filter', 'audiobook'); // chose the audiobook filter
     }
 
     toggleFilter(filter) {
