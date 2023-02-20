@@ -1,30 +1,25 @@
 import http from 'http';
 import fs from 'fs';
+import TTSClass from './Class.js';
 
-export default class Mimic extends MODULECLASS {
+export default class Mimic extends TTSClass {
     constructor(parent, options) {
         super(parent, options);
 
-        return new Promise((resolve, reject) => {
-            this.label = 'MIMIC';
-            LOG(this.label, 'INIT');
+        this.label = 'MIMIC';
+        LOG(this.label, 'INIT');
 
-            this.storagePath = `${STORAGE_CONTAINER_PATH}/speak`;
-
-            this.host = MIMIC_HOST;
-            this.port = MIMIC_PORT;
-            this.voice = 'de_DE/m-ailabs_low#ramona_deininger';
-            this.noiseScale = '0.333';
-            this.noiseW = '0.333';
-            this.lengthScale = '1.5';
-            this.audioTarget = 'client';
-
-            resolve(this);
-        });
+        this.host = MIMIC_HOST;
+        this.port = MIMIC_PORT;
+        this.voice = 'de_DE/m-ailabs_low#ramona_deininger';
+        this.noiseScale = '0.333';
+        this.noiseW = '0.333';
+        this.lengthScale = '1.5';
+        this.audioTarget = 'client';
     }
 
     speak(text) {
-        const mimicOptions = {
+        const options = {
             text: text,
             voice: this.voice,
             noiseScale: this.noiseScale,
@@ -34,39 +29,35 @@ export default class Mimic extends MODULECLASS {
             ssml: 'false'
         };
 
-        const hash = this.createHash(JSON.stringify(mimicOptions));
+        const hash = this.createHash(JSON.stringify(options));
 
         return this.exists(hash)
-            .then(() => Promise.resolve(hash))          // exists
-            .catch(e => this.getAudio(mimicOptions));   // not exists
+            .then(() => Promise.resolve(hash))              // exists
+            .catch(e => this.getAudio(options, hash));      // not exists
     }
 
-    exists(hash) {
-        const filePath = `${this.storagePath}/${hash}.wav`;
-        return new Promise((resolve, reject) => fs.exists(filePath, e => e ? resolve() : reject()));
-    }
-
-    getAudio(mimicOptions) {
+    getAudio(mimicOptions, hash) {
         return new Promise((resolve, reject) => {
-            const hash = this.createHash(JSON.stringify(mimicOptions));
+
             const filePath = `${this.storagePath}/${hash}.wav`;
             const sendDataString = Object.keys(mimicOptions).map(i => `${i}=${encodeURI(mimicOptions[i])}`).join('&');
 
             LOG(this.label, 'SEND DATA', sendDataString);
 
-            const options = {
+            const requestOptions = {
                 hostname: `${this.host}`,
                 port: this.port,
                 path: `/api/tts?${sendDataString}`,
             };
 
-            const req = http.get(options, res => {
+            const req = http.get(requestOptions, res => {
                 const writeStream = fs.createWriteStream(`${filePath}`);
                 res.pipe(writeStream);
 
                 writeStream.on('error', () => reject('Error writing to file!'));
                 writeStream.on('finish', () => {
                     writeStream.close(resolve);
+                    LOG(this.label, 'AUDIO WRITTEN', hash);
                     resolve(hash);
                 });
             });

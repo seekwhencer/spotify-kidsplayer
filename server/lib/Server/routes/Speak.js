@@ -7,7 +7,7 @@ export default class extends Route {
         this.router.post('/speak', this.jsonParser);
         this.router.post('/speak', (req, res) => {
             const params = req.body;
-            APP.MIMIC.speak(params.text).then(hash => res.redirect(`/speak/${hash}.wav`));
+            APP.TTS.speak(params.text).then(hash => res.redirect(`/speak/${hash}.mp3`));
         });
 
         return this.router;

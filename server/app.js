@@ -3,7 +3,7 @@ import Config from '../shared/lib/Config.js';
 import WebServer from './lib/Server/index.js';
 import Mqtt from './lib/Mqtt/index.js';
 import Spotify from './lib/Spotify/index.js';
-import Mimic from './lib/Mimic/index.js';
+import TTS from './lib/TextToSpeech/index.js';
 
 export default class App extends MODULECLASS {
     constructor() {
@@ -23,10 +23,10 @@ export default class App extends MODULECLASS {
             })
             .then(mqtt => {
                 global.APP.MQTT = mqtt;
-                return new Mimic(this);
+                return new TTS(this);
             })
-            .then(mimic => {
-                global.APP.MIMIC = mimic;
+            .then(tts => {
+                global.APP.TTS = tts;
                 return new Spotify(this);
             })
             .then(spotify => {
