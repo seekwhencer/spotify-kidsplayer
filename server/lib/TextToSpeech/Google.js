@@ -9,17 +9,6 @@ export default class GoogleTTS extends TTSClass {
         this.label = 'GOOGLE TTS';
         LOG(this.label, 'INIT');
 
-        //https://translate.google.com/translate_tts?
-        // ie=UTF-8
-        // &q=17%3A%20Gro%C3%9Fe%20Entdecker%20%2F%20Polargebiete
-        // &tl=de
-        // &total=1
-        // &idx=0
-        // &textlen=34
-        // &client=tw-ob
-        // &prev=input
-        // &ttsspeed=0.24
-
         this.host = TTS_GOOGLE_HOST;
         this.speed = TTS_GOOGLE_SPEED;
         this.language = 'de';
@@ -27,6 +16,9 @@ export default class GoogleTTS extends TTSClass {
     }
 
     speak(text) {
+
+        text = text.replace(/&/, 'und');
+
         const serviceOptions = {
             ie: 'UTF-8',
             q: encodeURI(text),
@@ -38,13 +30,6 @@ export default class GoogleTTS extends TTSClass {
             prev: 'input',
             ttsspeed: this.speed
         }
-
-        /*const serviceOptions = {
-            lang: 'de',
-            slow: false,
-            host: 'https://translate.google.com',
-            timeout: 10000,
-        };*/
 
         const hash = this.createHash(`${text}${JSON.stringify(serviceOptions)}`);
 

@@ -1,17 +1,8 @@
-import SpeechTemplate from "./Templates/speech.html";
-
 export default class Speech extends MODULECLASS {
     constructor(parent, options) {
         super(parent, options);
         this.label = 'SPEECH';
-
-        this.target = this.toDOM(SpeechTemplate({
-            scope: {}
-        }));
-        this.parent.target.append(this.target);
-
         this.on('data', () => this.play());
-
     }
 
     speak(text) {
@@ -33,10 +24,21 @@ export default class Speech extends MODULECLASS {
     }
 
     play() {
+        this.stop();
+
         this.audioElement = document.createElement("audio");
         this.audioElement.src = URL.createObjectURL(this.data);
         this.audioElement.onloadeddata = () => this.audioElement.play();
         this.audioElement.load();
+    }
+
+    stop() {
+        if (this.audioElement) {
+            this.audioElement.pause()
+            this.audioElement.src = '';
+            this.audioElement.load();
+            delete this.audioElement;
+        }
     }
 
     get data() {
