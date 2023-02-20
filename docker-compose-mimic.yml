@@ -1,0 +1,12 @@
+version: "3.6"
+
+services:
+
+  kidsplayer_mimic:
+    image: mycroftai/mimic3
+    restart: always
+    container_name: ${PROJECT_NAME}_mimic
+    ports:
+      - "59125:59125"
+    volumes:
+      - "./mimic:/home/mimic3/.local/share/mycroft/mimic3"

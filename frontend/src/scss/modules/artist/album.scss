@@ -1,35 +1,24 @@
 .artist {
 
     .artist--albums {
-        width: 100%;
+        width: calc(100% - 16vw);
         height: 100%;
+        margin-left: 16vw;
 
         .album--listing {
             $album-margin: 10px;
             $album-border: 4px;
-
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            align-items: stretch;
-            justify-content: center;
-            overflow-Y: auto;
-            max-height: 100%;
+            text-align: center;
+            overflow-Y: scroll;
+            height: 100%;
+            //white-space: nowrap;
 
             .album {
-
-                //width: calc(calc(100% / 6) - calc(4 * 2 * 6px) - calc(10px * 2 * 6));
-                //width: calc(calc(100% / 6) - (10px * 2) - (4px * 2));
-
-                display: flex;
-                justify-content: center;
-                margin: $album-margin $album-margin 50px $album-margin;
-                border-radius: 30px;
-                background: black;
-                border: $album-border solid $color-primary;
+                height: fit-content;
                 position: relative;
                 transition: all ease-in-out 0.5s;
                 opacity: 0;
+                display: inline-block;
 
                 &.loaded {
                     opacity: 1;
@@ -37,6 +26,14 @@
 
                 &.hidden {
                     display: none;
+                }
+
+                &--body {
+                    margin: $album-margin $album-margin 50px $album-margin;
+                    border: $album-border solid $color-primary;
+                    position: relative;
+                    border-radius: 30px;
+                    transition: all ease-in-out 0.5s;
                 }
 
 
@@ -65,8 +62,6 @@
                     img {
                         width: 100%;
                         display: block;
-
-
                     }
                 }
 
@@ -106,8 +101,8 @@
                     &__group {
                         &.options-type {
                             position: absolute;
-                            left: 2px;
-                            top: 30px;
+                            left: 20px;
+                            top: 50px;
                             display: flex;
                             flex-direction: column;
                             flex-wrap: wrap;
@@ -121,8 +116,8 @@
 
                         &.options-edit {
                             position: absolute;
-                            right: 2px;
-                            top: 30px;
+                            right: 20px;
+                            top: 50px;
                             display: flex;
                             flex-direction: column;
                             flex-wrap: wrap;
@@ -138,7 +133,7 @@
                             position: absolute;
                             width: 100%;
                             left: 0;
-                            bottom: 20px;
+                            bottom: 60px;
                             display: flex;
                             flex-direction: row;
                             flex-wrap: wrap;
@@ -157,61 +152,73 @@
 
             &.per-row-1 {
                 .album {
-                    width: calc(100% - (#{$album-margin} * 2) - (#{$album-border} * 2));
+                    width: 90vh;
+
+                    &--body {
+
+                    }
                 }
             }
 
             &.per-row-2 {
                 .album {
-                    width: calc(calc(100% / 2) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+                    width: calc(100% / 2);
+
+                    &--body {
+
+                    }
                 }
             }
 
             &.per-row-3 {
                 .album {
-                    width: calc(calc(100% / 3) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+                    width: calc(100% / 3);
+
+                    &--body {
+
+                    }
                 }
             }
 
             &.per-row-4 {
                 .album {
-                    width: calc(calc(100% / 4) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+                    width: calc(100% / 4);
                 }
             }
 
             &.per-row-5 {
                 .album {
-                    width: calc(calc(100% / 5) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+                    width: calc(100% / 5);
                 }
             }
 
             &.per-row-6 {
                 .album {
-                    width: calc(calc(100% / 6) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+                    width: calc(100% / 6);
                 }
             }
 
             &.per-row-7 {
                 .album {
-                    width: calc(calc(100% / 7) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+                    width: calc(100% / 7);
                 }
             }
 
             &.per-row-8 {
                 .album {
-                    width: calc(calc(100% / 8) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+                    width: calc(100% / 8);
                 }
             }
 
             &.per-row-9 {
                 .album {
-                    width: calc(calc(100% / 9) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+                    width: calc(100% / 9);
                 }
             }
 
             &.per-row-10 {
                 .album {
-                    width: calc(calc(100% / 10) - (#{$album-margin} * 2) - (#{$album-border} * 2));
+                    width: calc(100% / 10);
                 }
             }
         }

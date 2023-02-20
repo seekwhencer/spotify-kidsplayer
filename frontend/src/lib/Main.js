@@ -12,6 +12,7 @@ import Album from './Album/index.js';
 import Music from './Music/index.js';
 import Audiobooks from './Audiobooks/index.js';
 import Setup from './Setup/index.js';
+import Speech from './Speech/index.js';
 
 export default class Main extends MODULECLASS {
     constructor(options) {
@@ -54,8 +55,9 @@ export default class Main extends MODULECLASS {
 
             // things
             this.navigation = new Navigation(this);
-            this.player = new Player(this);
-            this.browser = new Browser(this);
+            //this.player = new Player(this);
+            //this.browser = new Browser(this);
+            this.speech = new Speech(this);
 
             // tabs
             this.tabs = {
@@ -69,6 +71,9 @@ export default class Main extends MODULECLASS {
             }
 
             this.navigation.disableFilter();
+
+
+            this.speech.speak('Hallo Welt');
 
             // finally ;)
             this.emit('ready');

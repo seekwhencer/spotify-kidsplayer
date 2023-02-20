@@ -13,4 +13,9 @@ export default class Home extends Tab {
         this.parent.target.append(this.target);
     }
 
+    show() {
+        this.app.navigation.disableFilter();
+        super.show();
+    }
+
 }

@@ -78,4 +78,18 @@ export default class Module {
             });
     }
 
+    fetchAudio(url, requestOptions) {
+        !requestOptions ? requestOptions = {
+            method: 'GET'
+        } : null;
+
+        return fetch(url, requestOptions)
+            .then(response => {
+                if (!response.ok)
+                    return Promise.reject(response.statusText);
+
+                return response.blob();
+            });
+    }
+
 }

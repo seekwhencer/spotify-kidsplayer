@@ -11,6 +11,12 @@ export default class Setup extends Tab {
             scope: {}
         }));
         this.parent.target.append(this.target);
+
+    }
+
+    show() {
+        this.app.navigation.disableFilter();
+        super.show();
     }
 
 }

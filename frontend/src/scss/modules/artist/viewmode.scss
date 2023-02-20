@@ -1,0 +1,25 @@
+.artist {
+    .artist--albums {
+        .album--viewmode {
+            height: 50px;
+            text-align: right;
+            margin-right: 50px;
+
+            button {
+                background-color: $color-primary-darkest;
+                height: 20px;
+                width: 20px;
+                margin: 0;
+                padding: 0;
+                border-radius: 3px;
+                border: 2px solid $color-primary-dark;
+                cursor: pointer;
+                margin-right: 10px;
+
+                &.active {
+                    background-color: $color-primary;
+                }
+            }
+        }
+    }
+}

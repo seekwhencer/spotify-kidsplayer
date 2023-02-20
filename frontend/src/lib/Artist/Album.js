@@ -15,7 +15,7 @@ export default class Album extends MODULECLASS {
             scope: options
         }));
 
-        parent.target.append(this.target);
+        parent.listElement.append(this.target);
 
         this.image = this.target.querySelector('img');
         this.image.onclick = () => this.select();
@@ -81,7 +81,7 @@ export default class Album extends MODULECLASS {
     }
 
     read() {
-
+        this.app.speech.speak(this.data.name);
     }
 
 }

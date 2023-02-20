@@ -20,6 +20,33 @@
 > This will be a simplified UI for kids to use spotify.  
 > At the moment, the setup is done and the spotify authentication works from the server app.
 
+## Features
+ 
+### Server
+
+- Authorize to the spotify api
+- Refresh api session periodically
+- Get an artist with ALL albums and ALL tracks
+- Download and store the artist and album images
+- Store the data in a mysql database
+- Offer an api for the web-app
+
+### Web-App
+
+- Toggle parent mode = edit mode with PIN
+- Display all artists
+- Edit artist: name
+- Display all albums from an artist
+- Filter the artist albums by favorites, audiobooks, music and podcasts
+- Hide (delete) unwanted albums
+- Toggle (edit) album type: audiobook, music, podcast 
+- Edit album: name
+
 ## Todo
 
-- ... a lot ;)
+### Web-App
+
+- change image for artists and album by upload or image url
+- reorder (change position) of the albums per drag and drop
+- text to speech
+- the configuration inputs

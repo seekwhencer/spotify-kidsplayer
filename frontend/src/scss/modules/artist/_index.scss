@@ -1,5 +1,6 @@
 @import "./details.scss";
 @import "./album.scss";
+@import "./viewmode.scss";
 
 .artist {
 
@@ -38,6 +39,6 @@
     }
 
     .album--listing {
-        margin-left: 16vw;
+
     }
 }

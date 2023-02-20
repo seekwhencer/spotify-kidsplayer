@@ -31,9 +31,10 @@ export default class Artist extends Tab {
             if (this.raw.id !== id) {
                 this.getArtist(id);
             }
-        }
+        } // @TODO
         super.show();
         this.app.navigation.clearFilter();
+        this.app.navigation.draw(this.albums.filter);
     }
 
     hide() {
@@ -55,7 +56,7 @@ export default class Artist extends Tab {
     draw() {
         this.detailsElement.replaceChildren(this.details.target[0], this.details.target[1]);
         this.playedElement.replaceChildren(this.played.target);
-        this.albumsElement.replaceChildren(this.albums.target);
+        this.albumsElement.replaceChildren(this.albums.target[0], this.albums.target[1]);
         this.albumsElement.scroll(0,0);
         this.app.emit('filter', 'audiobook'); // chose the audiobook filter
     }

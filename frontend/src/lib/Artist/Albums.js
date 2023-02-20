@@ -1,5 +1,6 @@
 import AlbumsTemplate from "./Templates/albums.html";
 import Album from './Album.js';
+import AlbumsViewMode from './AlbumsViewMode.js';
 
 export default class Albums extends MODULECLASS {
     constructor(parent, options) {
@@ -10,9 +11,15 @@ export default class Albums extends MODULECLASS {
             scope: {}
         }));
 
+        this.viewModeElement = this.target[0];
+        this.listElement = this.target[1];
+
         this.filter = {};
         this.albums = [];
         options.albums.forEach(album => this.albums.push(new Album(this, album)));
+
+        this.viewMode = new AlbumsViewMode(this, {});
+
     }
 
     toggleFilter(filter) {
@@ -22,22 +29,42 @@ export default class Albums extends MODULECLASS {
         this.albums.forEach(album => {
             album.hide();
 
-            if (this.filter.like === true && album.data.is_liked === 1)
-                album.show();
+            if (this.filter.like === true && album.data.is_liked === 1) {
 
-            if (this.filter.audiobook === true && album.data.type === 'audiobook')
-                album.show();
+                if (!this.filter.audiobook && !this.filter.music && !this.filter.podcast) {
+                    album.show();
+                }
 
-            if (this.filter.music === true && album.data.type === 'music')
-                album.show();
+                if (this.filter.audiobook === true && album.data.type === 'audiobook')
+                    album.show();
 
-            if (this.filter.podcast === true && album.data.type === 'podcast')
-                album.show();
+                if (this.filter.music === true && album.data.type === 'music')
+                    album.show();
 
+                if (this.filter.podcast === true && album.data.type === 'podcast')
+                    album.show();
+
+            }
+
+            if (!this.filter.like) {
+                if (this.filter.audiobook === true && album.data.type === 'audiobook')
+                    album.show();
+
+                if (this.filter.music === true && album.data.type === 'music')
+                    album.show();
+
+                if (this.filter.podcast === true && album.data.type === 'podcast')
+                    album.show();
+            }
 
             if (!this.filter.like && !this.filter.audiobook && !this.filter.music && !this.filter.podcast)
                 album.show();
         });
+
         this.app.navigation.draw(this.filter);
+    }
+
+    setViewMode() {
+
     }
 }
