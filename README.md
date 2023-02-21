@@ -1,5 +1,6 @@
 # spotify-kidsplayer
 
+![alt text](../master/docs/screenshots/artists.png?raw=true "Screenshot Artists")
 ![alt text](../master/docs/screenshots/artist.png?raw=true "Screenshot Artist")
 
 ## Goal
