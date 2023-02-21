@@ -4,6 +4,8 @@ import TokenRoutes from './Token.js';
 import ArtistRoutes from './Artist.js';
 import AlbumRoutes from './Album.js';
 import SpeakRoutes from './Speak.js';
+import TrackRoutes from './Track.js';
+import PlayerRoutes from './Player.js';
 
 export {
     AuthRoutes,
@@ -11,5 +13,7 @@ export {
     TokenRoutes,
     ArtistRoutes,
     AlbumRoutes,
-    SpeakRoutes
+    SpeakRoutes,
+    TrackRoutes,
+    PlayerRoutes
 };

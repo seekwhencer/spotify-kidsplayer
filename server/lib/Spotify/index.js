@@ -4,6 +4,7 @@ import SpotifyStorage from "./Storage/index.js";
 import SpotifyArtist from "./Controller/Artist.js";
 import SpotifyAlbum from "./Controller/Album.js";
 import SpotifyTrack from "./Controller/Track.js";
+import SpotifyPlayer from "./Controller/Player.js";
 
 export default class Spotify extends MODULECLASS {
     constructor(parent, options) {
@@ -44,6 +45,7 @@ export default class Spotify extends MODULECLASS {
             this.artist = new SpotifyArtist(this);
             this.album = new SpotifyAlbum(this);
             this.track = new SpotifyTrack(this);
+            this.player = new SpotifyPlayer(this);
 
             // authentication
             new SpotifyAuth(this).then(auth => {
