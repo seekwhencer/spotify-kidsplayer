@@ -32,6 +32,7 @@
 - Download and store the artist and album images
 - Store the data in a mysql database
 - Offer an api for the web-app
+- Download tts from google as audio cache
 
 ### Web-App
 
@@ -43,6 +44,7 @@
 - Hide (delete) unwanted albums
 - Toggle (edit) album type: audiobook, music, podcast 
 - Edit album: name
+- Text to speech
 
 ## Todo
 
