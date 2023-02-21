@@ -2,40 +2,49 @@
     .album--tracks {
         position: fixed;
         right: 0;
-        top: 50px;
-        width: calc(100% - 14vw - 20px);
+        bottom: 100px;
+        width: 100%;
 
         .track--listing {
-            overflow-X: hidden;
-            overflow-Y: auto;
-            max-height: 100%;
             margin: 50px;
 
             .track {
-                display: inline-block;
-                overflow: hidden;
+                display: block;
                 margin-bottom: 10px;
-                border-radius: 40px;
-                font-size: $fs-xl;
+                font-size: $fs-m;
+                position: relative;
+                float: left;
+                perspective: 500px;
+                height: 50px;
 
                 &.active {
                     .track--number {
                         background-color: $color-leaf;
                         font-weight: 900;
+                        color: white;
+                        line-height: 50px;
+                        transition: all ease-in-out 0.3s;
+                    }
+
+                    .track--read, .track--play {
+                        opacity: 1;
+                        transform: rotateX(0deg);
+                        transition: all ease-in-out 0.3s;
                     }
                 }
 
                 &--number {
                     background: $color-primary;
-                    width: 100px;
-                    height: 100px;
-                    line-height: 100px;
+                    width: calc(100% - 4px);
+                    margin-right: 4px;
+                    height: 100%;
+                    line-height: 70px;
                     vertical-align: middle;
                     display: block;
                     text-align: center;
-                    border-radius: 70px;
-                    float: left;
-                    margin-right: 10px;
+                    color: $color-primary-darkest;
+                    transition: all ease-in-out 0.3s;
+                    border-radius: 3px;
                 }
 
 
@@ -48,13 +57,36 @@
 
                 }
 
+                &--read, &--play {
+                    position: absolute;
+                    left: calc(50% - 27px);
+                    top: -44px;
+                    text-align: center;
+                    margin: 0;
+                    padding: 0;
+                    background-color: $color-primary;
+                    width: 50px;
+                    height: 40px;
+                    vertical-align: middle;
+                    opacity: 0;
+                    transform-origin: bottom;
+                    transform: rotateX(90deg);
+                    transition: all ease-in-out 0.3s;
+                    cursor: pointer;
+
+                    svg {
+                        height: 100%;
+
+                        path {
+                            color: white;
+                        }
+                    }
+                }
+
                 &--play {
-                    width: 100px;
-                    height: 100px;
-                    display: block;
-                    background: $color-ocean;
-                    border-radius: 70px;
-                    margin-right: 10px;
+                    transform-origin: top;
+                    top: 54px;
+                    transform: rotateX(-90deg);
                 }
 
                 &:hover {
