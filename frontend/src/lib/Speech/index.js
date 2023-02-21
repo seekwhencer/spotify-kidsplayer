@@ -26,7 +26,7 @@ export default class Speech extends MODULECLASS {
     play() {
         this.stop();
 
-        this.audioElement = document.createElement("audio");
+        this.audioElement = document.createElement('audio');
         this.audioElement.src = URL.createObjectURL(this.data);
         this.audioElement.onloadeddata = () => this.audioElement.play();
         this.audioElement.load();

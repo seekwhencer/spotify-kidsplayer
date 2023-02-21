@@ -1,5 +1,7 @@
 # spotify-kidsplayer
 
+![alt text](../master/docs/screenshots/artist.png?raw=true "Screenshot Artist")
+
 ## Ingredients
 - [Raspberry Pi 4](https://geizhals.de/raspberry-pi-4-modell-b-v54547.html)
 - [Desktop Image](https://www.raspberrypi.com/software/operating-systems/)

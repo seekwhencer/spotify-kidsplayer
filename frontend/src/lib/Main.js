@@ -2,7 +2,6 @@ import './Global/Globals.js';
 import * as Icons from './Icons/index.js';
 
 import Navigation from './Navigation/index.js';
-import Browser from './Browser/index.js';
 import Player from './Player/index.js';
 
 import Home from './Home/index.js';
@@ -56,7 +55,6 @@ export default class Main extends MODULECLASS {
             // things
             this.navigation = new Navigation(this);
             //this.player = new Player(this);
-            //this.browser = new Browser(this);
             this.speech = new Speech(this);
 
             // tabs
