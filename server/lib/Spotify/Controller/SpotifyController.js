@@ -19,17 +19,22 @@ export default class SpotifyController extends MODULECLASS {
         !method ? method = 'GET' : null;
 
         let data = '';
+        let bodyString = false;
 
         return new Promise((resolve, reject) => {
 
-            const bodyString = JSON.stringify(requestData);
+            if (requestData !== false)
+                bodyString = JSON.stringify(requestData);
 
             const headers = {
-                'Content-Length': Buffer.byteLength(bodyString),
-                'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${this.spotify.auth.accessToken}`
             };
+
+            if (bodyString !== false) {
+                headers['Accept'] = 'application/json';
+                headers['Content-Length'] = Buffer.byteLength(bodyString);
+            }
 
             const requestOptions = {
                 headers: headers,
@@ -48,7 +53,10 @@ export default class SpotifyController extends MODULECLASS {
                 reject();
             });
 
-            req.write(bodyString);
+            if (bodyString !== false) {
+                req.write(bodyString);
+            }
+
             req.end();
 
         });

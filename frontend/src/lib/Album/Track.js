@@ -32,8 +32,8 @@ export default class Track extends MODULECLASS {
         this.buttonRead = this.target.querySelector('[data-track-read]');
         this.buttonPlay = this.target.querySelector('[data-track-play]');
 
-        this.buttonRead.onclick = () => {}
-        this.buttonPlay.onclick = () => {}
+        this.buttonRead.onclick = () => this.read();
+        this.buttonPlay.onclick = () => this.play();
 
     }
 
@@ -56,6 +56,14 @@ export default class Track extends MODULECLASS {
     unselect() {
         this.active = false;
         this.target.classList.remove('active');
+    }
+
+    read() {
+        this.app.speech.speak(this.name);
+    }
+
+    play() {
+        this.app.player.play(this.id);
     }
 
 }

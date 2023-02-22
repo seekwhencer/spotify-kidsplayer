@@ -64,7 +64,7 @@
                     text-align: center;
                     margin: 0;
                     padding: 0;
-                    background-color: $color-primary;
+                    background-color: rgba(255,255,255,0.3);
                     width: 50px;
                     height: 40px;
                     vertical-align: middle;
@@ -80,6 +80,11 @@
                         path {
                             color: white;
                         }
+                    }
+
+                    &:hover {
+                        background-color: $color-primary;
+                        transform: scale(1.1);
                     }
                 }
 

@@ -13,12 +13,11 @@ export default class extends Route {
 
         this.router.get('/track/:id', (req, res) => {
             const trackId = req.params.id;
-
-            res.json({
-                message: "track",
-                data: {
-                    id: trackId
-                }
+            APP.SPOTIFY.track.getOne(trackId).then(track => {
+                res.json({
+                    message: "track",
+                    data: track
+                });
             });
         });
 
