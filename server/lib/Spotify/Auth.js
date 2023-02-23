@@ -164,17 +164,17 @@ export default class SpotifyAuth extends MODULECLASS {
             res.on('data', chunk => body += chunk);
             res.on('end', () => LOG(body));
 
-            LOG('>>> JUHU', res.responseUrl, res.headers,'');
+            LOG(this.label, 'REQUEST AUTH URL', res.responseUrl, res.headers, '');
         });
     }
 
     requestAuth() {
-        http.get('http://kidsplayer:3000/auth', res => {
+        http.get('http://kidsplayer:3000/api/auth', res => {
             let body = '';
             res.on('data', chunk => body += chunk);
             res.on('end', () => LOG(body));
 
-            LOG('>>> JUHU', res.responseUrl, res.headers,'');
+            LOG(this.label, 'REQUEST AUTH', res.responseUrl, res.headers, '');
         });
     }
 

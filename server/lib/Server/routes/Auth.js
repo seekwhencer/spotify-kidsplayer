@@ -61,6 +61,7 @@ export default class extends Route {
             const spotify = global.APP.SPOTIFY;
             spotify.auth.code = code;
 
+            // @TODO - to much code here. place it in controller
             if (!spotify.auth.accessToken) {
                 spotify.auth
                     .grantCode()

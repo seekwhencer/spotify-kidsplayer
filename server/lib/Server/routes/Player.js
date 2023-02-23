@@ -47,11 +47,20 @@ export default class extends Route {
         });
 
         this.router.get('/player/state', (req, res) => {
-                res.json({
-                    message: "player state",
-                    data: APP.SPOTIFY.player.state()
-                });
+            res.json({
+                message: "player state",
+                data: APP.SPOTIFY.player.state()
+            });
 
+        });
+
+        this.router.get('/player/device', (req, res) => {
+            APP.SPOTIFY.player.device().then(device => {
+                res.json({
+                    message: "player device",
+                    data: device
+                });
+            });
         });
 
         return this.router;

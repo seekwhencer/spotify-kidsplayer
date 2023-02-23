@@ -30,4 +30,6 @@ export default class Player extends MODULECLASS {
                 return Promise.resolve(this.track);
             });
     }
+
+
 }

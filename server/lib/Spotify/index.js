@@ -23,13 +23,14 @@ export default class Spotify extends MODULECLASS {
              * Events
              */
             this.on('auth', () => {
-                this.getDevices();
+                this
+                    .getDevices()
+                    .then((() => this.useDevice()));
             });
 
             this.on('access-token-expired', () => {
                 this.auth.emit('access-token-expired');
             });
-
 
             // the api
             this.api = new SpotifyWebApi({
@@ -58,22 +59,31 @@ export default class Spotify extends MODULECLASS {
 
     // THIS IS THE CHECK METHOD!!!
     getDevices() {
-        this.api
+        return this.api
             .getMyDevices()
             .then(data => {
                 this.availableDevices = data.body.devices;
-                LOG(this.label, data.body.devices, 'abc');
-            }).catch(error => {
-            if (error.body.error.status === 401)
-                this.emit('access-token-expired');
-        });
+                LOG(this.label, 'DEVICES', data.body.devices, '');
+                return Promise.resolve(this.availableDevices);
+            })
+            .catch(error => {
+                if (error.body.error.status === 401)
+                    this.emit('access-token-expired');
+            });
     }
 
-    useDevices(ids) {
-        this.api
-            .transferMyPlayback(ids)
+    useDevice() {
+        const deviceName = SPOTIFY_DEVICE_NAME || 'kidsplayer';
+        const deviceId = this.availableDevices.filter(d => d.name === deviceName)[0].id;
+
+        if (!deviceId)
+            return Promise.resolve(false);
+
+        return this.api
+            .transferMyPlayback([deviceId])
             .then((data, err) => {
-                LOG(this.label, 'USING DEVICES:', ids, 'abc');
+                LOG(this.label, 'USING DEVICES:', deviceId);
+                return Promise.resolve(data);
             });
     }
 
