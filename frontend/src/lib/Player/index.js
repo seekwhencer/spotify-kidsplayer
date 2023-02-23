@@ -46,17 +46,28 @@ export default class Player extends MODULECLASS {
          * REGISTER EVENTS
          */
         this.on('state', () => {
-            LOG(this.label, 'GOT STATE', this.state, '');
+            this.progressPercent = 100 / this.track.duration_ms * this.state.progress_ms;
+            this.progress = this.state.progress_ms;
+            LOG(this.label, 'GOT STATE', this.state);
         });
+
+        this.on('progress', () => {
+            LOG(this.label, 'GOT PROGRESS', this.progress, this.progressPercent);
+
+        });
+
         this.on('track', () => {
             LOG(this.label, 'GOT TRACK', this.track, '');
         });
+
         this.on('album', () => {
             LOG(this.label, 'GOT ALBUM', this.album, '');
         });
+
         this.on('artist', () => {
             LOG(this.label, 'GOT ARTIST', this.artist, '');
         });
+        
         this.on('tracks', () => {
             LOG(this.label, 'GOT TRACKS', this.tracks, '');
         });
@@ -75,17 +86,17 @@ export default class Player extends MODULECLASS {
                 return this.fetch(`${this.app.urlBase}/player/play/track/${track.id}`);
             })
             .then(() => Promise.resolve(track));
-        
+
     }
 
     getState() {
         return this.fetch(`${this.app.urlBase}/player/state`)
             .then(res => {
-                this.state = res.data.state;
                 this.track = res.data.track;
                 this.album = res.data.album;
                 this.artist = res.data.artist;
                 this.tracks = res.data.tracks;
+                this.state = res.data.state;
                 return Promise.resolve(this.state);
             });
     }
@@ -152,6 +163,18 @@ export default class Player extends MODULECLASS {
 
         this._tracks = val;
         this.emit('tracks');
+    }
+
+    get progress() {
+        return this._progress;
+    }
+
+    set progress(val) {
+        if (this.progress === val)
+            return;
+
+        this._progress = val;
+        this.emit('progress');
     }
 
 
