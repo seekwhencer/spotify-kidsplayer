@@ -25,7 +25,8 @@ export default class Spotify extends MODULECLASS {
             this.on('auth', () => {
                 this
                     .getDevices()
-                    .then((() => this.useDevice()));
+                    .then((() => this.useDevice()))
+                    .then((() => this.shuffle()));
             });
 
             this.on('access-token-expired', () => {
@@ -89,6 +90,16 @@ export default class Spotify extends MODULECLASS {
 
     resetSession() {
         this.auth.reset();
+    }
+
+    shuffle() {
+        return this.api
+            .setShuffle(false)
+            .then((data, err) => {
+                LOG(this.label, 'SHUFFLE OFF');
+                return Promise.resolve(true);
+            });
+
     }
 
 

@@ -168,11 +168,13 @@ export default class SpotifyAuth extends MODULECLASS {
         });
     }
 
+    // @TODO url not hard wired
+    // not working. must do it in the browser.
     requestAuth() {
         http.get('http://kidsplayer:3000/api/auth', res => {
             let body = '';
             res.on('data', chunk => body += chunk);
-            res.on('end', () => LOG(body));
+            res.on('end', () => LOG(this.label, body, ''));
 
             LOG(this.label, 'REQUEST AUTH', res.responseUrl, res.headers, '');
         });

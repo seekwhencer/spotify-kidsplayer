@@ -63,6 +63,15 @@ export default class extends Route {
             });
         });
 
+        this.router.get('/player/shuffle', (req, res) => {
+            APP.SPOTIFY.player.shuffle().then(data => {
+                res.json({
+                    message: "player device",
+                    data: data
+                });
+            });
+        });
+
         return this.router;
     }
 }

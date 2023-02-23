@@ -129,9 +129,11 @@ export default class SpotifyPlayer extends SpotifyController {
     }
 
     device() {
-        return this.spotify.getDevices().then(() => {
-            return Promise.resolve(this.spotify.availableDevices);
-        });
+        return this.spotify.getDevices().then(() => Promise.resolve(this.spotify.availableDevices));
+    }
+
+    shuffle() {
+        return this.spotify.shuffle();
     }
 
     get data() {
