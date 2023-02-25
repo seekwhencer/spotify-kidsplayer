@@ -53,7 +53,8 @@ export default class Player extends MODULECLASS {
 
         this.on('progress', () => {
             LOG(this.label, 'GOT PROGRESS', this.progress, this.progressPercent);
-
+            // do drawing things here
+            this.drawProgress();
         });
 
         this.on('track', () => {
@@ -67,7 +68,7 @@ export default class Player extends MODULECLASS {
         this.on('artist', () => {
             LOG(this.label, 'GOT ARTIST', this.artist, '');
         });
-        
+
         this.on('tracks', () => {
             LOG(this.label, 'GOT TRACKS', this.tracks, '');
         });
@@ -99,6 +100,11 @@ export default class Player extends MODULECLASS {
                 this.state = res.data.state;
                 return Promise.resolve(this.state);
             });
+    }
+
+    drawProgress() {
+        this.targets.handle.style.left = `${this.progressPercent}%`;
+        this.targets.progress.style.width = `${this.progressPercent}%`;
     }
 
     /**

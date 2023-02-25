@@ -111,7 +111,7 @@ export default class SpotifyAuth extends MODULECLASS {
 
 
     auth() {
-        LOG('>>>>', this.accessToken, this.refreshToken);
+        LOG(this.label, 'SET & REFRESH AUTH TOKEN', this.accessToken, this.refreshToken);
 
         this.api.setAccessToken(this.accessToken, (err) => {
             ERROR(this.label, err);
