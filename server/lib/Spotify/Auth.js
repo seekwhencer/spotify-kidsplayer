@@ -216,31 +216,30 @@ export default class SpotifyAuth extends MODULECLASS {
 
 
     refreshAccessToken() {
+        this.api.setRefreshToken(this.refreshToken);
+
         return this.api.refreshAccessToken().then((data, err) => {
             if (err) {
                 ERROR(this.label, err);
                 return Promise.reject(false);
             }
 
+            if (!data.body.access_token) {
+                ERROR(this.label, 'WRONG RESPONSE', data.body, '');
+                return Promise.reject(false);
+            }
+
             this.accessToken = data.body.access_token;
-            this.api.setAccessToken(this.accessToken);
-            this.writeFile(this.fileNames.accessToken, this.accessToken);
+            this.expireToken = parseInt(data.body.expires_in);
+
+            this.api.setAccessToken(this.accessToken, (err) => {
+                ERROR(this.label, err);
+                this.api.setRefreshToken(this.refreshToken);
+            });
 
             LOG(this.label, 'REFRESHING ACCESS TOKEN', this.accessToken);
             return Promise.resolve();
         })
-    }
-
-    writeFile(fileName, data) {
-        return fs.writeFile(fileName, data).catch(e => {
-            LOG(this.label, 'FILE NOT WRITTEN', fileName);
-        });
-    }
-
-    readFile(fileName) {
-        return fs.readFile(fileName).catch(e => {
-            LOG(this.label, 'FILE NOT EXISTS:', fileName);
-        });
     }
 
     readCode() {
@@ -293,6 +292,18 @@ export default class SpotifyAuth extends MODULECLASS {
         this.api.resetCode();*/
     }
 
+    writeFile(fileName, data) {
+        return fs.writeFile(fileName, data).catch(e => {
+            LOG(this.label, 'FILE NOT WRITTEN', fileName, e, '');
+        });
+    }
+
+    readFile(fileName) {
+        return fs.readFile(fileName).catch(e => {
+            LOG(this.label, 'FILE NOT EXISTS:', fileName);
+        });
+    }
+
     get code() {
         return this._code === '' ? false : this._code;
     }
@@ -325,7 +336,7 @@ export default class SpotifyAuth extends MODULECLASS {
     }
 
     set expireToken(val) {
-        this.writeFile(this.fileNames.expireToken, val === false ? '' : val);
+        this.writeFile(this.fileNames.expireToken, val === false ? '' : val.toString());
         this._expireToken = val;
     }
 }

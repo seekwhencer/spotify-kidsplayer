@@ -49,7 +49,7 @@ export default class extends Route {
         this.router.get('/player/state', (req, res) => {
             res.json({
                 message: "player state",
-                data: APP.SPOTIFY.player.state()
+                data: APP.SPOTIFY.player.state() || false
             });
 
         });

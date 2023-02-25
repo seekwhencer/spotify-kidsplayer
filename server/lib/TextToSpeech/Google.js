@@ -17,7 +17,8 @@ export default class GoogleTTS extends TTSClass {
 
     speak(text) {
 
-        text = text.replace(/&/, 'und');
+        text = text.replace(/&/g, ' und ');
+        text = text.replace(/#/g, ' Nummer ');
 
         const serviceOptions = {
             ie: 'UTF-8',

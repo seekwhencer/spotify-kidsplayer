@@ -65,7 +65,10 @@ export default class Spotify extends MODULECLASS {
             .then(data => {
                 this.availableDevices = data.body.devices;
                 LOG(this.label, 'DEVICES', data.body.devices, '');
-                return Promise.resolve(this.availableDevices);
+                return Promise.resolve();
+            })
+            .then(() => {
+                return this.useDevice();
             })
             .catch(error => {
                 if (error.body.error.status === 401)
@@ -75,15 +78,15 @@ export default class Spotify extends MODULECLASS {
 
     useDevice() {
         const deviceName = SPOTIFY_DEVICE_NAME || 'kidsplayer';
-        const deviceId = this.availableDevices.filter(d => d.name === deviceName)[0].id;
+        this.device = this.availableDevices.filter(d => d.name === deviceName)[0];
 
-        if (!deviceId)
+        if (!this.device)
             return Promise.resolve(false);
 
         return this.api
-            .transferMyPlayback([deviceId])
+            .transferMyPlayback([this.device.id])
             .then((data, err) => {
-                LOG(this.label, 'USING DEVICES:', deviceId);
+                LOG(this.label, 'USING DEVICES:', this.device.id);
                 return Promise.resolve(data);
             });
     }
