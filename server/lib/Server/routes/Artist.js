@@ -24,6 +24,20 @@ export default class extends Route {
             });
         });
 
+        this.router.post('/artist/:id/albums/filter', this.jsonParser);
+        this.router.post('/artist/:id/albums/filter', (req, res) => {
+            const artistId = req.params.id;
+            const params = req.body;
+
+            APP.SPOTIFY.saveArtistAlbumsFilter(artistId, params).then(data => {
+                res.json({
+                    message: 'albums filter',
+                    data: data,
+                    filter: params
+                });
+            });
+        });
+
         this.router.post('/artist/add', this.jsonParser);
         this.router.post('/artist/add', (req, res) => {
             const params = req.body;

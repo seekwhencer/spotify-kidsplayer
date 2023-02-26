@@ -5,6 +5,7 @@ import SpotifyArtist from "./Controller/Artist.js";
 import SpotifyAlbum from "./Controller/Album.js";
 import SpotifyTrack from "./Controller/Track.js";
 import SpotifyPlayer from "./Controller/Player.js";
+import SpotifyFilter from "./Filter.js";
 
 export default class Spotify extends MODULECLASS {
     constructor(parent, options) {
@@ -42,6 +43,7 @@ export default class Spotify extends MODULECLASS {
 
             // storage
             this.storage = new SpotifyStorage(this);
+            this.filter = new SpotifyFilter(this);
 
             // controller
             this.artist = new SpotifyArtist(this);
@@ -140,5 +142,9 @@ export default class Spotify extends MODULECLASS {
 
     toggleAlbumLiked(id) {
         return this.album.toggleLiked(id);
+    }
+
+    saveArtistAlbumsFilter(artistId, data) {
+        return this.filter.save(artistId, data);
     }
 }

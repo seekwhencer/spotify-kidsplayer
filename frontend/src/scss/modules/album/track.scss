@@ -2,7 +2,7 @@
     .album--tracks {
         position: fixed;
         right: 0;
-        bottom: 150px;
+        bottom: 70px;
         width: 100%;
         height: 100px;
 
@@ -20,7 +20,7 @@
 
                 &.active {
                     .track--number {
-                        background-color: $color-leaf;
+                        background-color: $color-primary;
                         font-weight: 900;
                         color: white;
                         line-height: 50px;
@@ -34,8 +34,14 @@
                     }
                 }
 
+                &.playing {
+                    .track--number {
+                        background-color: $color-splash;
+                    }
+                }
+
                 &--number {
-                    background: $color-primary;
+                    background: $color-primary-dark;
                     width: calc(100% - 4px);
                     margin-right: 4px;
                     height: 100%;
@@ -60,7 +66,7 @@
 
                 &--read, &--play {
                     position: absolute;
-                    left: calc(50% - 27px);
+                    left: calc(50% - 54px);
                     top: -44px;
                     text-align: center;
                     margin: 0;
@@ -90,8 +96,7 @@
                 }
 
                 &--play {
-                    transform-origin: top;
-                    top: 54px;
+                    left: calc(50%);
                     transform: rotateX(-90deg);
                 }
 

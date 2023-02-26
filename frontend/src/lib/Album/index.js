@@ -61,7 +61,7 @@ export default class Album extends Tab {
         //this.albumsElement.replaceChildren(this.albums.target);
 
         // select the first track
-        this.albumTracks.tracks[0].select();
+        //this.albumTracks.tracks[0].select();
         //this.albums.addSlider();
     }
 

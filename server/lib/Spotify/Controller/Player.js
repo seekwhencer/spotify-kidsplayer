@@ -18,7 +18,12 @@ export default class SpotifyPlayer extends SpotifyController {
         this.album = false;
         this.artist = false;
 
-        this.on('change', () => this.completeState());
+        this.on('change', () => {
+            this.completeState()
+                .then(() => {
+
+                });
+        });
 
     }
 
@@ -123,8 +128,29 @@ export default class SpotifyPlayer extends SpotifyController {
                 delete this.album.artist;
                 delete this.album.tracks;
 
+                // last track of the album
+                if (this.tracks.length === this.track.track_number) {
+                    LOG(this.label, this.tracks.length, this.track.track_number, '>>> LAST TRACK OF ALBUM!!! ');
+                    //@TODO get the next album ;)
+
+                    this.spotify.album.getByArtistId(this.artist.id).then(albums => {
+
+                        //@TODO filtering before !!!
+                        //@TODO get the filter from frontend
+                        const index = albums.findIndex(album => album.id === this.album.id);
+
+                        LOG(this.label, '>>> INDEX', index);
+
+
+                        /*albums.forEach(album => {
+                            LOG(this.label, 'ALBUM');
+                        });*/
+                    });
+
+                }
+
                 LOG(this.label, 'GOT TRACK AND ALBUM');
-                return Promise.resolve();
+                return Promise.resolve(true);
             });
     }
 

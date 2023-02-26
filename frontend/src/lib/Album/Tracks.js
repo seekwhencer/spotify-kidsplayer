@@ -18,6 +18,12 @@ export default class Tracks extends MODULECLASS {
     }
 
     unselectAll(id) {
+        !id ? id = 0 : null;
         this.tracks.forEach(track => id !== track.id ? track.unselect() : null);
+    }
+
+    highlightPlaying(id) {
+        !id ? id = 0 : null;
+        this.tracks.forEach(track => id !== track.id ? track.highlightPlaying(false) : null);
     }
 }

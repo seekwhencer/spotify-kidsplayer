@@ -11,7 +11,7 @@ $color-text: #999;
 $color-bg: #ddd;
 
 // dark, bright
-$color-primary-dark: desaturate(darken($color-primary, 5%), 5%);
+$color-primary-dark: desaturate(darken($color-primary, 10%), 10%);
 $color-primary-darkest: desaturate(darken($color-primary, 30%), 5%);
 $color-primary-bright: desaturate(lighten($color-primary, 3%), 3%);
 

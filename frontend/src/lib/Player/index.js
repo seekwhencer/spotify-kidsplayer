@@ -40,6 +40,7 @@ export default class Player extends MODULECLASS {
             pause: this.target.querySelector('[data-player-seek-pause]'),
         };
 
+        // polling play state from server
         this.statsCycle = setInterval(() => this.getState(), 1000);
 
         /*
@@ -53,24 +54,28 @@ export default class Player extends MODULECLASS {
 
         this.on('progress', () => {
             LOG(this.label, 'GOT PROGRESS', this.progress, this.progressPercent);
-            // do drawing things here
             this.drawProgress();
+            this.nextAlbum();
         });
 
         this.on('track', () => {
             LOG(this.label, 'GOT TRACK', this.track, '');
+            this.drawTrack();
         });
 
         this.on('album', () => {
             LOG(this.label, 'GOT ALBUM', this.album, '');
+            this.drawAlbum();
         });
 
         this.on('artist', () => {
             LOG(this.label, 'GOT ARTIST', this.artist, '');
+            this.drawArtist();
         });
 
         this.on('tracks', () => {
             LOG(this.label, 'GOT TRACKS', this.tracks, '');
+            this.drawTracks();
         });
     }
 
@@ -105,6 +110,39 @@ export default class Player extends MODULECLASS {
     drawProgress() {
         this.targets.handle.style.left = `${this.progressPercent}%`;
         this.targets.progress.style.width = `${this.progressPercent}%`;
+        this.highlightAlbumTrack();
+    }
+
+    drawTrack() {
+        this.targets.trackName.replaceChildren(this.track.name);
+        this.highlightAlbumTrack();
+    }
+
+    drawAlbum() {
+
+    }
+
+    drawArtist() {
+
+    }
+
+    drawTracks() {
+
+    }
+
+    highlightAlbumTrack() {
+        if (!this.app.tabs.album.albumTracks)
+            return;
+
+        const track = this.app.tabs.album.albumTracks.tracks.filter(t => t.id === this.track.id)[0];
+        if (!track)
+            return;
+
+        track.highlightPlaying(true);
+    }
+
+    nextAlbum() {
+
     }
 
     /**
@@ -132,7 +170,7 @@ export default class Player extends MODULECLASS {
             return;
 
         this._track = val;
-        this.emit('track');
+        this.emit('track'); // equals a track change
     }
 
     get album() {

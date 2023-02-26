@@ -5,7 +5,8 @@ import AlbumsViewMode from './AlbumsViewMode.js';
 export default class Albums extends MODULECLASS {
     constructor(parent, options) {
         super(parent);
-        this.label = 'ALBUMS'
+        this.label = 'ALBUMS';
+        this.artist = parent;
 
         this.target = this.toDOM(AlbumsTemplate({
             scope: {}
@@ -62,6 +63,19 @@ export default class Albums extends MODULECLASS {
         });
 
         this.app.navigation.draw(this.filter);
+        this.submitFilter();
+    }
+
+    submitFilter() {
+        return this.fetch(`${this.app.urlBase}/artist/${this.artist.raw.id}/albums/filter`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(this.filter)
+        }).then(response => {
+            LOG(this.label, 'SUBMIT FILTER:', response.data, '');
+        });
     }
 
     setViewMode() {

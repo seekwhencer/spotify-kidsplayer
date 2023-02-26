@@ -53,6 +53,18 @@ export default class Track extends MODULECLASS {
         this.target.classList.add('active');
     }
 
+    highlightPlaying(show) {
+        show === 'undefined' ? show = true : null;
+
+        if (show === true) {
+            this.tracks.highlightPlaying(this.id);
+            this.target.classList.add('playing');
+        }
+        if (show === false) {
+            this.target.classList.remove('playing');
+        }
+    }
+
     unselect() {
         this.active = false;
         this.target.classList.remove('active');
