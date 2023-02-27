@@ -236,6 +236,62 @@ export default class SpotifyAlbum extends SpotifyController {
             });
     }
 
+    getNext(albumId) {
+        LOG(this.label, 'GET NEXT ALBUM FROM ALBUM:', albumId);
+        let filter, album, albums;
+
+        return this.model.getOne(albumId)
+            .then(data => {
+                album = data;
+                filter = this.spotify.filter.data.filter(f => f.artistId === album.artist_id)[0] || {};
+                return this.getByArtistId(album.artist_id);
+            })
+            .then(data => {
+                albums = data;
+
+                const filteredAlbums = [];
+                albums.forEach(a => {
+                    if (filter.like === true && a.is_liked === 1) {
+
+                        if (!filter.audiobook && !filter.music && !filter.podcast)
+                            filteredAlbums.push(a);
+
+                        if (filter.audiobook === true && a.type === 'audiobook')
+                            filteredAlbums.push(a);
+
+                        if (filter.music === true && a.type === 'music')
+                            filteredAlbums.push(a);
+
+                        if (filter.podcast === true && a.type === 'podcast')
+                            filteredAlbums.push(a);
+
+                    }
+
+                    if (!filter.like) {
+                        if (filter.audiobook === true && a.type === 'audiobook')
+                            filteredAlbums.push(a);
+
+                        if (filter.music === true && a.type === 'music')
+                            filteredAlbums.push(a);
+
+                        if (filter.podcast === true && a.type === 'podcast')
+                            filteredAlbums.push(a);
+                    }
+
+                    if (!filter.like && !filter.audiobook && !filter.music && !filter.podcast)
+                        filteredAlbums.push(a);
+                });
+
+                const index = filteredAlbums.findIndex(a => a.id === albumId);
+
+                if (!filteredAlbums[index + 1])
+                    return Promise.resolve(filteredAlbums[0]); // jump to the first album of the filtered list
+
+                return Promise.resolve(filteredAlbums[index + 1]); // the next album
+            });
+
+    }
+
     // ---------------
 
     get artist() {

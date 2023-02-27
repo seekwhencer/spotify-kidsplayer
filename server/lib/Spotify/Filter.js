@@ -19,12 +19,7 @@ export default class SpotifyFilter extends MODULECLASS {
         };
 
         if (existingFilter) {
-            this.data = this.data.map(f => {
-                if (f.artistId !== artistId)
-                    return f;
-
-                return newFilter;
-            });
+            this.data = this.data.map(f => f.artistId !== artistId ? f : newFilter);
         } else {
             this.data.push(newFilter);
         }
@@ -32,6 +27,14 @@ export default class SpotifyFilter extends MODULECLASS {
         LOG(this.label, 'STORED FILTERS', this.data.length);
 
         return Promise.resolve(artistId);
+    }
+
+    flush() {
+        this.data = [];
+    }
+
+    reset() {
+        this.flush();
     }
 
 }
