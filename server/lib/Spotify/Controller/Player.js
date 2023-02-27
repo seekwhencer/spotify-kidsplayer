@@ -17,6 +17,9 @@ export default class SpotifyPlayer extends SpotifyController {
         this.track = false;
         this.album = false;
         this.artist = false;
+        this.tracks = false;
+
+        this.nextAlbum = false;
 
         this.on('change', () => {
             this.completeState()
@@ -25,8 +28,22 @@ export default class SpotifyPlayer extends SpotifyController {
                 });
         });
 
+        // @TODO detect the queue end
+        this.on('queue-end', () => {
+
+        });
+
     }
 
+    /**
+     * playing a track
+     * - get the track from the database
+     * - get all tracks from the track album
+     * - add all tracks from the track number to the spotify playback queue
+     *
+     * @param id = database id
+     * @returns {Promise}
+     */
     play(id) {
 
         let trackNumber = 0;
@@ -135,10 +152,13 @@ export default class SpotifyPlayer extends SpotifyController {
                 LOG(this.label, 'LAST TRACK OF ALBUM', this.tracks.length, '#', this.track.track_number);
 
                 // is that the last track of the album ?
+                // @TODO this must happen, when the track ends
                 return this.spotify.album.getNext(this.album.id);
             })
             .then(nextAlbum => {
                 LOG(this.label, 'GOT NEXT ALBUM (BY FILTER)', nextAlbum, '');
+                this.nextAlbum = nextAlbum;
+
                 return Promise.resolve(true);
             });
     }
@@ -156,13 +176,13 @@ export default class SpotifyPlayer extends SpotifyController {
     }
 
     set data(val) {
+        if (val === false)
+            return;
+
         this.shuffle_state = val.shuffle_state;
         this.repeat_state = val.repeat_state;
         this.progress_ms = val.progress_ms;
         this.is_playing = val.is_playing;
-
-        if (val === false)
-            return;
 
         if (!val.item)
             return;

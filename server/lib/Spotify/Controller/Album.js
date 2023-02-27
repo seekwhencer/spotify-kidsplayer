@@ -251,6 +251,9 @@ export default class SpotifyAlbum extends SpotifyController {
 
                 const filteredAlbums = [];
                 albums.forEach(a => {
+                    if (a.is_hidden === 1)
+                        return;
+
                     if (filter.like === true && a.is_liked === 1) {
 
                         if (!filter.audiobook && !filter.music && !filter.podcast)
