@@ -8,9 +8,9 @@ export default class SpotifyPlayer extends SpotifyController {
         LOG(this.label, 'INIT');
 
         this.is_playing = false;
+        this.progress_ms = false;
         this.shuffle_state = false;
         this.repeat_state = false;
-        this.progress_ms = false;
 
         this.stateCycle = new setInterval(() => this.getState(), 1000);
 
@@ -21,17 +21,37 @@ export default class SpotifyPlayer extends SpotifyController {
 
         this.nextAlbum = false;
 
-        this.on('change', () => {
-            this.completeState()
-                .then(() => {
+        this.on('track-change', () => this.completeState());
 
-                });
-        });
-
-        // @TODO detect the queue end
         this.on('queue-end', () => {
+            LOG(this.label, 'QUEUE END');
 
+            this.spotify.album.getNext(this.album.id).then(nextAlbum => {
+                LOG(this.label, 'GOT NEXT ALBUM (BY FILTER)', nextAlbum.name, 'TRACK 0:', nextAlbum.tracks[0].name);
+                this.nextAlbum = nextAlbum;
+
+                // play the first track of the next album
+                this.play(this.nextAlbum.tracks[0].id);
+
+                return Promise.resolve(true);
+            });
         });
+
+        this.on('progress', () => {
+            //LOG(this.label, 'PROGRESS', this.progress_ms);
+        });
+
+        this.on('play', () => {
+            LOG(this.label, 'IS PLAYING');
+        });
+
+        this.on('stop', () => {
+            LOG(this.label, 'IS STOPPED');
+            if (this.progress_ms === 0) {
+                this.emit('queue-end');
+            }
+        });
+
 
     }
 
@@ -118,15 +138,15 @@ export default class SpotifyPlayer extends SpotifyController {
         return this
             .request(false, 'GET', 'me/player')
             .then(data => {
-                data ? this.data = JSON.parse(data) : this.data = false;
+                data ? this.raw = JSON.parse(data) : this.raw = false;
                 return Promise.resolve(data);
             });
     }
 
     completeState() {
-        LOG(this.label, 'TRACK CHANGE');
+        LOG(this.label, 'TRACK CHANGE COMPLETE STATE');
 
-        return this.spotify.storage.track.getBySpotifyId(this.data.item.id)
+        return this.spotify.storage.track.getBySpotifyId(this.raw.id)
             .then(track => {
                 if (!track)
                     return Promise.resolve(false);
@@ -145,20 +165,6 @@ export default class SpotifyPlayer extends SpotifyController {
                 delete this.album.artist;
                 delete this.album.tracks;
 
-                // is the track NOT the last of the album ?
-                if (this.tracks.length !== this.track.track_number)
-                    return Promise.resolve(true);
-
-                LOG(this.label, 'LAST TRACK OF ALBUM', this.tracks.length, '#', this.track.track_number);
-
-                // is that the last track of the album ?
-                // @TODO this must happen, when the track ends
-                return this.spotify.album.getNext(this.album.id);
-            })
-            .then(nextAlbum => {
-                LOG(this.label, 'GOT NEXT ALBUM (BY FILTER)', nextAlbum, '');
-                this.nextAlbum = nextAlbum;
-
                 return Promise.resolve(true);
             });
     }
@@ -171,18 +177,20 @@ export default class SpotifyPlayer extends SpotifyController {
         return this.spotify.shuffle();
     }
 
-    get data() {
-        return this._data;
+    // --------------------------
+
+    get raw() {
+        return this._raw;
     }
 
-    set data(val) {
+    set raw(val) {
         if (val === false)
             return;
 
-        this.shuffle_state = val.shuffle_state;
-        this.repeat_state = val.repeat_state;
         this.progress_ms = val.progress_ms;
         this.is_playing = val.is_playing;
+        this.shuffle_state = val.shuffle_state;
+        this.repeat_state = val.repeat_state;
 
         if (!val.item)
             return;
@@ -190,13 +198,36 @@ export default class SpotifyPlayer extends SpotifyController {
         if (!val.item.id)
             return;
 
-        if (this.data)
-            if (this.data.item)
-                if (this.data.item.id === val.item.id)
-                    return;
+        if (this.raw)
+            if (this.raw.id === val.item.id)
+                return;
 
-        this._data = val;
-        this.emit('change');
+        this._raw = val.item;
+        this.emit('track-change');
+    }
+
+    get progress_ms() {
+        return this._progress_ms;
+    }
+
+    set progress_ms(val) {
+        if (this.progress_ms === val)
+            return;
+
+        this._progress_ms = val;
+        this.emit('progress');
+    }
+
+    get is_playing() {
+        return this._is_playing;
+    }
+
+    set is_playing(val) {
+        if (this.is_playing === val)
+            return;
+
+        this._is_playing = val;
+        this.is_playing === true ? this.emit('play') : this.emit('stop');
     }
 
 }

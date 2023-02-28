@@ -291,7 +291,15 @@ export default class SpotifyAlbum extends SpotifyController {
                     return Promise.resolve(filteredAlbums[0]); // jump to the first album of the filtered list
 
                 return Promise.resolve(filteredAlbums[index + 1]); // the next album
+            })
+            // @TODO get the first track of the next album
+            .then(nextAlbum => {
+                return this.spotify.track.getByAlbumId(nextAlbum.id).then(tracks => {
+                    nextAlbum.tracks = tracks;
+                    return Promise.resolve(nextAlbum);
+                });
             });
+
 
     }
 
