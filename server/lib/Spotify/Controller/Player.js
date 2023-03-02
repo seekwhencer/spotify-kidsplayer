@@ -59,7 +59,7 @@ export default class SpotifyPlayer extends SpotifyController {
      * playing a track
      * - get the track from the database
      * - get all tracks from the track album
-     * - add all tracks from the track number to the spotify playback queue
+     * - add all tracks from the track number into the spotify playback queue
      *
      * @param id = database id
      * @returns {Promise}
@@ -122,9 +122,9 @@ export default class SpotifyPlayer extends SpotifyController {
         return {
             state: {
                 is_playing: this.is_playing,
+                progress_ms: this.progress_ms,
                 shuffle_state: this.shuffle_state,
                 repeat_state: this.repeat_state,
-                progress_ms: this.progress_ms,
                 spotify_id: this.track.spotify_id
             },
             track: this.track,
@@ -187,10 +187,7 @@ export default class SpotifyPlayer extends SpotifyController {
         if (val === false)
             return;
 
-        this.progress_ms = val.progress_ms;
-        this.is_playing = val.is_playing;
-        this.shuffle_state = val.shuffle_state;
-        this.repeat_state = val.repeat_state;
+        ['progress_ms', 'is_playing', 'shuffle_state', 'repeat_state'].forEach(k => val[k] !== undefined ? this[k] = val[k] : null);
 
         if (!val.item)
             return;
@@ -226,8 +223,9 @@ export default class SpotifyPlayer extends SpotifyController {
         if (this.is_playing === val)
             return;
 
+        LOG('???', val);
         this._is_playing = val;
-        this.is_playing === true ? this.emit('play') : this.emit('stop');
+        this.is_playing === true ? this.emit('play') : this.is_playing === false ? this.emit('stop') : null;
     }
 
 }
