@@ -12,6 +12,8 @@
 git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 ```
 
+> BEWARE: actually it's in development ! 
+
 ## Ingredients
 - [Raspberry Pi 4](https://geizhals.de/raspberry-pi-4-modell-b-v54547.html)
 - [Desktop Image](https://www.raspberrypi.com/software/operating-systems/)
@@ -41,9 +43,13 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 - browse artists and albums
 - play automatically the next album from a filtered album list
 
-## Todo
+## Roadmap
 
+- Frontend player: displaying actual track, album and artist to navigate to the artist and album
 - Toggle parent mode = edit mode with PIN
 - change image for artists and album by upload or image url
 - reorder (change position) of the albums per drag and drop
 - the setup + frontend
+- ...
+
+> At the moment: it is a working pre alpha ;)
