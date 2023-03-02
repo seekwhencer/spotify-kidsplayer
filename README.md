@@ -1,12 +1,16 @@
 # spotify-kidsplayer
+## Goal
+
+> This will be a simplified UI for kids to use spotify.
 
 ![alt text](../master/docs/screenshots/artists.png?raw=true "Screenshot Artists")
 ![alt text](../master/docs/screenshots/artist.png?raw=true "Screenshot Artist")
 ![alt text](../master/docs/screenshots/album.png?raw=true "Screenshot Album")
 
-## Goal
-
-> This will be a simplified UI for kids to use spotify.
+## Get it
+```
+git clone https://github.com/seekwhencer/spotify-kidsplayer.git
+```
 
 ## Ingredients
 - [Raspberry Pi 4](https://geizhals.de/raspberry-pi-4-modell-b-v54547.html)
@@ -23,35 +27,23 @@
 - [Database](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/docs/DATABASE.md)
 - [spotifyd](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/docs/SPOTIFYD.md)
 
+> Developed and tested on a Raspberry Pi 4 with 8 GB ram
+
 ## Features
- 
-### Server
 
-- Authorize to the spotify api
-- Refresh api session periodically
-- Get an artist with ALL albums and ALL tracks
-- Download and store the artist and album images
-- Store the data in a mysql database
-- Offer an api for the web-app
-- Download tts from google as audio cache
-
-### Web-App
-
-- Toggle parent mode = edit mode with PIN
-- Display all artists
-- Edit artist: name
-- Display all albums from an artist
-- Filter the artist albums by favorites, audiobooks, music and podcasts
-- Hide (delete) unwanted albums
-- Toggle (edit) album type: audiobook, music, podcast 
-- Edit album: name
-- Text to speech
+- using spotify API
+- get automatically all albums, album-tracks from an artist when adding an artist
+- storing artists, artist albums and album tracks in a local database
+- storing images locally
+- using text to speech to read titles and names
+- differ between audiobook, music, podcast and favorites (like)
+- hide / drop unwanted albums
+- browse artists and albums
+- play automatically the next album from a filtered album list
 
 ## Todo
 
-### Web-App
-
+- Toggle parent mode = edit mode with PIN
 - change image for artists and album by upload or image url
 - reorder (change position) of the albums per drag and drop
-- text to speech
-- the configuration inputs
+- the setup + frontend
