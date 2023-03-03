@@ -24,6 +24,7 @@ export default class Album extends Tab {
         this.playedElement = this.target.querySelector('[data-album-played]');
         this.tracksElement = this.target.querySelector('[data-album-tracks]');
         this.albumsElement = this.target.querySelector('[data-artist-albums]');
+        this.trackDetailsElement = this.target.querySelector('[data-track-details]');
 
         this.on('raw', () => this.populate());
     }
@@ -58,17 +59,21 @@ export default class Album extends Tab {
         this.artistElement.replaceChildren(this.artist.target[0], this.artist.target[1]);
         this.playedElement.replaceChildren(this.played.target);
         this.tracksElement.replaceChildren(this.albumTracks.target);
+
         //this.albumsElement.replaceChildren(this.albums.target);
 
         // select the first track
         //this.albumTracks.tracks[0].select();
         //this.albums.addSlider();
+        this.hideTrackDetails();
     }
 
     showTrackDetails(track) {
-        this.trackDetailsElement = this.target.querySelector('[data-track-details]');
         this.trackDetails = new TrackDetails(this, track);
-        this.trackDetailsElement.replaceChildren(this.trackDetails.target);
+    }
+
+    hideTrackDetails(){
+        this.trackDetails.hide();
     }
 
     setBackgroundImage() {

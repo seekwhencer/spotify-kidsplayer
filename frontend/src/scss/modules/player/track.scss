@@ -1,5 +1,13 @@
 .player {
     &--track {
         display: block;
+
+        &__name {
+            text-align: center;
+            font-size: $fs-xs;
+            position: absolute;
+            top: 10px;
+            width: 100%;
+        }
     }
 }

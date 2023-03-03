@@ -1,8 +1,9 @@
 .player {
     &--seek {
         width: calc(100% - 400px);
-        margin: 10px 200px;
-        position: relative;
+        margin: 0 200px;
+        position: absolute;
+        top: 45px;
         background-color: $color-primary-darkest;
         height: 10px;
         border-radius: 10px;
@@ -27,6 +28,23 @@
             transition: all linear 1s;
             background-color: $color-splash;
             border-radius: 10px;
+        }
+    }
+
+    &--button {
+        display: none;
+        position: absolute;
+        bottom: 5px;
+        width: 50px;
+        padding: 0;
+        margin: 0;
+
+        &__play {
+            left: calc(50% - 60px);
+        }
+
+        &__pause {
+            left: calc(50% + 10px);
         }
     }
 }

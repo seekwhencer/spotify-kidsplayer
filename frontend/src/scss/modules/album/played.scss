@@ -2,5 +2,6 @@
     &--played {
         position: fixed;
         top: calc(16vw + $navigation-height);
+        display: none;
     }
 }

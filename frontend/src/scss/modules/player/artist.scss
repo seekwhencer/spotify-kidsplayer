@@ -1,5 +1,28 @@
 .player {
     &--artist {
-        display: none;
+        position: absolute;
+        left: 0;
+        width: 180px;
+        height: 100%;
+
+        &__name {
+            font-size: $fs-xxs;
+            display: none;
+        }
+
+        &__image {
+            display:block;
+            overflow: hidden;
+            border-radius: 5px;
+            width: 70px;
+            height: 70px;
+            position: absolute;
+            top: 10px;
+            left: 55px;
+
+            img {
+                width: 100%;
+            }
+        }
     }
 }

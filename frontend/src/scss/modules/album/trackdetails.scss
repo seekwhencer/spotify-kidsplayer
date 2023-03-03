@@ -2,13 +2,13 @@
     .track--details {
         position: fixed;
         right: 0;
-        bottom: 250px;
+        bottom: 140px;
         width: 100%;
         display: block;
 
         .track--name {
             margin: 0 50px 0 50px;
-            font-size: $fs-xl;
+            font-size: $fs-m;
             line-height: $fs-s;
             opacity: 0.2;
             position: absolute;

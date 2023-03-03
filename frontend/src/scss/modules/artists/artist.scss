@@ -8,8 +8,8 @@
     }
 
     .artist {
-        width: calc(10vw - 18px);
-        height: calc(10vw - 18px);
+        width: calc(12vw - 18px);
+        height: calc(12vw - 18px);
         display: flex;
         justify-content: center;
         margin: 10px 10px 40px 10px;
@@ -22,9 +22,9 @@
             position: absolute;
             padding: 5px 0;
             display: block;
-            top: calc(10vw - 5px);
+            top: calc(12vw - 5px);
             transform-origin: bottom;
-            font-size: $fs-xs;
+            font-size: $fs-xxs;
             width: 100%;
             text-align: center;
             background: rgba(255,255,255,0.1);
