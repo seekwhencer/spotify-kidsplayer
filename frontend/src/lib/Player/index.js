@@ -49,11 +49,11 @@ export default class Player extends MODULECLASS {
         this.on('state', () => {
             this.progressPercent = 100 / this.track.duration_ms * this.state.progress_ms;
             this.progress = this.state.progress_ms;
-            LOG(this.label, 'GOT STATE', this.state);
+            //LOG(this.label, 'GOT STATE', this.state);
         });
 
         this.on('progress', () => {
-            LOG(this.label, 'GOT PROGRESS', this.progress, this.progressPercent);
+            //LOG(this.label, 'GOT PROGRESS', this.progress, this.progressPercent);
             this.drawProgress();
             this.nextAlbum();
         });

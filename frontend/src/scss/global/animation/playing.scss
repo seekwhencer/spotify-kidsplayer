@@ -1,0 +1,17 @@
+@keyframes playing {
+    0% {
+        border-color: $color-primary-dark;
+        box-shadow: 0 0 20px $color-primary-dark;
+        transform: scale(1);
+    }
+    50% {
+        border-color: $color-splash;
+        box-shadow: 0 0 50px $color-splash;
+        transform: scale(1.02);
+    }
+    100% {
+        border-color: $color-primary-dark;
+        box-shadow: 0 0 20px $color-primary-dark;
+        transform: scale(1);
+    }
+}

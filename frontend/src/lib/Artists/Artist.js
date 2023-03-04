@@ -21,4 +21,12 @@ export default class Artists extends MODULECLASS {
         this.app.tabs.artist.show(this.id);
     }
 
+    highlight() {
+        this.target.classList.add('playing');
+    }
+
+    blur() {
+        this.target.classList.remove('playing');
+    }
+
 }

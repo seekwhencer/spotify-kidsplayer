@@ -2,7 +2,7 @@
 
     .artist--albums {
         width: calc(100% - 16vw);
-        height: 100%;
+        height: calc(100% - 60px);
         margin-left: 16vw;
 
         .album--listing {
@@ -10,9 +10,9 @@
             $album-border: 4px;
             text-align: center;
             overflow-Y: scroll;
+            overflow-X: hidden;
             height: 100%;
-            //white-space: nowrap;
-            padding-top: 70px;
+            margin-top: 60px;
 
             .album {
                 height: fit-content;
@@ -41,16 +41,17 @@
                 &--name {
                     color: white;
                     position: absolute;
-                    padding: 5px 0;
                     display: block;
-                    top: calc(100% + 10px);
+                    bottom: -35px;
                     transform-origin: bottom;
                     font-size: $fs-xxs;
-                    width: 100%;
                     text-align: center;
                     background: rgba(255, 255, 255, 0.1);
                     opacity: 0;
                     border-radius: 5px;
+                    width:100%;
+                    padding: 5px 0;
+
                 }
 
                 &--image {
@@ -74,13 +75,13 @@
 
                     .album--name {
                         opacity: 1;
-                        padding: 5px 10px;
                         z-index: 100;
                         background: rgba(0, 0, 0, 0.7);
                     }
                 }
 
                 &--options {
+
                     button {
                         cursor: pointer;
 
@@ -146,8 +147,22 @@
                             }
                         }
                     }
+                }
 
+                &.playing {
+                    .album--body {
+                        border-color: $color-splash;
+                        box-shadow: 0 0 50px $color-splash;
+                        animation: 1s ease-in-out 0s infinite playing;
 
+                        .album--image {
+                            background-color: $color-splash;
+
+                            img {
+                                animation: 1s ease-in-out 0s infinite playing-image;
+                            }
+                        }
+                    }
                 }
             }
 

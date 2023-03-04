@@ -38,6 +38,24 @@ export default class Artists extends Tab {
         this.listingElement.innerHTML = '';
         this.items.forEach(artist => this.listingElement.append(artist.target));
         this.app.navigation.disableFilter();
+        this.app.player.on('artist', () => this.highlightPlaying());
+        this.highlightPlaying();
+    }
+
+    blurAll(id) {
+        this.items.forEach(artist => artist.id !== id ? artist.blur() : null);
+    }
+
+    highlightPlaying() {
+        const playingArtist = this.items.filter(a => a.id === this.app.player.artist.id)[0];
+
+        if (!playingArtist)
+            return;
+
+        this.blurAll(playingArtist.id);
+        playingArtist.highlight();
+
+        LOG(this.label, 'SWITCH ARTIST', playingArtist);
     }
 
     get items() {

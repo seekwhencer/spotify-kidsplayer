@@ -15,6 +15,12 @@ import IconOptions from "./options.html";
 import IconUser from "./user.html";
 import IconHome from "./home.html";
 
+import IconPlay from "./play.html";
+import IconPause from "./pause.html";
+import IconStop from "./stop.html";
+import IconSkipPrev from "./skip-prev.html";
+import IconSkipNext from "./skip-next.html";
+
 const music = scope => {
     typeof scope === 'undefined' ? scope = {} : null;
     return IconMusic({
@@ -122,6 +128,61 @@ const home = scope => {
     });
 }
 
+const play = scope => {
+    typeof scope === 'undefined' ? scope = {} : null;
+    return IconPlay({
+        scope: {
+            ...scope,
+            height: scope.height || 24,
+            width: scope.width || 24
+        }
+    });
+}
+
+const pause = scope => {
+    typeof scope === 'undefined' ? scope = {} : null;
+    return IconPause({
+        scope: {
+            ...scope,
+            height: scope.height || 24,
+            width: scope.width || 24
+        }
+    });
+}
+
+const stop = scope => {
+    typeof scope === 'undefined' ? scope = {} : null;
+    return IconStop({
+        scope: {
+            ...scope,
+            height: scope.height || 24,
+            width: scope.width || 24
+        }
+    });
+}
+
+const skipPrev = scope => {
+    typeof scope === 'undefined' ? scope = {} : null;
+    return IconSkipPrev({
+        scope: {
+            ...scope,
+            height: scope.height || 24,
+            width: scope.width || 24
+        }
+    });
+}
+
+const skipNext = scope => {
+    typeof scope === 'undefined' ? scope = {} : null;
+    return IconSkipNext({
+        scope: {
+            ...scope,
+            height: scope.height || 24,
+            width: scope.width || 24
+        }
+    });
+}
+
 
 export {
     home as home,
@@ -133,7 +194,12 @@ export {
     eye as eye,
     pen as pen,
     heart as heart,
-    mouth as mouth
+    mouth as mouth,
+    play as play,
+    pause as pause,
+    stop as stop,
+    skipPrev as skipPrev,
+    skipNext as skipNext
 
 }
 

@@ -21,7 +21,9 @@ export default class Track extends MODULECLASS {
                     book: this.app.icons.book(),
                     music: this.app.icons.music(),
                     podcast: this.app.icons.podcast(),
-                    read: this.app.icons.mouth()
+                    read: this.app.icons.mouth(),
+                    play: this.app.icons.play(),
+                    pause: this.app.icons.pause(),
                 }
             }
         }));

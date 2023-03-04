@@ -4,7 +4,7 @@
     opacity: 0;
     position: fixed;
     top: 90px;
-    height: calc(100% - 90px - 100px); // minus navigation and player
+    height: calc(100% - 80px - 100px); // minus navigation and player
     width: 100%;
 
     &.active {

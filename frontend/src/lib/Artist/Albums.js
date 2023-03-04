@@ -19,7 +19,12 @@ export default class Albums extends MODULECLASS {
         this.albums = [];
         options.albums.forEach(album => this.albums.push(new Album(this, album)));
 
+
         this.viewMode = new AlbumsViewMode(this, {});
+
+        // listen on album change in the player
+        this.app.player.on('album', () => this.highlightPlaying());
+        this.highlightPlaying();
 
     }
 
@@ -78,7 +83,19 @@ export default class Albums extends MODULECLASS {
         });
     }
 
-    setViewMode() {
+    blurAll(id) {
+        this.albums.forEach(album => album.id !== id ? album.blur() : null);
+    }
 
+    highlightPlaying() {
+        const playingAlbum = this.albums.filter(a => a.id === this.app.player.album.id)[0];
+
+        if (!playingAlbum)
+            return;
+
+        this.blurAll(playingAlbum.id);
+        playingAlbum.highlight();
+
+        LOG(this.label, 'SWITCH ALBUM', playingAlbum);
     }
 }

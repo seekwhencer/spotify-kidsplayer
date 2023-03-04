@@ -5,6 +5,8 @@
         flex-wrap: wrap;
         align-items: stretch;
         justify-content: center;
+        height: 100%;
+        overflow-y: auto;
     }
 
     .artist {
@@ -17,6 +19,8 @@
         background: black;
         border: 4px solid $color-primary;
         position: relative;
+        cursor: pointer;
+
 
         &--name {
             position: absolute;
@@ -27,7 +31,7 @@
             font-size: $fs-xxs;
             width: 100%;
             text-align: center;
-            background: rgba(255,255,255,0.1);
+            background: rgba(255, 255, 255, 0.1);
         }
 
         &--image {
@@ -39,6 +43,21 @@
 
             img {
                 height: 100%;
+            }
+        }
+
+        &.playing {
+            border-color: $color-splash;
+            box-shadow: 0 0 50px $color-splash;
+            z-index: 200;
+            animation: 1s ease-in-out 0s infinite playing;
+
+            .artist--image {
+                background-color: $color-splash;
+
+                img {
+                    animation: 1s ease-in-out 0s infinite playing-image;
+                }
             }
         }
     }

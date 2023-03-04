@@ -16,6 +16,7 @@
             border-radius: 25px;
             width: 14vw;
             height: 14vw;
+            margin-top: 20px;
 
             img {
                 width: 100%;
@@ -36,6 +37,7 @@
     &--played {
         position: fixed;
         top: calc(16vw + 160px);
+        display: none;
     }
 
     .album--listing {
