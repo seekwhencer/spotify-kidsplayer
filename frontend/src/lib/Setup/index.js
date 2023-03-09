@@ -1,5 +1,5 @@
 import Tab from '../Tab.js';
-import SetupTemplate from "./Templates/setup.html";
+import LayoutTemplate from "./Templates/layout.html";
 
 export default class Setup extends Tab {
     constructor(parent, options) {
@@ -7,11 +7,10 @@ export default class Setup extends Tab {
         this.label = 'SETUP'
         this.tab = 'setup';
 
-        this.target = this.toDOM(SetupTemplate({
+        this.target = this.toDOM(LayoutTemplate({
             scope: {}
         }));
         this.parent.target.append(this.target);
-
     }
 
     show() {

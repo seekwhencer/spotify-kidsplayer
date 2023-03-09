@@ -34,22 +34,24 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 ## Features
 
 - using spotify API
-- get automatically all albums, album-tracks from an artist when adding an artist
-- storing artists, artist albums and album tracks in a local database
+- get automatically all albums, album-tracks from an artist when adding them
+- storing artists, artist albums and album tracks in a local database 
 - storing images locally
 - using text to speech to read titles and names
-- differ between audiobook, music, podcast and favorites (like)
+- set the album type to audiobook, music or podcast
+- set album as favorite (like)
 - hide / drop unwanted albums
 - browse artists and albums
 - play automatically the next album from a filtered album list
 
 ## Roadmap
 
-- Frontend player: displaying actual track, album and artist to navigate to the artist and album
-- Toggle parent mode = edit mode with PIN
+- toggle parent mode = edit mode with PIN
 - change image for artists and album by upload or image url
 - reorder (change position) of the albums per drag and drop
-- the setup + frontend
-- ...
+- the setup tab
+- edit artist FE
+- add artist FE
+- album view with other albums as list or prev / next image
 
 > At the moment: it is a working pre alpha ;)

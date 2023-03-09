@@ -1,16 +1,7 @@
-import fs from 'fs-extra';
-//import https from 'https';
-//import http from 'http';
-
 import followRedirects from 'follow-redirects';
 
 const http = followRedirects.http;
 const https = followRedirects.https;
-
-/**
- *
- *
- */
 
 export default class SpotifyAuth extends MODULECLASS {
     constructor(parent, options) {
@@ -21,10 +12,49 @@ export default class SpotifyAuth extends MODULECLASS {
             LOG(this.label, 'INIT');
 
             this.api = this.parent.api;
-            this.clientId = this.parent.clientId;
-            this.clientSecret = this.parent.clientSecret;
-            this.redirectUri = this.parent.redirectUri;
+            this.setup = this.parent.setup;
 
+            this.clientId = this.parent.config.clientId;
+            this.clientSecret = this.parent.config.clientSecret;
+            this.redirectUri = this.parent.config.redirectUri;
+
+            /**
+             *  the session object
+             */
+            this.sessionMap = {
+                accessToken: 'SPOTIFY_ACCESS_TOKEN',
+                refreshToken: 'SPOTIFY_REFRESH_TOKEN',
+                expireToken: 'SPOTIFY_TOKEN_EXPIRE',
+                code: 'SPOTIFY_CODE',
+                scopes: 'SPOTIFY_SCOPES',
+                state: 'SPOTIFY_STATE',
+                authorizeURL: 'SPOTIFY_AUTHORIZE_URL'
+            };
+            this.session = new Proxy({}, {
+                get: (target, prop, receiver) => this.setup.data[this.sessionMap[prop]],
+                set: (target, prop, value) => {
+                    this.setup.data[this.sessionMap[prop]] = value;
+                    return true;
+                }
+            });
+
+            /**
+             * Events
+             */
+            this.on('auth', () => {
+                LOG(this.label, 'AUTH CHECK OK.');
+                this.parent.emit('auth');
+                this.refreshAccessToken();
+                this.startRefreshCycle();
+            });
+
+            this.on('session-expired', () => {
+                LOG(this.label, 'ACCESS TOKEN EXPIRED');
+                this.reset();
+           });
+
+
+            // setup
             this.scopes = [
                 'user-read-playback-state',
                 'user-read-currently-playing',
@@ -42,147 +72,37 @@ export default class SpotifyAuth extends MODULECLASS {
             ];
             this.state = 'play';
 
-            this.fileNames = {
-                code: `${APP_DIR}/config/.code`,
-                accessToken: `${APP_DIR}/config/.access_token`,
-                refreshToken: `${APP_DIR}/config/.refresh_token`,
-                expireToken: `${APP_DIR}/config/.expire_token`
+            if (!this.session.accessToken || !this.session.refreshToken) {
+                this.emit('session-expired');
             }
 
-            /**
-             * Events
-             */
-            this.on('auth', () => {
-                LOG(this.label, 'AUTH CHECK OK.');
-                this.parent.emit('auth');
-                this.startRefreshCycle();
-            });
+            if (this.session.accessToken && this.session.refreshToken) {
+                this.auth()
+                    .then(auth => auth ? this.emit('auth') : null)
+                    .catch(e => ERROR(this.label, 'SOMETHING WENT ABSOLUTELY WRONG, DUDE...', e));
+            }
 
-            this.on('access-token-expired', () => {
-                LOG(this.label, 'ACCESS TOKEN EXPIRED');
-
-                this.reset();
-                this.createURL();
-                this.requestAuth();
-
-            });
-
-
-            /**
-             * Start here
-             */
-            this
-                .readFiles()
-                /*                .then(() => {
-
-                                    LOG('---');
-                                    LOG(this.label, 'CODE:', this.code);
-                                    LOG(this.label, 'ACCESS TOKEN:', this.accessToken);
-                                    LOG(this.label, 'REFRESH TOKEN:', this.refreshToken);
-                                    LOG('---');
-
-                                    if (!this.code) {
-                                        return this.getCode();
-                                    }
-                                    if (!this.accessToken && this.code) {
-                                        return this.grantCode();
-                                    }
-                                    return Promise.resolve();
-                                })*/
-                .then(() => {
-                    if (this.accessToken && this.refreshToken) {
-                        return this.auth();
-                    } else {
-                        this.emit('access-token-expired');
-                    }
-                    return Promise.resolve(false);
-                })
-                .then(auth => {
-                    auth ? this.emit('auth') : null;
-                    resolve(this);
-                })
-                .catch(e => {
-                    ERROR(this.label, 'SOMETHING WENT ABSOLUTELY WRONG, DUDE...', e);
-                });
-
-
+            resolve(this);
         });
     }
 
 
     auth() {
-        LOG(this.label, 'SET & REFRESH AUTH TOKEN', this.accessToken, this.refreshToken);
-
-        this.api.setAccessToken(this.accessToken, (err) => {
-            ERROR(this.label, err);
-
-            this.refreshAccessToken();
-            this.api.setRefreshToken(this.refreshToken);
-        });
-
-
-        return Promise.all([
-            this.writeFile(this.fileNames.accessToken, this.accessToken),
-            this.writeFile(this.fileNames.refreshToken, this.refreshToken),
-            this.writeFile(this.fileNames.expireToken, this.expireToken.toString())
-        ]);
+        LOG(this.label, 'SET & REFRESH AUTH TOKEN', this.session.accessToken, this.session.refreshToken);
+        this.api.setAccessToken(this.session.accessToken);
+        return this.refreshAccessToken();
     }
-
-    getCode() {
-        if (this.code)
-            return Promise.reject(false);
-
-        this.authorizeURL = this.api.createAuthorizeURL(this.scopes, this.state);
-        console.log('');
-        console.log('');
-        console.log(this.authorizeURL);
-        console.log('');
-        console.log('');
-        LOG('---');
-        LOG(this.label, '-', 'NOW - copy the url per hand or click on it to open the spotify authentication');
-        LOG(this.label, '-', 'LOG IN your spotify account and agree to the app.');
-        LOG(this.label, '-', 'THEN you will be redirected to your entered redirect page');
-        LOG(this.label, '-', 'COPY BY HAND the get parameter value from variable "code"');
-        LOG(this.label, '-', 'PASTE the code into the file: server/config/.code');
-        LOG(this.label, '-', 'RESTART this app');
-        LOG('---');
-
-        return Promise.resolve(this.authorizeURL);
-    }
-
     createURL() {
-        if (this.code)
+        if (this.session.code)
             return;
 
-        return this.authorizeURL = this.api.createAuthorizeURL(this.scopes, this.state);
+        LOG(this.label, 'CREATE CODE URL', this.redirectUri);
+        this.api.setRedirectURI(this.redirectUri);
+        return this.session.authorizeURL = this.api.createAuthorizeURL(this.scopes, this.state);
     }
-
-    requestURL() {
-        LOG(this.label, 'REQUESTING AUTHORIZE URL', this.authorizeURL);
-        https.get(this.authorizeURL, res => {
-            let body = '';
-            res.on('data', chunk => body += chunk);
-            res.on('end', () => LOG(body));
-
-            LOG(this.label, 'REQUEST AUTH URL', res.responseUrl, res.headers, '');
-        });
-    }
-
-    // @TODO url not hard wired
-    // not working. must do it in the browser.
-    requestAuth() {
-        http.get('http://kidsplayer:3000/api/auth', res => {
-            let body = '';
-            res.on('data', chunk => body += chunk);
-            res.on('end', () => LOG(this.label, body, ''));
-
-            LOG(this.label, 'REQUEST AUTH', res.responseUrl, res.headers, '');
-        });
-    }
-
 
     startRefreshCycle() {
-        const ms = this.expireToken / 2 * 1000;
+        const ms = this.session.expireToken / 2 * 1000;
         LOG(this.label, 'STARTING ACCESS TOKEN REFRESH CYCLE IN', ms / 1000, 'SECONDS');
         if (this.refreshCycle)
             clearInterval(this.refreshCycle);
@@ -191,32 +111,32 @@ export default class SpotifyAuth extends MODULECLASS {
     }
 
     grantCode() {
-        if (!this.code)
-            return;
+        if (!this.session.code)
+            return Promise.resolve(false);
 
-        return this.api.authorizationCodeGrant(this.code).then((data, err) => {
+        return this.api.authorizationCodeGrant(this.session.code).then((data, err) => {
 
             if (err) {
                 ERROR(this.label, err);
                 return Promise.reject(false);
             }
 
-            this.accessToken = data.body.access_token;
-            this.refreshToken = data.body.refresh_token;
-            this.expireToken = parseInt(data.body.expires_in);
+            this.session.accessToken = data.body.access_token;
+            this.session.refreshToken = data.body.refresh_token;
+            this.session.expireToken = parseInt(data.body.expires_in);
 
-            LOG(this.label, 'The access token is', this.accessToken);
-            LOG(this.label, 'The refresh token is', this.refreshToken);
-            LOG(this.label, 'The token expires in', this.expireToken, this.expireToken / 2 * 1000);
+            LOG(this.label, 'NEW ACCESS TOKEN:', this.session.accessToken);
+            LOG(this.label, 'NEW REFRESH TOKEN', this.session.refreshToken);
+            LOG(this.label, 'NEW EXPIRE TIME', this.session.expireToken, this.session.expireToken / 2 * 1000);
 
             // Set the access token on the API object to use it in later calls
-            return Promise.resolve();
+            return Promise.resolve(true);
         });
     }
 
 
     refreshAccessToken() {
-        this.api.setRefreshToken(this.refreshToken);
+        this.api.setRefreshToken(this.session.refreshToken);
 
         return this.api.refreshAccessToken().then((data, err) => {
             if (err) {
@@ -229,114 +149,28 @@ export default class SpotifyAuth extends MODULECLASS {
                 return Promise.reject(false);
             }
 
-            this.accessToken = data.body.access_token;
-            this.expireToken = parseInt(data.body.expires_in);
+            this.session.accessToken = data.body.access_token;
+            this.session.expireToken = parseInt(data.body.expires_in);
 
-            this.api.setAccessToken(this.accessToken, (err) => {
-                ERROR(this.label, err);
-                this.api.setRefreshToken(this.refreshToken);
-            });
+            this.api.setAccessToken(this.session.accessToken);
+            this.api.setRefreshToken(this.session.refreshToken);
 
-            LOG(this.label, 'REFRESHING ACCESS TOKEN', this.accessToken);
-            return Promise.resolve();
+            LOG(this.label, 'REFRESHING ACCESS TOKEN', this.session.accessToken);
+            return Promise.resolve(true);
         })
-    }
-
-    readCode() {
-        return this.readFile(this.fileNames.code).then(code => {
-            code && code !== '' ? this.code = code.toString() : this.code = false;
-            return Promise.resolve();
-        });
-    }
-
-    readToken() {
-        return Promise.all([
-            this.readFile(this.fileNames.accessToken).then(accessToken => {
-                accessToken && accessToken !== '' ? this.accessToken = accessToken.toString() : this.accessToken = false;
-                return Promise.resolve();
-            }),
-            this.readFile(this.fileNames.refreshToken).then(refreshToken => {
-                refreshToken && refreshToken !== '' ? this.refreshToken = refreshToken.toString() : this.refreshToken = false;
-                return Promise.resolve();
-            })]
-        );
-    }
-
-    readExpire() {
-        return this.readFile(this.fileNames.expireToken).then(expireToken => {
-            expireToken && expireToken !== '' ? this.expireToken = parseInt(expireToken) : this.expireToken = false;
-            return Promise.resolve();
-        });
-    }
-
-    readFiles() {
-        LOG(this.label, 'READING SESSION CREDENTIALS');
-        return Promise
-            .all([
-                this.readCode(),
-                this.readToken(),
-                this.readExpire()
-            ]);
     }
 
     reset() {
         LOG(this.label, 'RESET SESSION');
-        this.code = false;
-        this.accessToken = false;
-        this.refreshToken = false;
-        this.expireToken = false;
 
-        /*this.api.resetAccessToken();
+        this.session.code = false;
+        this.session.accessToken = false;
+        this.session.refreshToken = false;
+        this.session.expireToken = false;
+
+        this.api.resetAccessToken();
         this.api.resetRefreshToken();
         this.api.resetRedirectURI();
-        this.api.resetCode();*/
-    }
-
-    writeFile(fileName, data) {
-        return fs.writeFile(fileName, data).catch(e => {
-            LOG(this.label, 'FILE NOT WRITTEN', fileName, e, '');
-        });
-    }
-
-    readFile(fileName) {
-        return fs.readFile(fileName).catch(e => {
-            LOG(this.label, 'FILE NOT EXISTS:', fileName);
-        });
-    }
-
-    get code() {
-        return this._code === '' ? false : this._code;
-    }
-
-    set code(val) {
-        this.writeFile(this.fileNames.code, val === false ? '' : val);
-        this._code = val;
-    }
-
-    get accessToken() {
-        return this._accessToken === '' ? false : this._accessToken;
-    }
-
-    set accessToken(val) {
-        this.writeFile(this.fileNames.accessToken, val === false ? '' : val);
-        this._accessToken = val;
-    }
-
-    get refreshToken() {
-        return this._refreshToken === '' ? false : this._refreshToken;
-    }
-
-    set refreshToken(val) {
-        this.writeFile(this.fileNames.refreshToken, val === false ? '' : val);
-        this._refreshToken = val;
-    }
-
-    get expireToken() {
-        return this._expireToken === '' ? false : this._expireToken;
-    }
-
-    set expireToken(val) {
-        this.writeFile(this.fileNames.expireToken, val === false ? '' : val.toString());
-        this._expireToken = val;
+        //this.api.resetCode();
     }
 }

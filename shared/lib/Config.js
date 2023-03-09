@@ -15,6 +15,7 @@ export default class Config extends Module {
 
             this.path = path.resolve(`${APP_DIR}/config`) || path.resolve(`${APP_DIR}/server/config`);
             this.typesFile = `${this.path}/types.json`;
+            this.types = fs.readJsonSync(this.typesFile);
 
             this.configFile = `${this.path}/${ENVIRONMENT}.conf`;
             this.envFile = `${path.resolve(`${APP_DIR}/..`)}/.env`;
@@ -90,9 +91,7 @@ export default class Config extends Module {
     }
 
     convertTypes() {
-        const types = fs.readJsonSync(this.typesFile);
-
-        types.boolean.forEach(t => {
+        this.types.boolean.forEach(t => {
             if (Array.isArray(this.configData[t])) {
                 const arr = [];
 
@@ -103,7 +102,7 @@ export default class Config extends Module {
             }
         });
 
-        types.int.forEach(t => {
+        this.types.int.forEach(t => {
             if (Array.isArray(this.configData[t])) {
                 const arr = [];
                 this.configData[t].forEach(i => arr.push(parseInt(i)));

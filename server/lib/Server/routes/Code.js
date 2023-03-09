@@ -6,11 +6,11 @@ export default class extends Route {
 
         this.router.get('/code', (req, res) => {
             const spotify = global.APP.SPOTIFY;
-            spotify.auth.code = req.query.code;
+            spotify.auth.session.code = req.query.code;
             spotify.auth
                 .grantCode()
                 .then(() => {
-                    if (spotify.auth.accessToken && spotify.auth.refreshToken) {
+                    if (spotify.auth.session.accessToken && spotify.auth.session.refreshToken) {
                         return spotify.auth.auth();
                     }
                     return Promise.resolve(false);

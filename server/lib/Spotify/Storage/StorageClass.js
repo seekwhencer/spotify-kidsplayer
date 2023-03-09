@@ -8,12 +8,6 @@ export default class StorageClass extends MODULECLASS {
     }
 
     query(query, data) {
-
-        /*const sql = this.storage.mysql.format(query, data);
-        console.log('');
-        LOG(this.label, sql);
-        console.log('');
-        */
         return new Promise((resolve, reject) => {
             if (data) {
                 this.storage.pool.query(query, data, (error, result) => {

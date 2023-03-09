@@ -34,6 +34,7 @@
         "stylelint": "^14.16.1",
         "stylelint-config-standard-scss": "^6.1.0",
         "stylelint-webpack-plugin": "^4.0.0",
+        "swiper": "^9.0.5",
         "template-literals-loader": "^1.1.2",
         "terser-webpack-plugin": "^5.3.6",
         "webpack": "^5.75.0",

@@ -1,4 +1,14 @@
 import SpotifyWebApi from 'spotify-web-api-node';
+import SpotifyWebApiServer from 'spotify-web-api-node/src/server-methods.js';
+SpotifyWebApi._addMethods = function (methods) {
+    for (let i in methods) {
+        if (methods.hasOwnProperty(i)) {
+            this.prototype[i] = methods[i];
+        }
+    }
+};
+SpotifyWebApi._addMethods(SpotifyWebApiServer);
+
 import SpotifyAuth from "./Auth.js";
 import SpotifyStorage from "./Storage/index.js";
 import SpotifyArtist from "./Controller/Artist.js";
@@ -14,11 +24,25 @@ export default class Spotify extends MODULECLASS {
         return new Promise((resolve, reject) => {
             this.label = 'SPOTIFY';
             LOG(this.label, 'INIT');
+            this.setup = APP.SETUP;
 
-            this.clientId = SPOTIFY_ID;
-            this.clientSecret = SPOTIFY_SECRET;
-            this.redirectUri = SPOTIFY_REDIRECT_URI;
-            this.deviceId = SPOTIFY_DEVICE_ID;
+            /**
+             *  the config object
+             */
+            this.configMap = {
+                clientId: 'SPOTIFY_ID',
+                clientSecret: 'SPOTIFY_SECRET',
+                redirectUri: 'SPOTIFY_REDIRECT_URI',
+                deviceId: 'SPOTIFY_DEVICE_ID',
+                deviceName: 'SPOTIFY_DEVICE_NAME'
+            };
+            this.config = new Proxy({}, {
+                get: (target, prop, receiver) => this.setup.data[this.configMap[prop]],
+                set: (target, prop, value) => {
+                    this.setup.data[this.configMap[prop]] = value;
+                    return true;
+                }
+            });
 
             /**
              * Events
@@ -36,9 +60,9 @@ export default class Spotify extends MODULECLASS {
 
             // the api
             this.api = new SpotifyWebApi({
-                clientId: this.clientId,
-                clientSecret: this.clientSecret,
-                redirectUri: this.redirectUri,
+                clientId: this.config.clientId,
+                clientSecret: this.config.clientSecret,
+                redirectUri: this.config.redirectUri,
             });
 
             // storage
@@ -60,27 +84,28 @@ export default class Spotify extends MODULECLASS {
         });
     }
 
-    // THIS IS THE CHECK METHOD!!!
     getDevices() {
         return this.api
             .getMyDevices()
             .then(data => {
                 this.availableDevices = data.body.devices;
                 LOG(this.label, 'DEVICES', data.body.devices, '');
-                return Promise.resolve();
-            })
-            .then(() => {
                 return this.useDevice();
             })
             .catch(error => {
+                if(!error)
+                    return;
+
+                if(!error.body.error)
+                    return;
+
                 if (error.body.error.status === 401)
                     this.emit('access-token-expired');
             });
     }
 
     useDevice() {
-        const deviceName = SPOTIFY_DEVICE_NAME || 'kidsplayer';
-        this.device = this.availableDevices.filter(d => d.name === deviceName)[0];
+        this.device = this.availableDevices.filter(d => d.name === this.config.deviceName)[0];
 
         if (!this.device)
             return Promise.resolve(false);
