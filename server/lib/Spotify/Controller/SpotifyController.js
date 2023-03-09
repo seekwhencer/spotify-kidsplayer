@@ -28,7 +28,7 @@ export default class SpotifyController extends MODULECLASS {
 
             const headers = {
                 'Content-Type': 'application/json',
-                'Authorization': `Bearer ${this.spotify.auth.accessToken}`
+                'Authorization': `Bearer ${this.spotify.auth.session.accessToken}`
             };
 
             if (bodyString !== false) {
