@@ -36,9 +36,7 @@ export default class extends Route {
             const spotify = global.APP.SPOTIFY;
             url = spotify.auth.createURL();
 
-            LOG('?!?!?!?', url, '');
-
-            if(url) {
+            if (url) {
                 res.redirect(url);
             } else {
                 res.redirect('/api/auth');
@@ -54,39 +52,23 @@ export default class extends Route {
 
             if (!code) {
                 res.json({
-                    message: 'nothing...'
+                    message: 'got no code ...'
                 });
                 return;
             }
 
-
             const spotify = global.APP.SPOTIFY;
-            spotify.auth.session.code = code;
 
-            // @TODO - to much code here. place it in controller
             if (!spotify.auth.session.accessToken) {
-                spotify.auth
-                    .grantCode()
-                    .then(() => {
-                        if (spotify.auth.session.accessToken && spotify.auth.session.refreshToken) {
-                            return spotify.auth.auth();
-                        }
-                        return Promise.resolve(false);
-                    })
-                    .then(auth => {
-                        auth ? spotify.auth.emit('auth') : null;
-                        res.redirect('/api/auth');
-                    })
-                    .catch(e => {
-                        ERROR(this.label, 'SOMETHING WENT ABSOLUTELY WRONG, DUDE...', e);
-                    });
+                spotify.auth.receiveCode(code).then(is_auth => {
+                    is_auth ? res.redirect('/api/auth') : null;
+                });
             } else {
                 res.json({
                     code: code,
-                    message: 'seems wrong'
+                    message: 'seems a wrong'
                 });
             }
-
         });
 
         return this.router;

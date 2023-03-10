@@ -87,6 +87,7 @@ export default class SpotifyPlayer extends SpotifyController {
                 const requestData = {
                     uris: tracks.map(track => `spotify:track:${track.spotify_id}`)
                 };
+                this.shuffle();
 
                 return this.request(requestData, 'PUT', 'me/player/play');
             })

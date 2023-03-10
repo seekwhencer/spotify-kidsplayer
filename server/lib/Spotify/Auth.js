@@ -134,6 +134,26 @@ export default class SpotifyAuth extends MODULECLASS {
         });
     }
 
+    receiveCode(code) {
+        this.session.code = code;
+
+        this
+            .grantCode()
+            .then(() => {
+                if (this.session.accessToken && this.session.refreshToken) {
+                    return this.auth();
+                }
+                return Promise.resolve(false);
+            })
+            .then(auth => {
+                auth ? this.emit('auth') : null;
+                return Promise.resolve(auth);
+            })
+            .catch(e => {
+                ERROR(this.label, 'SOMETHING WENT ABSOLUTELY WRONG, DUDE...', e);
+            });
+    }
+
 
     refreshAccessToken() {
         this.api.setRefreshToken(this.session.refreshToken);
