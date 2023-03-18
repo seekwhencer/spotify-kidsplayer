@@ -34,7 +34,7 @@ export default class Artist extends Tab {
         } // @TODO
         super.show();
         this.app.navigation.clearFilter();
-        this.app.navigation.draw(this.albums.filter);
+        this.albums ? this.app.navigation.draw(this.albums.filter) : null;
     }
 
     hide() {

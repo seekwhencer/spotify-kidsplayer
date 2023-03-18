@@ -73,7 +73,7 @@ export default class Album extends Tab {
     }
 
     hideTrackDetails(){
-        this.trackDetails.hide();
+        this.trackDetails ? this.trackDetails.hide() : null;
     }
 
     setBackgroundImage() {
