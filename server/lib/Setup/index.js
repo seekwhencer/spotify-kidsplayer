@@ -14,7 +14,8 @@ export default class AppSetup extends AppSetupModel {
             /**
              * if this.data.PROPERTY will be set, update setup DB automatically
              */
-            this.data = new Proxy({}, {
+            this.dataSource = {};
+            this.data = new Proxy(this.dataSource , {
                 get: (target, prop, receiver) => {
                     return target[prop];
                 },
@@ -111,10 +112,9 @@ export default class AppSetup extends AppSetupModel {
     getAll() {
         return super.getAll()
             .then(raw => {
-                raw.forEach(prop => this.data[prop.property] = prop.value);
-                //LOG('>?????', this.data, '#', this.data.MQTT_ENABLE);
+//                this.dataSource = raw;
+                raw.forEach(prop => this.dataSource[prop.property] = prop.value);
                 return Promise.resolve();
             });
     }
-
 }

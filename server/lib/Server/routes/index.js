@@ -6,6 +6,7 @@ import AlbumRoutes from './Album.js';
 import SpeakRoutes from './Speak.js';
 import TrackRoutes from './Track.js';
 import PlayerRoutes from './Player.js';
+import SetupRoutes from './Setup.js';
 
 export {
     AuthRoutes,
@@ -15,5 +16,6 @@ export {
     AlbumRoutes,
     SpeakRoutes,
     TrackRoutes,
-    PlayerRoutes
+    PlayerRoutes,
+    SetupRoutes
 };
