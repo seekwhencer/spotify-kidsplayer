@@ -16,8 +16,6 @@ export default class App extends MODULECLASS {
         return new Config(this)
             .then(config => {
                 global.APP.CONFIG = config;
-                //global.CONF = config;
-                //global.CONFIG = config.configData;
                 return new Setup(this);
             })
             .then(setup => {
@@ -40,5 +38,17 @@ export default class App extends MODULECLASS {
                 global.APP.SPOTIFY = spotify;
                 return Promise.resolve(this);
             });
+    }
+
+    get parentMode() {
+        return this._parentMode;
+    }
+
+    set parentMode(val) {
+        if (val === this.parentMode)
+            return;
+
+        this._parentMode = val;
+        this.emit('parent-mode', this.parentMode);
     }
 }

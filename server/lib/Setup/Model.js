@@ -1,6 +1,6 @@
 import mysql from 'mysql';
 
-export default class AppSetupModel extends MODULECLASS {
+export default class SetupModel extends MODULECLASS {
     constructor(parent, options) {
         super(parent, options);
 

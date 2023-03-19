@@ -1,29 +1,37 @@
-import AppSetupModel from './Model.js';
+import SetupModel from './Model.js';
 
-export default class AppSetup extends AppSetupModel {
+export default class Setup extends SetupModel {
     constructor(parent, options) {
         super(parent, options);
+
         return new Promise((resolve, reject) => {
             this.label = 'SETUP';
             LOG(this.label, 'INIT');
 
             this.table = 'setup';
 
-            this.flattenTypes();
+            //this.flattenTypes();
+
+            this.types = APP.CONFIG.types;
+
+           // @TODO get from config and environment
 
             /**
              * if this.data.PROPERTY will be set, update setup DB automatically
              */
             this.dataSource = {};
-            this.data = new Proxy(this.dataSource , {
+            this.data = new Proxy(this.dataSource, {
                 get: (target, prop, receiver) => {
-                    return target[prop];
+                    return this.convertTypeRead(target[prop], prop);
                 },
                 set: (target, prop, value) => {
-                    target[prop] = this.convertTypeRead(value, prop);
-                    const valueWrite = this.convertTypeWrite(target[prop], prop);
+                    const valueWrite = this.convertTypeWrite(value, prop);
 
-                    //LOG(this.label, 'SET',  target[prop]);
+                    // store the db converted value
+                    target[prop] = valueWrite;
+
+                    // override global config vars
+                    global[prop] = this.convertTypeRead(target[prop], prop);
 
                     return this
                         .getProperty(prop)
@@ -43,14 +51,23 @@ export default class AppSetup extends AppSetupModel {
                 }
             });
 
+            this.feedFromConfig();
+
             this.getAll().then(() => {
-                // testing
-                //this.data.MQTT_PORT = 1886;
+                // map this.data to global[prop]
+
 
                 resolve(this);
             });
         });
 
+    }
+
+    feedFromConfig() {
+        Object.keys(APP.CONFIG.configData).forEach(prop => {
+            if (!this.dataSource[prop])
+                this.data[prop] = APP.CONFIG.configData[prop];
+        });
     }
 
     flattenTypes() {
@@ -63,6 +80,9 @@ export default class AppSetup extends AppSetupModel {
     }
 
     convertTypeRead(value, property) {
+        if (value === undefined)
+            return;
+
         const type = this.types[property];
 
         if (value.toLowerCase) {
@@ -112,7 +132,6 @@ export default class AppSetup extends AppSetupModel {
     getAll() {
         return super.getAll()
             .then(raw => {
-//                this.dataSource = raw;
                 raw.forEach(prop => this.dataSource[prop.property] = prop.value);
                 return Promise.resolve();
             });

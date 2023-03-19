@@ -28,6 +28,7 @@ export default class Spotify extends MODULECLASS {
 
             /**
              *  the config object
+             *  ignoring global config
              */
             this.configMap = {
                 clientId: 'SPOTIFY_ID',
@@ -36,6 +37,8 @@ export default class Spotify extends MODULECLASS {
                 deviceId: 'SPOTIFY_DEVICE_ID',
                 deviceName: 'SPOTIFY_DEVICE_NAME'
             };
+
+            // the delegation object
             this.config = new Proxy({}, {
                 get: (target, prop, receiver) => this.setup.data[this.configMap[prop]],
                 set: (target, prop, value) => {
