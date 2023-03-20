@@ -24,6 +24,7 @@ export default class SetupNavi extends MODULECLASS {
             this.target.append(button);
         });
 
+        // info button
         this.buttonInfo = this.toDOM(NaviButtonTemplate({
             scope: {
                 label: 'INFO'
@@ -31,6 +32,15 @@ export default class SetupNavi extends MODULECLASS {
         }));
         this.buttonInfo.onclick = () => this.summary();
         this.target.append(this.buttonInfo);
+
+        // add artist button
+        this.addArtistButton = this.toDOM(NaviButtonTemplate({
+            scope: {
+                label: `${this.app.icons.plus()}`
+            }
+        }));
+        this.addArtistButton.onclick = () => this.addArtist();
+        this.target.append(this.addArtistButton);
     }
 
     blurAll(button) {
@@ -47,6 +57,12 @@ export default class SetupNavi extends MODULECLASS {
         this.blurAll(this.buttonInfo);
         this.buttonInfo.classList.add('active');
         this.parent.showSummary();
+    }
+
+    addArtist() {
+        this.blurAll(this.addArtistButton);
+        this.addArtistButton.classList.add('active');
+        this.parent.showAddArtist();
     }
 
 

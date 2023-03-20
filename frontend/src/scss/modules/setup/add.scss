@@ -1,0 +1,69 @@
+.setup {
+
+
+    &--add {
+        width: calc(50vw + 30px);
+
+        &__text {
+            background-color: $color-leaf;
+            border-radius: 5px;
+            width: 50vw;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+
+        &__element {
+            input[type=text] {
+                font-size: $fs-s;
+                text-align: center;
+            }
+        }
+
+        &__button {
+            background-color: $color-primary;
+            margin: 0 10px 0 0;
+            cursor: pointer;
+            opacity: 0.6;
+            width: 100px;
+
+            &:hover {
+                opacity: 1;
+
+                svg {
+
+                }
+            }
+
+            &:disabled {
+                opacity: 0.1;
+            }
+
+            svg {
+                color: white;
+                width: 40px;
+                height: 40px;
+                margin: 7px;
+            }
+
+            &.form--option__update {
+                background-color: rgba(0, 0, 0, 0.2);
+                outline: 2px solid $color-leaf;
+            }
+
+            &.form--option__cancel {
+                background-color: rgba(0, 0, 0, 0.2);
+                outline: 2px solid $color-warn;
+
+                svg {
+                    color: $color-warn;
+                }
+            }
+
+
+
+
+
+        }
+    }
+
+}

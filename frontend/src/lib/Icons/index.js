@@ -22,6 +22,7 @@ import IconSkipPrev from "./skip-prev.html";
 import IconSkipNext from "./skip-next.html";
 import IconCheck from "./check.html";
 import IconClose from "./close.html";
+import IconPlus from "./plus.html";
 
 const music = scope => {
     typeof scope === 'undefined' ? scope = {} : null;
@@ -207,6 +208,17 @@ const close = scope => {
     });
 }
 
+const plus = scope => {
+    typeof scope === 'undefined' ? scope = {} : null;
+    return IconPlus({
+        scope: {
+            ...scope,
+            height: scope.height || 24,
+            width: scope.width || 24
+        }
+    });
+}
+
 
 export {
     home as home,
@@ -225,7 +237,8 @@ export {
     skipPrev as skipPrev,
     skipNext as skipNext,
     check as check,
-    close as close
+    close as close,
+    plus as plus
 
 }
 

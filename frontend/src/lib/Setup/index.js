@@ -17,9 +17,9 @@ export default class Setup extends Tab {
         this.parent.target.append(this.target);
 
         this.targets = {
-            navi: this.target.querySelector('[data-setup-navi]'),
-            form: this.target.querySelector('[data-setup-form]'),
-            lock: this.target.querySelector('[data-setup-lock]'),
+            navi: this.target.querySelector('[data-setup="navi"]'),
+            form: this.target.querySelector('[data-setup="form"]'),
+            lock: this.target.querySelector('[data-setup="lock"]')
         }
 
         this.on('data', () => this.draw());
@@ -82,6 +82,7 @@ export default class Setup extends Tab {
             this.navi.summary();
         } else {
             this.lock = new SetupLock(this);
+            this.lock.unlock(); // @TODO remove it!
         }
     }
 
@@ -103,6 +104,10 @@ export default class Setup extends Tab {
 
     showSummary() {
         this.form.summary();
+    }
+
+    showAddArtist() {
+        this.form.addArtist();
     }
 
     get parentMode() {

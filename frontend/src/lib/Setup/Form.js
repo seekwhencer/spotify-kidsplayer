@@ -4,6 +4,7 @@ import FormElementSwitchTemplate from "./Templates/FormElementSwitch.html";
 import FromOptionsTemplate from "./Templates/FormOptions.html";
 import FromSummaryTemplate from "./Templates/FormSummary.html";
 import FromSummaryItemTemplate from "./Templates/FormSummaryItem.html";
+import FromAddArtistTemplate from "./Templates/FormAddArtist.html";
 
 
 export default class SetupForm extends MODULECLASS {
@@ -109,5 +110,55 @@ export default class SetupForm extends MODULECLASS {
 
         this.parent.targets.form.replaceChildren(this.target);
     }
+
+    addArtist() {
+        this.target = this.toDOM(FromAddArtistTemplate({
+            scope: {
+                data: this.parent.data,
+                id: '',
+                name: '',
+                label: '',
+                icon: this.app.icons.plus()
+            }
+        }));
+
+        this.addArtistInput = this.target.querySelector('input');
+        this.addArtistButton = this.target.querySelector('button');
+        this.addArtistButton.onclick = () => this.submitArtist();
+        this.addArtistComplete = this.target.querySelector('[data-add-complete]');
+
+        this.parent.targets.form.replaceChildren(this.target);
+    }
+
+    submitArtist() {
+        if (this.addArtistInput.value === '')
+            return;
+
+        const postData = {
+            artistURI: this.addArtistInput.value
+        }
+        this.addArtistButton.disabled = true;
+
+        return this.fetch(`${this.app.urlBase}/artist/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+        }).then(response => {
+            LOG(this.label, 'SUBMIT ARTIST URI:', response.data, '');
+            this.addArtistButton.disabled = false;
+            this.addArtistInput.value = '';
+
+            if(!response.data)
+               return;
+
+            if(!response.data.name)
+               return;
+
+            this.addArtistComplete.append(response.data.name);
+        });
+    }
+
 
 }

@@ -44,15 +44,14 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 - browse artists and albums
 - play automatically the next album from a filtered album list
 - setup ui
+- setup toggle parent mode = edit mode with PIN
+- setup add artist
 
 ## Roadmap
 
-- toggle parent mode = edit mode with PIN
 - change image for artists and album by upload or image url
 - reorder (change position) of the albums per drag and drop
 - edit artist FE
-- add artist FE
 - album view with other albums as list or prev / next image
-
 
 > At the moment: it is a working pre alpha ;)
