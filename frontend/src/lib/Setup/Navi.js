@@ -24,14 +24,13 @@ export default class SetupNavi extends MODULECLASS {
             this.target.append(button);
         });
 
-        const buttonAll = this.toDOM(NaviButtonTemplate({
+        this.buttonInfo = this.toDOM(NaviButtonTemplate({
             scope: {
                 label: 'INFO'
             }
         }));
-        buttonAll.onclick = () => this.summary(buttonAll);
-        this.target.append(buttonAll);
-
+        this.buttonInfo.onclick = () => this.summary();
+        this.target.append(this.buttonInfo);
     }
 
     blurAll(button) {
@@ -44,9 +43,9 @@ export default class SetupNavi extends MODULECLASS {
         button.classList.add('active');
     }
 
-    summary(button) {
-        this.blurAll(button);
-        button.classList.add('active');
+    summary() {
+        this.blurAll(this.buttonInfo);
+        this.buttonInfo.classList.add('active');
         this.parent.showSummary();
     }
 

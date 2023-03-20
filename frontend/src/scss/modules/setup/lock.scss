@@ -1,0 +1,40 @@
+.setup {
+    padding-top: 50px;
+
+    &--lock {
+        position: absolute;
+        top: 0;
+        width: 100%;
+        height: calc(100% - 50px);
+        overflow: hidden;
+
+        &__form {
+            text-align: center;
+            padding-top: 20vh;
+        }
+
+        &__pin {
+            font-size: $fs-xxl;
+            line-height: $fs-xxl;
+            background: rgba(255, 255, 255, 0.1);
+            border: none;
+            color: white;
+            padding: 0 15px;
+            border-radius: 5px;
+            position: relative;
+            text-align: center;
+            width: 80vw;
+            letter-spacing: 0.5em;
+
+            &:focus {
+                border: none;
+            }
+
+            &:focus-visible {
+                border: none;
+                outline: 2px solid $color-primary-dark;
+                background-color: rgba(0, 0, 0, 0.2);
+            }
+        }
+    }
+}

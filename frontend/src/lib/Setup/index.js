@@ -3,6 +3,7 @@ import LayoutTemplate from "./Templates/layout.html";
 
 import SetupNavi from './Navi.js';
 import SetupForm from './Form.js';
+import SetupLock from './Lock.js';
 
 export default class Setup extends Tab {
     constructor(parent, options) {
@@ -18,6 +19,7 @@ export default class Setup extends Tab {
         this.targets = {
             navi: this.target.querySelector('[data-setup-navi]'),
             form: this.target.querySelector('[data-setup-form]'),
+            lock: this.target.querySelector('[data-setup-lock]'),
         }
 
         this.on('data', () => this.draw());
@@ -73,9 +75,14 @@ export default class Setup extends Tab {
     }
 
     draw() {
-        this.groups = this.flattenGroups();
-        this.navi = new SetupNavi(this)
-        this.form = new SetupForm(this);
+        if (this.parentMode === true) {
+            this.groups = this.flattenGroups();
+            this.navi = new SetupNavi(this);
+            this.form = new SetupForm(this);
+            this.navi.summary();
+        } else {
+            this.lock = new SetupLock(this);
+        }
     }
 
     flattenGroups() {
@@ -96,6 +103,14 @@ export default class Setup extends Tab {
 
     showSummary() {
         this.form.summary();
+    }
+
+    get parentMode() {
+        return this._parentMode;
+    }
+
+    set parentMode(val) {
+        this._parentMode = val;
     }
 
 }
