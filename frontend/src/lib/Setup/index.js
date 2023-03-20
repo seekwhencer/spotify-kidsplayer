@@ -94,4 +94,8 @@ export default class Setup extends Tab {
         this.form.show(group);
     }
 
+    showSummary() {
+        this.form.summary();
+    }
+
 }

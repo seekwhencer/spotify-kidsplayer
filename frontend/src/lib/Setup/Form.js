@@ -1,7 +1,9 @@
 import FormTemplate from "./Templates/Form.html";
 import FormElementInputTemplate from "./Templates/FormElementInput.html";
 import FormElementSwitchTemplate from "./Templates/FormElementSwitch.html";
-import FromOptionsTemplate from "./Templates/FormOptionsTemplate.html";
+import FromOptionsTemplate from "./Templates/FormOptions.html";
+import FromSummaryTemplate from "./Templates/FormSummary.html";
+import FromSummaryItemTemplate from "./Templates/FormSummaryItem.html";
 
 
 export default class SetupForm extends MODULECLASS {
@@ -86,6 +88,26 @@ export default class SetupForm extends MODULECLASS {
     cancel(inputElement, prop) {
         inputElement.value = this.parent.data[prop];
         this.hideInputOptions(inputElement, prop);
+    }
+
+    summary() {
+        this.target = this.toDOM(FromSummaryTemplate({
+            scope: {
+                data: this.parent.data
+            }
+        }));
+
+        Object.keys(this.parent.dataSource).forEach(prop => {
+            const item = this.toDOM(FromSummaryItemTemplate({
+                scope: {
+                    prop: prop,
+                    value: this.parent.data[prop]
+                }
+            }));
+            this.target.append(item);
+        });
+
+        this.parent.targets.form.replaceChildren(this.target);
     }
 
 }

@@ -4,6 +4,8 @@
     &--form {
         padding-left: 100px;
         overflow: hidden;
+        height: calc(100% - 50px);
+        overflow-y: auto;
 
         &__body {
 
@@ -60,12 +62,12 @@
                 }
 
                 &.form--option__update {
-                    background-color: rgba(0,0,0,0.2);
+                    background-color: rgba(0, 0, 0, 0.2);
                     outline: 2px solid $color-leaf;
                 }
 
                 &.form--option__cancel {
-                    background-color: rgba(0,0,0,0.2);
+                    background-color: rgba(0, 0, 0, 0.2);
                     outline: 2px solid $color-warn;
 
                     svg {
@@ -84,5 +86,23 @@
             }
         }
 
+    }
+
+    &--summary {
+        &__item {
+            margin-bottom: 20px;
+            width: 50vw;
+            overflow: hidden;
+            overflow-wrap: anywhere;
+
+            &__prop {
+                opacity: 0.5;
+            }
+
+            &__value {
+                padding: 20px;
+                background-color: rgba(0, 0, 0, 0.2);
+            }
+        }
     }
 }

@@ -23,12 +23,32 @@ export default class SetupNavi extends MODULECLASS {
             button.onclick = () => this.select(button, group);
             this.target.append(button);
         });
+
+        const buttonAll = this.toDOM(NaviButtonTemplate({
+            scope: {
+                label: 'INFO'
+            }
+        }));
+        buttonAll.onclick = () => this.summary(buttonAll);
+        this.target.append(buttonAll);
+
+    }
+
+    blurAll(button) {
+        this.target.querySelectorAll('button').forEach(b => b !== button ? b.classList.remove('active') : null);
     }
 
     select(button, group) {
         this.parent.selectGroup(group);
-        this.target.querySelectorAll('button').forEach(b => b !== button ? b.classList.remove('active') : null);
+        this.blurAll(button);
         button.classList.add('active');
     }
+
+    summary(button) {
+        this.blurAll(button);
+        button.classList.add('active');
+        this.parent.showSummary();
+    }
+
 
 }
