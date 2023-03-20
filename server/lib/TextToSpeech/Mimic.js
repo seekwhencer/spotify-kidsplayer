@@ -9,8 +9,8 @@ export default class Mimic extends TTSClass {
         this.label = 'MIMIC';
         LOG(this.label, 'INIT');
 
-        this.host = MIMIC_HOST;
-        this.port = MIMIC_PORT;
+        this.host = TTS_MIMIC_HOST;
+        this.port = TTS_MIMIC_PORT;
         this.voice = 'de_DE/m-ailabs_low#ramona_deininger';
         this.noiseScale = '0.333';
         this.noiseW = '0.333';

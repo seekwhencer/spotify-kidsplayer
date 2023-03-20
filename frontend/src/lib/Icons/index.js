@@ -20,6 +20,8 @@ import IconPause from "./pause.html";
 import IconStop from "./stop.html";
 import IconSkipPrev from "./skip-prev.html";
 import IconSkipNext from "./skip-next.html";
+import IconCheck from "./check.html";
+import IconClose from "./close.html";
 
 const music = scope => {
     typeof scope === 'undefined' ? scope = {} : null;
@@ -183,6 +185,28 @@ const skipNext = scope => {
     });
 }
 
+const check = scope => {
+    typeof scope === 'undefined' ? scope = {} : null;
+    return IconCheck({
+        scope: {
+            ...scope,
+            height: scope.height || 24,
+            width: scope.width || 24
+        }
+    });
+}
+
+const close = scope => {
+    typeof scope === 'undefined' ? scope = {} : null;
+    return IconClose({
+        scope: {
+            ...scope,
+            height: scope.height || 24,
+            width: scope.width || 24
+        }
+    });
+}
+
 
 export {
     home as home,
@@ -199,7 +223,9 @@ export {
     pause as pause,
     stop as stop,
     skipPrev as skipPrev,
-    skipNext as skipNext
+    skipNext as skipNext,
+    check as check,
+    close as close
 
 }
 

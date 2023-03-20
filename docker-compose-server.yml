@@ -21,6 +21,8 @@ services:
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
     #network_mode: host
+    extra_hosts:
+      - "${MQTT_HOST}:${MQTT_HOST_IP}"
     volumes:
       - .:/kidsplayer
       - /kidsplayer/server/node_modules
@@ -33,5 +35,5 @@ services:
       - ENVIRONMENT=default
       - NODE_ENV=development
       - PWD=/kidsplayer/server
-      - FRONTEND_BUNDLE=../frontend/dist/dev
+      - SERVER_FRONTEND_PATH=../frontend/dist/dev
 

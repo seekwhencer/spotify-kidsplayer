@@ -34,4 +34,4 @@ services:
       PMA_HOST: ${PROJECT_NAME}_mysql
       PMA_PORT: 3306
       MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASS}
-      HOST_IP: ${HOST_IP}
+      HOST_IP: ${DOCKER_HOST_IP}

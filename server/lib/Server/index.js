@@ -20,7 +20,7 @@ export default class WebServer extends MODULECLASS {
             process.env.NODE_ENV === 'production' ? this.env = 'prod' : this.env = 'dev';
             //this.documentRoot = path.resolve(`${process.cwd()}/../frontend/dist/${this.env}`);
 
-            this.documentRoot = path.resolve(`${process.cwd()}/${FRONTEND_BUNDLE}`);
+            this.documentRoot = path.resolve(`${process.cwd()}/${SERVER_FRONTEND_PATH}`);
 
             const icon = `${this.documentRoot}/favicon.ico`;
 

@@ -9,12 +9,7 @@ export default class Setup extends SetupModel {
             LOG(this.label, 'INIT');
 
             this.table = 'setup';
-
-            //this.flattenTypes();
-
             this.types = APP.CONFIG.types;
-
-           // @TODO get from config and environment
 
             /**
              * if this.data.PROPERTY will be set, update setup DB automatically
@@ -54,9 +49,6 @@ export default class Setup extends SetupModel {
             this.feedFromConfig();
 
             this.getAll().then(() => {
-                // map this.data to global[prop]
-
-
                 resolve(this);
             });
         });
@@ -64,7 +56,7 @@ export default class Setup extends SetupModel {
     }
 
     feedFromConfig() {
-        Object.keys(APP.CONFIG.configData).forEach(prop => {
+        APP.CONFIG.properties.forEach(prop => {
             if (!this.dataSource[prop])
                 this.data[prop] = APP.CONFIG.configData[prop];
         });

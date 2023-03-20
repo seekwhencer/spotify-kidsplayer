@@ -1,0 +1,28 @@
+.setup {
+    &--navi {
+        width: 20vw;
+        float: left;
+        margin-left: 50px;
+
+        &__body {
+
+        }
+
+        &__button {
+            width: 100%;
+            display: block;
+            margin-bottom: 20px;
+            font-size: $fs-l;
+            line-height: $fs-l;
+            background-color: rgba(0,0,0,0.2);
+            color: white;
+            cursor: pointer;
+            transition: all ease-in-out 0.4s;
+
+            &.active {
+                background-color: $color-primary-dark;
+                transition: all ease-in-out 0.2s;
+            }
+        }
+    }
+}

@@ -1,0 +1,88 @@
+.setup {
+    padding-top: 50px;
+
+    &--form {
+        padding-left: 100px;
+        overflow: hidden;
+
+        &__body {
+
+        }
+
+        &__element {
+            display: block;
+            margin-bottom: 30px;
+            position: relative;
+
+            input[type=text] {
+                width: 50vw;
+                font-size: $fs-l;
+                line-height: $fs-xl;
+                background: rgba(255, 255, 255, 0.1);
+                border: none;
+                color: white;
+                padding: 0 15px;
+                border-radius: 5px;
+                position: relative;
+
+                &:focus {
+                    border: none;
+                }
+
+                &:focus-visible {
+                    border: none;
+                    outline: 2px solid $color-primary-dark;
+                    background-color: rgba(0, 0, 0, 0.2);
+                }
+
+                &.update {
+                    background: $color-leaf;
+                    outline: none;
+                }
+            }
+        }
+
+        &__element-options {
+            position: absolute;
+            left: calc(50vw + 50px);
+            top: 23px;
+
+            button {
+                margin: 0 10px 0 0;
+                cursor: pointer;
+                opacity: 0.6;
+
+                svg {
+                    color: $color-leaf;
+                    width: 40px;
+                    height: 40px;
+                    margin: 7px;
+                }
+
+                &.form--option__update {
+                    background-color: rgba(0,0,0,0.2);
+                    outline: 2px solid $color-leaf;
+                }
+
+                &.form--option__cancel {
+                    background-color: rgba(0,0,0,0.2);
+                    outline: 2px solid $color-warn;
+
+                    svg {
+                        color: $color-warn;
+                    }
+                }
+
+
+                &:hover {
+                    opacity: 1;
+
+                    svg {
+
+                    }
+                }
+            }
+        }
+
+    }
+}

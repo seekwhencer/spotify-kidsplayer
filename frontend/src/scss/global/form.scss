@@ -1,0 +1,19 @@
+input[type=text] {
+
+}
+
+.form {
+    &--element {
+        &__text {
+            label {
+                width: 100%;
+                display: block;
+                opacity: 0.5;
+            }
+
+            input[type=text] {
+
+            }
+        }
+    }
+}
