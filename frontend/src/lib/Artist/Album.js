@@ -23,7 +23,6 @@ export default class Album extends MODULECLASS {
         this.image.onerror = () => this.target.classList.add('hidden');
 
         this.albumOptions = new AlbumOptions(this);
-
     }
 
     select() {
@@ -92,4 +91,11 @@ export default class Album extends MODULECLASS {
         this.target.classList.remove('playing');
     }
 
+    hideAdmin() {
+        this.albumOptions.hideAdmin();
+    }
+
+    showAdmin() {
+        this.albumOptions.showAdmin();
+    }
 }

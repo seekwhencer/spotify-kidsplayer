@@ -39,9 +39,20 @@ export default class AlbumOptions extends MODULECLASS {
         this.buttonEdit.onclick = () => this.album.edit();
         this.buttonRead.onclick = () => this.album.read();
         this.buttonLike.onclick = () => this.album.toggleLiked();
-
         this.album.target.append(this.target);
-
     }
+
+    hideAdmin() {
+        ['buttonAudiobook', 'buttonMusic', 'buttonPodcast', 'buttonHide', 'buttonEdit'].forEach(b => {
+            this[b].style.display = 'none';
+        });
+    }
+
+    showAdmin() {
+        ['buttonAudiobook', 'buttonMusic', 'buttonPodcast', 'buttonHide', 'buttonEdit'].forEach(b => {
+            this[b].style.display = 'block';
+        });
+    }
+
 
 }

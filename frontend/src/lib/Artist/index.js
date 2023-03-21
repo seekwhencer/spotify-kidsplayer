@@ -22,6 +22,8 @@ export default class Artist extends Tab {
         this.albumsElement = this.target.querySelector('[data-artist-albums]');
 
         this.on('raw', () => this.populate());
+        this.parent.on('parent-mode', parentMode => this.toggleParentMode(parentMode));
+
     }
 
     show(id) {
@@ -34,7 +36,11 @@ export default class Artist extends Tab {
         } // @TODO
         super.show();
         this.app.navigation.clearFilter();
-        this.albums ? this.app.navigation.draw(this.albums.filter) : null;
+
+        if(!this.albums)
+            return;
+
+        this.app.navigation.draw(this.albums.filter);
     }
 
     hide() {
@@ -59,11 +65,19 @@ export default class Artist extends Tab {
         this.albumsElement.replaceChildren(this.albums.target[0], this.albums.target[1]);
         this.albumsElement.scroll(0,0);
         this.app.emit('filter', 'audiobook'); // chose the audiobook filter
+        this.toggleParentMode();
     }
 
     toggleFilter(filter) {
         LOG(this.label, 'TOGGLE FILTER:', filter);
         this.albums.toggleFilter(filter);
+    }
+
+    toggleParentMode(parentMode) {
+        if(!this.albums)
+            return;
+
+        this.app.tabs.setup.parentMode === true ? this.albums.showAdmin() : this.albums.hideAdmin();
     }
 
     setBackgroundImage() {

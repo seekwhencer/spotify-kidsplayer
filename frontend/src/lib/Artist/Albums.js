@@ -19,13 +19,11 @@ export default class Albums extends MODULECLASS {
         this.albums = [];
         options.albums.forEach(album => this.albums.push(new Album(this, album)));
 
-
         this.viewMode = new AlbumsViewMode(this, {});
 
         // listen on album change in the player
         this.app.player.on('album', () => this.highlightPlaying());
         this.highlightPlaying();
-
     }
 
     toggleFilter(filter) {
@@ -97,5 +95,13 @@ export default class Albums extends MODULECLASS {
         playingAlbum.highlight();
 
         LOG(this.label, 'SWITCH ALBUM', playingAlbum);
+    }
+
+    hideAdmin() {
+        this.albums.forEach(album => album.hideAdmin());
+    }
+
+    showAdmin() {
+        this.albums.forEach(album => album.showAdmin());
     }
 }

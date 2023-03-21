@@ -24,6 +24,7 @@ export default class Setup extends Tab {
 
         this.on('data', () => this.draw());
         this.on('property', (prop, value) => this.setProp(prop, value));
+        this.on('parent-mode', parentMode => this.parent.emit('parent-mode', parentMode));
 
         // all (!) setup properties
         this.dataSource = {};
@@ -82,7 +83,7 @@ export default class Setup extends Tab {
             this.navi.summary();
         } else {
             this.lock = new SetupLock(this);
-            this.lock.unlock(); // @TODO remove it!
+            //this.lock.unlock(); // @TODO remove it!
         }
     }
 
@@ -111,11 +112,15 @@ export default class Setup extends Tab {
     }
 
     get parentMode() {
-        return this._parentMode;
+        return this._parentMode || false;
     }
 
     set parentMode(val) {
+        if (val === this.parentMode)
+            return;
+
         this._parentMode = val;
+        this.emit('parent-mode', this.parentMode);
     }
 
 }

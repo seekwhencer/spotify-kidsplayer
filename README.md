@@ -46,12 +46,13 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 - setup ui
 - setup toggle parent mode = edit mode with PIN
 - setup add artist
+- hide artist and album options when parent mode is off
 
 ## Roadmap
 
-- change image for artists and album by upload or image url
-- reorder (change position) of the albums per drag and drop
-- edit artist FE
+- edit artist (name, image)
+- edit album (name, image, artist)
+- reorder (change position) the albums per drag and drop
 - album view with other albums as list or prev / next image
 
 > At the moment: it is a working pre alpha ;)
