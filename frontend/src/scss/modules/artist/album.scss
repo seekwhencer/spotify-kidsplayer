@@ -30,8 +30,6 @@
                 }
 
                 &.disabled {
-                    display: inline-block;
-
                     .album--body {
                         border: 4px dotted $color-primary;
                     }

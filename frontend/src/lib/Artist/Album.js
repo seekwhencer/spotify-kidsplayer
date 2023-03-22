@@ -60,10 +60,10 @@ export default class Album extends MODULECLASS {
             this.data = response.data;
             if (this.data.is_hidden === 1) {
                 this.albumOptions.buttonHide.classList.add('active');
-                this.target.classList.add('hidden', 'disabled');
+                this.target.classList.add('disabled');
             } else {
                 this.albumOptions.buttonHide.classList.remove('active');
-                this.target.classList.remove('hidden', 'disabled');
+                this.target.classList.remove('disabled');
             }
         });
     }

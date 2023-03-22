@@ -85,7 +85,6 @@ export default class StorageImage extends StorageClass {
                 return this.getLowres(table);
             })
             .then(data => {
-                LOG(this.label, 'LOW RES IMAGES', data, '');
                 const imageIds = data.map(image => image.id);
                 images = [...images, ...data];
                 return this.deleteByFieldIds(table, imageIds, 'id');
