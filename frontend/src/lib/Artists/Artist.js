@@ -1,6 +1,7 @@
 import ArtistTemplate from "./Templates/artist.html";
 import ArtistOptions from "./ArtistOptions.js";
 import Modal from "../Modal/index.js";
+import ModalEditBody from "./Templates/artist-edit.html";
 
 export default class Artists extends MODULECLASS {
     constructor(parent, options) {
@@ -57,25 +58,72 @@ export default class Artists extends MODULECLASS {
 
     edit() {
         LOG(this.label, 'EDIT', this.id, this.data.name);
-        this.modal = new Modal(this, {
-            ...this.data,
-            submit: () => this.submitModal(),
-            close: () => this.closeModal()
-        });
 
+        return this.fetch(`${this.app.urlBase}/artist/${this.id}`).then(response => {
+            LOG(this.label, 'SUBMIT FILTER:', response.data, '');
+
+            const modalBody = toDOM(ModalEditBody({
+                scope: response.data
+            }));
+
+            this.modal = new Modal(this, {
+                ...response.data,
+
+                title: 'Edit',
+
+                // if true, then call "this.modal.open()" to show it
+                silent: true,
+
+                // the dom element
+                body: modalBody,
+
+                // the behavior
+                open: () => this.openModal(),
+                submit: () => this.submitModal(),
+                close: () => this.closeModal()
+            });
+
+            // shows the modal, because it's silent
+            this.modal.open();
+        });
+    }
+
+    openModal() {
+        LOG(this.label, 'MODAL OPENED FINALLY');
+
+        // stuff when the modal is open
+
+        const inputElement = this.modal.target.querySelector('[data-input="name"]');
+        inputElement.onkeyup = () => `${inputElement.value}` === `${this.data.name}` ? inputElement.classList.remove('update') : inputElement.classList.add('update');
     }
 
     submitModal() {
         return new Promise((resolve, reject) => {
             LOG(this.label, 'SUBMIT');
 
-            // 4 testing
-            setTimeout(() => resolve(), 1000);
+            const inputElement = this.modal.target.querySelector('[data-input="name"]');
+            const value = inputElement.value;
+
+            const postData = {
+                name : value
+            }
+
+            return this.fetch(`${this.app.urlBase}/artist/update/${this.id}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(postData)
+            }).then(response => {
+                LOG(this.label, 'UPDATED:', response.data, '');
+                resolve();
+            });
         });
     }
 
     closeModal() {
         this.removeModal();
+        this.parent.show();
     }
 
     removeModal() {

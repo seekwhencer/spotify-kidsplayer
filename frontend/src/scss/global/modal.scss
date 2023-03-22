@@ -12,12 +12,29 @@
             position: absolute;
             right: 20px;
             top: 20px;
+
+            background-color: rgba(255,255,255,0.1);
+
+            svg {
+                width: 50px;
+                height: 50px;
+                margin: 10px;
+                color: white;
+            }
+
+            &:hover {
+                background-color: $color-primary;
+
+                svg {
+                    color: white;
+                }
+            }
         }
 
         &[data-button="submit"] {
             position: absolute;
             left: calc(50% - 100px);
-            bottom: 50px;
+            bottom: 20vh;
             font-size: $fs-xl;
             line-height: $fs-xl;
             width: 200px;

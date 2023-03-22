@@ -1,0 +1,35 @@
+.modal {
+    &--body {
+        height: 100%;
+        text-align: center;
+
+        .artist--data {
+            width: 100%;
+            display: block;
+            overflow: hidden;
+            margin-top: 10vh;
+        }
+
+        .artist--input {
+            width: 100%;
+            display: block;
+            margin: 30px 0 0 0;
+        }
+
+        .artist--image {
+            width: 20vw;
+            display: block;
+            margin: auto;
+
+            img {
+                width: 100%;
+            }
+        }
+
+        input[type=text] {
+            background-color: rgba(0, 0, 0, 0.9);
+            outline: 2px solid $color-primary-dark;
+            text-align: center;
+        }
+    }
+}
