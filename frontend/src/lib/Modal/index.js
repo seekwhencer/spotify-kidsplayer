@@ -4,9 +4,12 @@ export default class Modal extends MODULECLASS {
     constructor(parent, options) {
         super(parent, options);
         this.label = 'MODAL';
+        this.open();
+    }
 
+    open() {
         this.target = this.toDOM(LayoutTemplate({
-            scope: options
+            scope: this.options
         }));
 
         this.target.close = () => this.close();
@@ -23,10 +26,11 @@ export default class Modal extends MODULECLASS {
 
     close() {
         this.target.remove();
+        typeof this.options.close === 'function' ? this.options.close() : null;
     }
 
     submit() {
         // this.options.submit must be a promise
-        this.options.submit().then(() => this.close());
+        typeof this.options.submit === 'function' ? this.options.submit().then(() => this.close()) : null;
     }
 }

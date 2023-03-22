@@ -59,19 +59,27 @@ export default class Artists extends MODULECLASS {
         LOG(this.label, 'EDIT', this.id, this.data.name);
         this.modal = new Modal(this, {
             ...this.data,
-            submit: () => this.submit()
+            submit: () => this.submitModal(),
+            close: () => this.closeModal()
         });
 
     }
 
-    submit() {
+    submitModal() {
         return new Promise((resolve, reject) => {
             LOG(this.label, 'SUBMIT');
 
             // 4 testing
             setTimeout(() => resolve(), 1000);
         });
+    }
 
+    closeModal() {
+        this.removeModal();
+    }
+
+    removeModal() {
+        delete this.modal;
     }
 
     read() {
