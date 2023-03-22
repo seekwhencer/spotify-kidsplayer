@@ -46,7 +46,7 @@ export default class SpotifyStorage extends MODULECLASS {
 
     clean() {
 
-        let tracks, albums, artists;
+        let tracks, albums, artists, images;
         return this.track
             .clean()
             .then(data => {

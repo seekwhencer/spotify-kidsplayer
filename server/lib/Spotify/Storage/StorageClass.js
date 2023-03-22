@@ -124,7 +124,10 @@ export default class StorageClass extends MODULECLASS {
     }
 
     deleteIds(ids) {
-        const query = `DELETE 
+        if (ids.length === 0)
+            return Promise.resolve(false);
+
+        const query = `DELETE
                        FROM ${this.table}
                        WHERE id IN (${ids.join(',')})`;
 

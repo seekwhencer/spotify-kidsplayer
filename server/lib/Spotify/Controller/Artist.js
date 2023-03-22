@@ -107,8 +107,8 @@ export default class SpotifyArtist extends SpotifyController {
                 return this.storage.image.create({
                     artist_id: artist.id,
                     url: params.imageUrl,
-                    height: 0,
-                    width: 0,
+                    height: 640,
+                    width: 640,
                     hash: imageHash,
                     is_poster: 1
                 }, 'artist');

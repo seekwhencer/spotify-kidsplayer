@@ -22,11 +22,7 @@ export default class StorageAlbum extends StorageClass {
             .then(data => {
                 albums = [...albums, ...data]
                 albumIds = albums.map(album => album.id);
-
-                if (albumIds.length === 0)
-                    return Promise.resolve(false);
-
-                return this.storage.image.deleteByIds('album', albumIds);
+                return this.storage.image.clean('album', albumIds);
             })
             .then(data => {
                 if (!data)
@@ -35,7 +31,7 @@ export default class StorageAlbum extends StorageClass {
                 images = data;
                 return this.deleteIds(albumIds);
             })
-            .then(data => Promise.resolve({albums, images}));
+            .then(() => Promise.resolve({albums, images}));
     }
 
     getLost() {

@@ -75,6 +75,33 @@ export default class StorageImage extends StorageClass {
         });
     }
 
+    clean(table, ids) {
+        let images;
+
+        return this
+            .deleteByFieldIds(table, ids, `${table}_id`)
+            .then(data => {
+                images = data || [];
+                return this.getLowres(table);
+            })
+            .then(data => {
+                LOG(this.label, 'LOW RES IMAGES', data, '');
+                const imageIds = data.map(image => image.id);
+                images = [...images, ...data];
+                return this.deleteByFieldIds(table, imageIds, 'id');
+            })
+            .then(data => {
+                if(!data){
+                    return Promise.resolve(false);
+                }
+                const imageIds = data.map(image => image.id);
+                return this.deleteIds(table, imageIds);
+            })
+            .then(() => {
+                return Promise.resolve(images);
+            });
+    }
+
     getBy(field, value, table) {
         const query = `SELECT *
                        FROM ${table}
@@ -91,11 +118,31 @@ export default class StorageImage extends StorageClass {
         return this.query(query);
     }
 
-    deleteByIds(table, ids) {
-        return this.getByIds(table, ids)
+    getByFieldIds(table, ids, field) {
+        const query = `SELECT *
+                       FROM ${table}_image
+                       WHERE ${field} IN (${ids.join(',')})`;
+
+        return this.query(query);
+    }
+
+    getLowres(table) {
+        const query = `SELECT *
+                       FROM ${table}_image
+                       WHERE width < 640`;
+
+        return this.query(query);
+    }
+
+    deleteByFieldIds(table, ids, field) {
+        if (ids.length === 0) {
+            return Promise.resolve(false);
+        }
+
+        return this.getByFieldIds(table, ids, field)
             .then(images => {
                 images.forEach(image => this.deleteFS(image.hash, 'jpg').then(deleted => {
-                    LOG(this.label, 'IMAGE FS DELETED', deleted );
+                    //LOG(this.label, 'IMAGE FS DELETED', deleted);
                 }));
                 return Promise.resolve(images);
             });
@@ -112,5 +159,16 @@ export default class StorageImage extends StorageClass {
     exists(hash, extension) {
         const filePath = `${this.imagePath}/${hash}.${extension}`;
         return new Promise((resolve, reject) => fs.exists(filePath, e => e ? resolve() : reject()));
+    }
+
+    deleteIds(table, ids) {
+        if (ids.length === 0)
+            return Promise.resolve(false);
+
+        const query = `DELETE
+                       FROM ${table}_image
+                       WHERE id IN (${ids.join(',')})`;
+
+        return this.query(query);
     }
 }

@@ -18,11 +18,7 @@ export default class StorageArtist extends StorageClass {
             .then(data => {
                 artists = data;
                 artistIds = artists.map(artist => artist.id);
-
-                if (artistIds.length === 0)
-                    return Promise.resolve(false);
-
-                return this.storage.image.deleteByIds('artist', artistIds);
+                return this.storage.image.clean('artist', artistIds);
             })
             .then(data => {
                 if (!data)
@@ -31,7 +27,7 @@ export default class StorageArtist extends StorageClass {
                 images = data;
                 return this.deleteIds(artistIds);
             })
-            .then(data =>  Promise.resolve({artists, images}));
+            .then(() =>  Promise.resolve({artists, images}));
     }
 
     getEmpty() {
