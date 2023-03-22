@@ -61,6 +61,9 @@ export default class Navigation extends MODULECLASS {
     }
 
     draw(filter) {
+        if (filter === undefined)
+            return;
+
         LOG(this.label, 'DRAW FILTER', filter);
         this.filter.forEach(button => {
             const filterName = button.getAttribute('data-filter');

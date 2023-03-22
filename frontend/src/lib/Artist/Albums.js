@@ -28,7 +28,10 @@ export default class Albums extends MODULECLASS {
 
     toggleFilter(filter) {
         LOG(this.label, 'TOGGLE FILTER', filter);
-        this.filter[filter] === true ? this.filter[filter] = false : this.filter[filter] = true;
+
+        if (filter !== undefined) {
+            this.filter[filter] === true ? this.filter[filter] = false : this.filter[filter] = true;
+        }
 
         this.albums.forEach(album => {
             album.hide();
@@ -102,9 +105,11 @@ export default class Albums extends MODULECLASS {
 
     hideAdmin() {
         this.albums.forEach(album => album.hideAdmin());
+        this.toggleFilter(); // run the filter
     }
 
     showAdmin() {
         this.albums.forEach(album => album.showAdmin());
+        this.toggleFilter(); // run the filter
     }
 }

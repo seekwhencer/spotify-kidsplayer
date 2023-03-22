@@ -34,11 +34,13 @@ export default class ArtistOptions extends MODULECLASS {
     }
 
     hideAdmin() {
-        this.target.style.display = 'none';
+        this.buttonHide.style.display = 'none';
+        this.buttonEdit.style.display = 'none';
     }
 
     showAdmin() {
-        this.target.style.display = 'block';
+        this.buttonHide.style.display = 'block';
+        this.buttonEdit.style.display = 'block';
     }
 
 

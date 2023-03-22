@@ -87,12 +87,12 @@ export default class Artist extends Tab {
 
     showAdmin() {
         this.albums ? this.albums.showAdmin() : null;
-        this.options.showAdmin();
+        this.options ? this.options.showAdmin() : null;
     }
 
     hideAdmin() {
         this.albums ? this.albums.hideAdmin() : null;
-        this.options.hideAdmin();
+        this.options ? this.options.hideAdmin() : null;
     }
 
     get raw() {

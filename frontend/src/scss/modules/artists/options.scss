@@ -47,6 +47,31 @@
 
                 button {
                     margin-bottom: 5px;
+
+                    &[data-button-hide].active {
+                        background-color: $color-primary-dark;
+
+                        &:before {
+                            content: '';
+                            position: absolute;
+                            transform: rotate(45deg);
+                            width: 100%;
+                            height: 2px;
+                            background-color: white;
+                            left: 0;
+                            top: 15px;
+                        }
+                        &:after {
+                            content: '';
+                            position: absolute;
+                            transform: rotate(-45deg);
+                            width: 100%;
+                            height: 2px;
+                            background-color: white;
+                            left: 0;
+                            top: 15px;
+                        }
+                    }
                 }
             }
 

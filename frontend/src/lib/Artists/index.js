@@ -17,6 +17,7 @@ export default class Artists extends Tab {
 
         this.on('raw', () => this.populate());
         this.on('data', () => this.draw());
+        this.parent.on('parent-mode', parentMode => this.toggleParentMode(parentMode));
     }
 
     show() {
@@ -40,6 +41,8 @@ export default class Artists extends Tab {
         this.app.navigation.disableFilter();
         this.app.player.on('artist', () => this.highlightPlaying());
         this.highlightPlaying();
+        this.toggleHidden();
+        this.toggleParentMode();
     }
 
     blurAll(id) {
@@ -56,6 +59,33 @@ export default class Artists extends Tab {
         playingArtist.highlight();
 
         LOG(this.label, 'SWITCH ARTIST', playingArtist);
+    }
+
+    toggleHidden() {
+        LOG(this.label, 'TOGGLE HIDDEN');
+
+        this.items.forEach(artist => {
+            artist.hide();
+
+            if (this.app.tabs.setup.parentMode === false && artist.data.is_hidden === 1)
+                return;
+
+            artist.show();
+        });
+    }
+
+    toggleParentMode() {
+        this.parent.tabs.setup.parentMode === true ? this.showAdmin() : this.hideAdmin();
+    }
+
+    showAdmin() {
+        this.toggleHidden();
+        this.items.forEach(artist => artist.showAdmin());
+    }
+
+    hideAdmin() {
+        this.toggleHidden();
+        this.items.forEach(artist => artist.hideAdmin());
     }
 
     get items() {

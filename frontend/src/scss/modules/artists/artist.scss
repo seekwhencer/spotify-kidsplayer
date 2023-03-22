@@ -20,6 +20,11 @@
         border-radius: 25px;
 
         &.hidden {
+            display: none;
+        }
+
+        &.disabled {
+            display: inline-block;
             outline: 2px dotted $color-primary;
 
             img {
@@ -27,6 +32,8 @@
                 filter: blur(2px);
             }
         }
+
+
 
         &--name {
             position: absolute;
