@@ -92,7 +92,6 @@ export default class Artists extends MODULECLASS {
         LOG(this.label, 'MODAL OPENED FINALLY');
 
         // stuff when the modal is open
-
         const inputElement = this.modal.target.querySelector('[data-input="name"]');
         inputElement.focus();
         inputElement.onkeyup = () => `${inputElement.value}` === `${this.data.name}` ? inputElement.classList.remove('update') : inputElement.classList.add('update');
@@ -102,11 +101,12 @@ export default class Artists extends MODULECLASS {
         return new Promise((resolve, reject) => {
             LOG(this.label, 'SUBMIT');
 
-            const inputElement = this.modal.target.querySelector('[data-input="name"]');
-            const value = inputElement.value;
+            const inputName = this.modal.target.querySelector('[data-input="name"]');
+            const inputImageUrl = this.modal.target.querySelector('[data-input="image_url"]');
 
             const postData = {
-                name : value
+                name : inputName.value,
+                imageUrl: inputImageUrl.value
             }
 
             return this.fetch(`${this.app.urlBase}/artist/update/${this.id}`, {
@@ -117,7 +117,7 @@ export default class Artists extends MODULECLASS {
                 body: JSON.stringify(postData)
             }).then(response => {
                 LOG(this.label, 'UPDATED:', response.data, '');
-                resolve();
+                resolve(response.data);
             });
         });
     }

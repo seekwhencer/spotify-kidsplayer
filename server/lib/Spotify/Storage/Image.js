@@ -20,12 +20,17 @@ export default class StorageImage extends StorageClass {
         return new Promise((resolve, reject) => {
             const proms = [];
 
+            //@TODO get the largest image. not all three
+
+            images = images.filter(image => image.width === 640);
+
             images.forEach(image => {
                 const data = {
                     hash: this.createHash(image.url),
                     url: image.url,
                     height: image.height,
-                    width: image.width
+                    width: image.width,
+                    is_poster: 1
                 };
                 data[`${table}_id`] = id;
 
@@ -67,6 +72,45 @@ export default class StorageImage extends StorageClass {
                     resolve();
                 });
             });
-        }).catch(err => ERROR(this.label, err));
+        });
+    }
+
+    getBy(field, value, table) {
+        const query = `SELECT *
+                       FROM ${table}
+                       WHERE ${field} = '${value}'`;
+
+        return this.query(query);
+    }
+
+    getByIds(table, ids) {
+        const query = `SELECT *
+                       FROM ${table}_image
+                       WHERE ${table}_id IN (${ids.join(',')})`;
+
+        return this.query(query);
+    }
+
+    deleteByIds(table, ids) {
+        return this.getByIds(table, ids)
+            .then(images => {
+                images.forEach(image => this.deleteFS(image.hash, 'jpg').then(deleted => {
+                    LOG(this.label, 'IMAGE FS DELETED', deleted );
+                }));
+                return Promise.resolve(images);
+            });
+    }
+
+    deleteFS(hash, extension) {
+        const filePath = `${this.imagePath}/${hash}.${extension}`;
+        return this.exists(hash, extension)
+            .then(() => fs.remove(filePath))
+            .then(() => Promise.resolve(filePath))
+            .catch(err => Promise.resolve(false));
+    }
+
+    exists(hash, extension) {
+        const filePath = `${this.imagePath}/${hash}.${extension}`;
+        return new Promise((resolve, reject) => fs.exists(filePath, e => e ? resolve() : reject()));
     }
 }

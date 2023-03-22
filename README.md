@@ -51,6 +51,7 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 - setup add artist
 - hide artist and album options when parent mode is off
 - hide disabled albums, show disabled albums in parent mode
+- clean database endpoint at `api/clean` - that drops all empty and lost artists, albums and tracks
 
 ## Roadmap
 

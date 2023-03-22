@@ -36,6 +36,12 @@
                     outline: 2px solid $color-leaf;
                 }
             }
+
+            &[data-input=image_url] {
+                font-size: $fs-xs;
+                margin-top: 20px;
+                font-weight: 300;
+            }
         }
     }
 }

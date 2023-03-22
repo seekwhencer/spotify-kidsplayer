@@ -70,9 +70,7 @@ export default class StorageClass extends MODULECLASS {
 
         const sql = this.storage.mysql.format(query, data);
 
-        LOG('>>>>', sql);
-        LOG();
-        LOG();
+        LOG(this.label, '>> QUERY >>', sql);
         LOG();
 
         return this.query(query, data);
@@ -83,7 +81,8 @@ export default class StorageClass extends MODULECLASS {
                               (SELECT hash
                                from ${this.table}_image AS imgtable
                                WHERE imgtable.${this.table}_id = ${this.table}.id
-                                 AND imgtable.height = 640 LIMIT 1) AS image
+                                 AND (imgtable.height = 640) LIMIT 1) AS image
+
                        FROM ${this.table}
                        ORDER BY name ASC`;
 
@@ -111,6 +110,23 @@ export default class StorageClass extends MODULECLASS {
                        FROM ${this.table}
                        WHERE ${field} = ${value}
                        ORDER BY name ASC`;
+
+        return this.query(query);
+    }
+
+    getBy(field, value) {
+        const query = `SELECT *
+                       FROM ${this.table}
+                       WHERE ${field} = ${value};
+        ORDER BY name ASC`;
+
+        return this.query(query);
+    }
+
+    deleteIds(ids) {
+        const query = `DELETE 
+                       FROM ${this.table}
+                       WHERE id IN (${ids.join(',')})`;
 
         return this.query(query);
     }

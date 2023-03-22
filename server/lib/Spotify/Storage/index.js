@@ -44,4 +44,28 @@ export default class SpotifyStorage extends MODULECLASS {
         return this.artist.update(artistId, data);
     }
 
+    clean() {
+
+        let tracks, albums, artists;
+        return this.track
+            .clean()
+            .then(data => {
+                tracks = data;
+                return this.album.clean();
+            })
+            .then(data => {
+                albums = data;
+                return this.artist.clean();
+            })
+            .then(data => {
+                artists = data;
+
+                return Promise.resolve({
+                    tracks: tracks,
+                    albums: albums,
+                    artists: artists
+                });
+            });
+    }
+
 }

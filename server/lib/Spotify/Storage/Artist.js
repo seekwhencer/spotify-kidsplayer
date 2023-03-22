@@ -9,4 +9,38 @@ export default class StorageArtist extends StorageClass {
 
         this.table = 'artist';
     }
+
+    clean() {
+        let artists, artistIds, images;
+
+        return this
+            .getEmpty()
+            .then(data => {
+                artists = data;
+                artistIds = artists.map(artist => artist.id);
+
+                if (artistIds.length === 0)
+                    return Promise.resolve(false);
+
+                return this.storage.image.deleteByIds('artist', artistIds);
+            })
+            .then(data => {
+                if (!data)
+                    return Promise.resolve(false);
+
+                images = data;
+                return this.deleteIds(artistIds);
+            })
+            .then(data =>  Promise.resolve({artists, images}));
+    }
+
+    getEmpty() {
+        const query = `SELECT *
+                       FROM ${this.table}
+                       WHERE (SELECT name
+                              FROM album AS albumtable
+                              WHERE albumtable.artist_id = ${this.table}.id LIMIT 1) IS NULL;`;
+
+        return this.query(query);
+    }
 }

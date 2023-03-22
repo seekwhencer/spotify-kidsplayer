@@ -65,9 +65,15 @@ export default class SpotifyArtist extends SpotifyController {
     }
 
     update(artistId, params) {
+
+        let imageHash = false;
+        let artist = false;
+
         return this.model
             .getById(artistId)
-            .then(artist => {
+            .then(data => {
+                artist = data;
+
                 if (!artist)
                     return Promise.resolve(false);
 
@@ -75,6 +81,40 @@ export default class SpotifyArtist extends SpotifyController {
                     name: params.name,
                     dt_update: nowDateTime()
                 });
+            })
+            .then(() => {
+                if (params.imageUrl) {
+                    imageHash = this.createHash(`${artist.id}${params.imageUrl}`);
+                    return this.storage.image.getBy('hash', imageHash, 'artist_image');
+                }
+                return Promise.resolve(false);
+            }).then(exists => {
+                if (exists[0])
+                    return Promise.resolve(false);
+
+                return this.storage.image
+                    .downloadImage(params.imageUrl, imageHash)
+                    .then(() => Promise.resolve(true))
+                    .catch(err => {
+                        LOG(this.label, 'IMAGE DOWNLOAD ERROR', err.code, ':', err.input);
+                        return Promise.resolve(false);
+                    });
+            })
+            .then(is_downloaded => {
+                if (!is_downloaded)
+                    return Promise.resolve(false);
+
+                return this.storage.image.create({
+                    artist_id: artist.id,
+                    url: params.imageUrl,
+                    height: 0,
+                    width: 0,
+                    hash: imageHash,
+                    is_poster: 1
+                }, 'artist');
+            })
+            .then(created => {
+                return Promise.resolve(true);
             });
     }
 
@@ -107,6 +147,10 @@ export default class SpotifyArtist extends SpotifyController {
             })
             .then(albums => {
                 artist.albums = albums;
+                return this.storage.image.getBy('artist_id', artist.id, 'artist_image');
+            })
+            .then(images => {
+                artist.images = images;
                 return Promise.resolve(artist);
             });
     }
@@ -125,6 +169,7 @@ export default class SpotifyArtist extends SpotifyController {
                 return this.model.getOne(id)
             });
     }
+
 
     // ---------------
 

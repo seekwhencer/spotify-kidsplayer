@@ -26,4 +26,30 @@ export default class StorageTrack extends StorageClass {
 
         return this.query(query);
     }
+
+    clean() {
+        let tracks;
+
+        return this
+            .getLost()
+            .then(data => {
+                tracks = data;
+                const ids = tracks.map(track => track.id);
+
+                if (ids.length === 0)
+                    return Promise.resolve(false);
+
+                return this.deleteIds(ids);
+            })
+            .then(deleted => {
+                return Promise.resolve(tracks);
+            });
+    }
+
+    getLost() {
+        const query = `SELECT *
+                       FROM ${this.table}
+                       WHERE (SELECT name from album AS albumtable WHERE albumtable.id = track.album_id) IS NULL;`;
+        return this.query(query);
+    }
 }

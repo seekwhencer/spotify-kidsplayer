@@ -7,6 +7,7 @@ import SpeakRoutes from './Speak.js';
 import TrackRoutes from './Track.js';
 import PlayerRoutes from './Player.js';
 import SetupRoutes from './Setup.js';
+import CleanRoutes from './Clean.js';
 
 export {
     AuthRoutes,
@@ -17,5 +18,6 @@ export {
     SpeakRoutes,
     TrackRoutes,
     PlayerRoutes,
-    SetupRoutes
+    SetupRoutes,
+    CleanRoutes
 };
