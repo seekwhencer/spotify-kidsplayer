@@ -7,12 +7,13 @@ export default class Album extends MODULECLASS {
         this.label = 'ARTIST ALBUM';
 
         this.data = options;
-
         this.id = options.id;
 
-
         this.target = this.toDOM(AlbumTemplate({
-            scope: options
+            scope: {
+                ...this.data,
+                parentMode: this.app.tabs.setup.parentMode
+            }
         }));
 
         parent.listElement.append(this.target);
@@ -59,10 +60,10 @@ export default class Album extends MODULECLASS {
             this.data = response.data;
             if (this.data.is_hidden === 1) {
                 this.albumOptions.buttonHide.classList.add('active');
-                this.target.classList.add('hidden');
+                this.target.classList.add('hidden', 'disabled');
             } else {
                 this.albumOptions.buttonHide.classList.remove('active');
-                this.target.classList.remove('hidden');
+                this.target.classList.remove('hidden', 'disabled');
             }
         });
     }

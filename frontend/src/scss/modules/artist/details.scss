@@ -1,9 +1,31 @@
 .artist {
+
     &--details {
+        position: fixed;
+        left: 1vw;
+        top: 10px;
 
-    }
+        .artist--image {
+            text-align: center;
+            display: block;
+            overflow: hidden;
+            border-radius: 25px;
+            width: 14vw;
+            height: 14vw;
+            margin-top: 20px;
 
-    &--played {
+            img {
+                width: 100%;
+                display: block;
+            }
+        }
 
+        .artist--name {
+            text-align: center;
+            display: block;
+            width: 14vw;
+            overflow: hidden;
+            height: 30px;
+        }
     }
 }

@@ -10,23 +10,29 @@
     }
 
     .artist {
-        width: calc(12vw - 18px);
-        height: calc(12vw - 18px);
-        display: flex;
-        justify-content: center;
-        margin: 10px 10px 40px 10px;
-        border-radius: 30px;
-        background: black;
-        border: 4px solid $color-primary;
+        height: fit-content;
         position: relative;
+        transition: all ease-in-out 0.5s;
+        display: inline-block;
+        width: calc(100% / 10);
+        margin: 10px 10px 40px 10px;
         cursor: pointer;
+        border-radius: 25px;
 
+        &.hidden {
+            outline: 2px dotted $color-primary;
+
+            img {
+                opacity: 0.25;
+                filter: blur(2px);
+            }
+        }
 
         &--name {
             position: absolute;
             padding: 5px 0;
             display: block;
-            top: calc(12vw - 5px);
+            bottom: -40px;
             transform-origin: bottom;
             font-size: $fs-xxs;
             width: 100%;
@@ -42,7 +48,8 @@
             border-radius: 25px;
 
             img {
-                height: 100%;
+                width: 100%;
+                display: block;
             }
         }
 
@@ -61,4 +68,5 @@
             }
         }
     }
+
 }

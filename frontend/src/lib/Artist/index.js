@@ -2,6 +2,7 @@ import Tab from '../Tab.js';
 import ArtistDetails from './Details.js';
 import ArtistPlayed from './Played.js';
 import ArtistAlbums from './Albums.js';
+import ArtistOptions from './Options.js';
 
 import LayoutTemplate from "./Templates/layout.html";
 
@@ -18,6 +19,7 @@ export default class Artist extends Tab {
         this.parent.target.append(this.target);
 
         this.detailsElement = this.target.querySelector('[data-artist-details]');
+        this.optionsElement = this.target.querySelector('[data-artist-options]');
         this.playedElement = this.target.querySelector('[data-artist-played]');
         this.albumsElement = this.target.querySelector('[data-artist-albums]');
 
@@ -55,12 +57,14 @@ export default class Artist extends Tab {
         this.played = new ArtistPlayed(this, this.raw);
         this.details = new ArtistDetails(this, this.raw);
         this.albums = new ArtistAlbums(this, this.raw);
+        this.options = new ArtistOptions(this, this.raw);
 
         this.draw();
     }
 
     draw() {
         this.detailsElement.replaceChildren(this.details.target[0], this.details.target[1]);
+        this.optionsElement.replaceChildren(this.options.target);
         this.playedElement.replaceChildren(this.played.target);
         this.albumsElement.replaceChildren(this.albums.target[0], this.albums.target[1]);
         this.albumsElement.scroll(0,0);
@@ -74,14 +78,21 @@ export default class Artist extends Tab {
     }
 
     toggleParentMode(parentMode) {
-        if(!this.albums)
-            return;
-
-        this.app.tabs.setup.parentMode === true ? this.albums.showAdmin() : this.albums.hideAdmin();
+        this.app.tabs.setup.parentMode === true ? this.showAdmin() : this.hideAdmin();
     }
 
     setBackgroundImage() {
         //document.querySelector('body').style.backgroundImage = `url(${APP.mediaBaseUrl}/${this.raw.image}.jpg)`;
+    }
+
+    showAdmin() {
+        this.albums ? this.albums.showAdmin() : null;
+        this.options.showAdmin();
+    }
+
+    hideAdmin() {
+        this.albums ? this.albums.hideAdmin() : null;
+        this.options.hideAdmin();
     }
 
     get raw() {

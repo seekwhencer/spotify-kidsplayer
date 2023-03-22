@@ -37,11 +37,6 @@ createVolumes() {
     echo "Creating docker volumes"
     echo ""
 
-    docker volume create ${PROJECT_NAME}_mopidy-fifo
-    docker volume create ${PROJECT_NAME}_mopidy-data
-    docker volume create ${PROJECT_NAME}_mopidy-cache
-    docker volume create ${PROJECT_NAME}_mopidy-log
-    docker volume create ${PROJECT_NAME}_mopidy-podcast
     docker volume create ${PROJECT_NAME}_spotifyd-tmp
     docker volume create ${PROJECT_NAME}_pkg-cache
     docker volume create ${PROJECT_NAME}_mysql

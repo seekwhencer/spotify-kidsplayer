@@ -175,4 +175,8 @@ export default class Spotify extends MODULECLASS {
     saveArtistAlbumsFilter(artistId, data) {
         return this.filter.save(artistId, data);
     }
+
+    toggleArtistHidden(id){
+        return this.artist.toggleHidden(id);
+    }
 }

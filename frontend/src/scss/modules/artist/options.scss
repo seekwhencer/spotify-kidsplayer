@@ -1,0 +1,71 @@
+.artist {
+
+    &--options {
+
+        button {
+            cursor: pointer;
+
+            &:hover, &.active {
+                background-color: $color-primary-dark;
+                transform: scale(1.2);
+                transition: all ease-in-out 0.1s;
+
+                svg {
+                    path {
+                        color: white;
+                    }
+                }
+            }
+        }
+
+        &__group {
+
+            &.options-type {
+                position: absolute;
+                left: 0;
+                top: 50px;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                align-items: stretch;
+                justify-content: center;
+
+                button {
+                    margin-bottom: 5px;
+                }
+            }
+
+            &.options-edit {
+                position: absolute;
+                right: 5px;
+                top: 50px;
+                display: flex;
+                flex-direction: column;
+                flex-wrap: wrap;
+                align-items: stretch;
+                justify-content: center;
+
+                button {
+                    margin-bottom: 5px;
+                }
+            }
+
+            &.options-public {
+                position: absolute;
+                width: 100%;
+                left: 0;
+                bottom: 5px;
+                display: flex;
+                flex-direction: row;
+                flex-wrap: wrap;
+                align-items: stretch;
+                justify-content: center;
+
+                button {
+                    margin-right: 5px;
+                }
+            }
+
+        }
+    }
+}

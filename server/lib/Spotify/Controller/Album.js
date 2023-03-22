@@ -60,7 +60,7 @@ export default class SpotifyAlbum extends SpotifyController {
                     name: albumSpotify.name,
                     spotify_id: albumSpotify.id,
                     artist_id: artist_id,
-                    type: albumSpotify.type,
+                    type: 'audiobook',
                     total_tracks: albumSpotify.total_tracks,
                     dt_create: nowDateTime()
                 };

@@ -33,6 +33,9 @@ export default class Albums extends MODULECLASS {
         this.albums.forEach(album => {
             album.hide();
 
+            if (this.app.tabs.setup.parentMode === false && album.data.is_hidden === 1)
+                return;
+
             if (this.filter.like === true && album.data.is_liked === 1) {
 
                 if (!this.filter.audiobook && !this.filter.music && !this.filter.podcast) {

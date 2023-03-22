@@ -123,6 +123,16 @@ export default class extends Route {
             });
         });
 
+        this.router.get('/artist/:id/toggle-visibility', (req, res) => {
+            const artistId = req.params.id;
+
+            APP.SPOTIFY.toggleArtistHidden(artistId).then(artist => {
+                res.json({
+                    message: 'one artist',
+                    data: artist
+                });
+            });
+        });
 
         return this.router;
     }

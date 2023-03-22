@@ -1,46 +1,12 @@
 @import "./details.scss";
 @import "./album.scss";
 @import "./viewmode.scss";
+@import "./options.scss";
 
 .artist {
-
-    &--details {
-        position: fixed;
-        left: 1vw;
-        top: 10px;
-
-        .artist--image {
-            text-align: center;
-            display: block;
-            overflow: hidden;
-            border-radius: 25px;
-            width: 14vw;
-            height: 14vw;
-            margin-top: 20px;
-
-            img {
-                width: 100%;
-                display: block;
-            }
-        }
-
-        .artist--name {
-            text-align: center;
-            display: block;
-            width: 14vw;
-            overflow: hidden;
-            height: 30px;
-        }
-    }
-
-
     &--played {
         position: fixed;
         top: calc(16vw + 160px);
         display: none;
-    }
-
-    .album--listing {
-
     }
 }

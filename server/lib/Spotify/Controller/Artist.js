@@ -111,6 +111,21 @@ export default class SpotifyArtist extends SpotifyController {
             });
     }
 
+    toggleHidden(id) {
+        return this.model.getOne(id)
+            .then(data => {
+                if (!data)
+                    return Promise.resolve(false);
+
+                return this.model.update(id, {
+                    is_hidden: !data.is_hidden,
+                    dt_update: nowDateTime()
+                });
+            }).then(insert => {
+                return this.model.getOne(id)
+            });
+    }
+
     // ---------------
 
     get album() {
