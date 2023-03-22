@@ -27,9 +27,15 @@
         }
 
         input[type=text] {
-            background-color: rgba(0, 0, 0, 0.9);
             outline: 2px solid $color-primary-dark;
             text-align: center;
+
+            &.update {
+                &:focus-visible {
+                    border: none;
+                    outline: 2px solid $color-leaf;
+                }
+            }
         }
     }
 }

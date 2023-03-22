@@ -94,6 +94,7 @@ export default class Artists extends MODULECLASS {
         // stuff when the modal is open
 
         const inputElement = this.modal.target.querySelector('[data-input="name"]');
+        inputElement.focus();
         inputElement.onkeyup = () => `${inputElement.value}` === `${this.data.name}` ? inputElement.classList.remove('update') : inputElement.classList.add('update');
     }
 
