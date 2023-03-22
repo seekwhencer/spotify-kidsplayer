@@ -1,5 +1,6 @@
 import ArtistTemplate from "./Templates/artist.html";
 import ArtistOptions from "./ArtistOptions.js";
+import Modal from "../Modal/index.js";
 
 export default class Artists extends MODULECLASS {
     constructor(parent, options) {
@@ -46,15 +47,30 @@ export default class Artists extends MODULECLASS {
             this.data = response.data;
             if (this.data.is_hidden === 1) {
                 this.options.buttonHide.classList.add('active');
-                this.target.classList.add('hidden', 'disabled');
+                this.target.classList.add('disabled');
             } else {
                 this.options.buttonHide.classList.remove('active');
-                this.target.classList.remove('hidden', 'disabled');
+                this.target.classList.remove('disabled');
             }
         });
     }
 
     edit() {
+        LOG(this.label, 'EDIT', this.id, this.data.name);
+        this.modal = new Modal(this, {
+            ...this.data,
+            submit: () => this.submit()
+        });
+
+    }
+
+    submit() {
+        return new Promise((resolve, reject) => {
+            LOG(this.label, 'SUBMIT');
+
+            // 4 testing
+            setTimeout(() => resolve(), 1000);
+        });
 
     }
 

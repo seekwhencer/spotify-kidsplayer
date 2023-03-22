@@ -54,13 +54,13 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 
 ## Roadmap
 
-- drop artist recursive with images
-- drop album recursive with images
+- exit parent mode in setup tab
 - edit artist (name, image)
 - edit album (name, image, artist)
 - reorder (change position) the albums per drag and drop
 - album view with other albums as list or prev / next image
 - loading indicator when adding artist (future request: with one by one output via websockets)
-
+- drop artist recursive with images
+- drop album recursive with images
 
 > At the moment: it is a working pre alpha ;)

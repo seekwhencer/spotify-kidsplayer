@@ -5,8 +5,10 @@
         flex-wrap: wrap;
         align-items: stretch;
         justify-content: center;
-        height: 100%;
+        height: calc(100% - 120px);
         overflow-y: auto;
+        margin-top: 60px;
+        padding-bottom: 60px;
     }
 
     .artist {
@@ -24,7 +26,6 @@
         }
 
         &.disabled {
-            display: inline-block;
             outline: 2px dotted $color-primary;
 
             img {

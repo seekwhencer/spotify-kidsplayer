@@ -1,0 +1,29 @@
+.modal {
+    position: fixed;
+    z-index: 1000;
+    width: 100%;
+    height: 100%;
+    background-image: linear-gradient(180deg, rgba(2, 0, 36, 0.7) 100%, rgba(181, 0, 255, 0.7) 0%);
+
+    button {
+        cursor: pointer;
+
+        &[data-button="close"] {
+            position: absolute;
+            right: 20px;
+            top: 20px;
+        }
+
+        &[data-button="submit"] {
+            position: absolute;
+            left: calc(50% - 100px);
+            bottom: 50px;
+            font-size: $fs-xl;
+            line-height: $fs-xl;
+            width: 200px;
+            font-weight: bold;
+            background-color: $color-primary-dark;
+            color: white;
+        }
+    }
+}
