@@ -179,4 +179,12 @@ export default class Spotify extends MODULECLASS {
     toggleArtistHidden(id){
         return this.artist.toggleHidden(id);
     }
+
+    addArtistImage(artistId, data) {
+        return this.artist.addImage(artistId, data);
+    }
+
+    setArtistPosterImage(artistId, params) {
+        return this.artist.setPosterImage(artistId, params);
+    }
 }

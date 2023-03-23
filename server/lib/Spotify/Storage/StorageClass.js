@@ -81,7 +81,7 @@ export default class StorageClass extends MODULECLASS {
                               (SELECT hash
                                from ${this.table}_image AS imgtable
                                WHERE imgtable.${this.table}_id = ${this.table}.id
-                                 AND (imgtable.height = 640) LIMIT 1) AS image
+                                 AND imgtable.is_poster = 1 LIMIT 1) AS image
 
                        FROM ${this.table}
                        ORDER BY name ASC`;
@@ -94,7 +94,7 @@ export default class StorageClass extends MODULECLASS {
                               (SELECT hash
                                from ${this.table}_image AS imgtable
                                WHERE imgtable.${this.table}_id = ${this.table}.id
-                                 AND imgtable.height = 640 LIMIT 1) AS image
+                                 AND imgtable.is_poster = 1 LIMIT 1) AS image
                        FROM ${this.table}
                        WHERE id = ${id}`;
 
@@ -106,7 +106,7 @@ export default class StorageClass extends MODULECLASS {
                               (SELECT hash
                                from ${this.table}_image AS imgtable
                                WHERE imgtable.${this.table}_id = ${this.table}.id
-                                 AND imgtable.height = 640 LIMIT 1) AS image
+                                 AND imgtable.is_poster = 1 LIMIT 1) AS image
                        FROM ${this.table}
                        WHERE ${field} = ${value}
                        ORDER BY name ASC`;

@@ -90,7 +90,7 @@ export default class StorageImage extends StorageClass {
                 return this.deleteByFieldIds(table, imageIds, 'id');
             })
             .then(data => {
-                if(!data){
+                if (!data) {
                     return Promise.resolve(false);
                 }
                 const imageIds = data.map(image => image.id);
@@ -99,6 +99,14 @@ export default class StorageImage extends StorageClass {
             .then(() => {
                 return Promise.resolve(images);
             });
+    }
+
+    getById(table, id) {
+        const query = `SELECT *
+                       FROM ${table}_image
+                       WHERE id = ${id}`;
+
+        return this.query(query).then(result => Promise.resolve(result[0]));
     }
 
     getBy(field, value, table) {
@@ -169,5 +177,30 @@ export default class StorageImage extends StorageClass {
                        WHERE id IN (${ids.join(',')})`;
 
         return this.query(query);
+    }
+
+    setPoster(table, id) {
+        let posterImage;
+
+        return this
+            .getById(table, id)
+            .then(data => {
+                if (!data)
+                    return Promise.resolve(false);
+
+                posterImage = data;
+
+                const query = `UPDATE ${table}_image
+                             SET is_poster = 0
+                             WHERE ${table}_id = ${posterImage.artist_id}`;
+
+                return this.query(query).then(() => {
+                    const query = `UPDATE ${table}_image
+                         SET is_poster = 1
+                         WHERE id = ${posterImage.id}`;
+
+                    return this.query(query);
+                });
+            });
     }
 }

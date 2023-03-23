@@ -14,7 +14,7 @@ export default class Artists extends MODULECLASS {
         this.target = this.toDOM(ArtistTemplate({
             scope: this.data
         }));
-        this.image = this.target.querySelector('img');
+        this.image = this.target.querySelector('[data-artist-image]');
         this.image.onclick = () => this.select();
 
         this.options = new ArtistOptions(this);
@@ -60,7 +60,6 @@ export default class Artists extends MODULECLASS {
         LOG(this.label, 'EDIT', this.id, this.data.name);
 
         return this.fetch(`${this.app.urlBase}/artist/${this.id}`).then(response => {
-            LOG(this.label, 'SUBMIT FILTER:', response.data, '');
 
             const modalBody = toDOM(ModalEditBody({
                 scope: response.data
@@ -95,6 +94,14 @@ export default class Artists extends MODULECLASS {
         const inputElement = this.modal.target.querySelector('[data-input="name"]');
         inputElement.focus();
         inputElement.onkeyup = () => `${inputElement.value}` === `${this.data.name}` ? inputElement.classList.remove('update') : inputElement.classList.add('update');
+
+        // image url button
+        const downloadButton = this.modal.target.querySelector('[data-button="download"]');
+        downloadButton.onclick = () => this.downloadImage();
+
+        // images
+        const imageElements = this.modal.target.querySelectorAll('[data-artist-image]');
+        imageElements.forEach(image => image.onclick = () => this.setPoster(image.dataset.artistImage));
     }
 
     submitModal() {
@@ -102,11 +109,10 @@ export default class Artists extends MODULECLASS {
             LOG(this.label, 'SUBMIT');
 
             const inputName = this.modal.target.querySelector('[data-input="name"]');
-            const inputImageUrl = this.modal.target.querySelector('[data-input="image_url"]');
 
             const postData = {
-                name : inputName.value,
-                imageUrl: inputImageUrl.value
+                name: inputName.value,
+                posterImageId: this.posterImageId
             }
 
             return this.fetch(`${this.app.urlBase}/artist/update/${this.id}`, {
@@ -129,6 +135,65 @@ export default class Artists extends MODULECLASS {
 
     removeModal() {
         delete this.modal;
+    }
+
+    downloadImage() {
+        const inputImageUrl = this.modal.target.querySelector('[data-input="image_url"]');
+        const imagesElement = this.modal.target.querySelector('[data-artist-images]');
+        const postData = {
+            imageUrl: inputImageUrl.value
+        }
+
+        return this.fetch(`${this.app.urlBase}/artist/${this.id}/image/add`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+        })
+            .then(response => {
+                LOG(this.label, 'IMAGE ADDED:', response.data);
+                return Promise.resolve(response.data);
+            })
+            .then(imageData => {
+                if (!imageData)
+                    return Promise.resolve(false);
+
+                inputImageUrl.value = '';
+
+                // @TODO this is dirty ... use a template
+                this.modal.options.images.push(imageData);
+                imagesElement.append(toDOM(`<div data-artist-image="${imageData.id}" class="artist--images__image" style="background-image: url(${APP.mediaBaseUrl}/${imageData.hash}.jpg)"></div>`));
+                imagesElement.querySelector(`[data-artist-image="${imageData.id}"]`).onclick = () => this.setPoster(imageData.id);
+            });
+    }
+
+    setPoster(imageId) {
+        LOG(this.label, 'USE POSTER IMAGE', imageId);
+        this.posterImageId = imageId;
+
+        const image = this.modal.options.images.filter(i => i.id === parseInt(imageId))[0];
+        const posterImage = this.modal.target.querySelector('[data-artist-poster-image]');
+        posterImage.removeAttribute('style');
+        const url = encodeURI(`${APP.mediaBaseUrl}/${image.hash}.jpg`);
+        posterImage.setAttribute('style', `background-image:url(${url})`);
+
+        LOG('>>>>>', url, posterImage.style.backgroundImage, posterImage,'');
+
+        /*const postData = {
+            id: imageId
+        }
+
+        return this.fetch(`${this.app.urlBase}/artist/${this.id}/posterimage`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(postData)
+        }).then(response => {
+            LOG(this.label, 'UPDATED:', response.data, '');
+            return Promise.resolve(response.data);
+        });*/
     }
 
     read() {

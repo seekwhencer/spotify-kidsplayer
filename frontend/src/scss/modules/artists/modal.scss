@@ -11,18 +11,60 @@
         }
 
         .artist--input {
-            width: 100%;
-            display: block;
-            margin: 30px 0 0 0;
+
+            &__name {
+                width: 100%;
+                display: block;
+                margin: 30px 0 0 0;
+                position: absolute;
+                bottom: 35vh;
+            }
+
+            &__image-url {
+                width: 100%;
+                display: block;
+                margin: 30px 0 0 0;
+                position: absolute;
+                bottom: 30vh;
+            }
+
         }
 
         .artist--image {
             width: 20vw;
+            height: 20vw;
+            background-size: cover;
+            background-position: center;
             display: block;
-            margin: auto;
+            position: absolute;
+            top: 15vh;
+            left: 50%;
+            transform: translateX(calc(-20vw - 50px));
+            border-radius: 10px;
+            overflow: hidden;
+        }
 
-            img {
-                width: 100%;
+        .artist--images {
+            width: 21vw;
+            height: 20vw;
+            display: block;
+            position: absolute;
+            top: 15vh;
+            left: 50%;
+            transform: translateX(calc(50px));
+            text-align: left;
+            overflow-y: auto;
+
+            &__image {
+                margin: 0 1vw 1vw 0;
+                width: 8vw;
+                height: 8vw;
+                overflow: hidden;
+                display: inline-block;
+                background-size: cover;
+                background-position: center;
+                cursor: pointer;
+                border-radius: 5px;
             }
         }
 
@@ -41,7 +83,31 @@
                 font-size: $fs-xs;
                 margin-top: 20px;
                 font-weight: 300;
+                width: calc(50vw - 200px);
+                line-height: 23px;
+                border-top-right-radius: 0;
+                border-bottom-right-radius: 0;
+                text-align: left;
             }
+        }
+
+        button {
+            &[data-button="download"] {
+                width: 200px;
+                font-size: $fs-xs;
+                line-height: $fs-l;
+                background-color: $color-primary-dark;
+                color: white;
+                border-top-left-radius: 0;
+                border-bottom-left-radius: 0;
+                margin-left: 0;
+            }
+        }
+    }
+
+    button {
+        &[data-button="submit"] {
+            bottom: 15vh;
         }
     }
 }

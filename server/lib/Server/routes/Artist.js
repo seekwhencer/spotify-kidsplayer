@@ -123,12 +123,40 @@ export default class extends Route {
             });
         });
 
+
         this.router.get('/artist/:id/toggle-visibility', (req, res) => {
             const artistId = req.params.id;
 
             APP.SPOTIFY.toggleArtistHidden(artistId).then(artist => {
                 res.json({
                     message: 'one artist',
+                    data: artist
+                });
+            });
+        });
+
+
+        this.router.post('/artist/:id/posterimage', this.jsonParser);
+        this.router.post('/artist/:id/posterimage', (req, res) => {
+            const artistId = req.params.id;
+            const params = req.body;
+
+            APP.SPOTIFY.setArtistPosterImage(artistId, params).then(artist => {
+                res.json({
+                    message: 'set poster image for artist',
+                    data: artist
+                });
+            });
+        });
+
+        this.router.post('/artist/:id/image/add', this.jsonParser);
+        this.router.post('/artist/:id/image/add', (req, res) => {
+            const artistId = req.params.id;
+            const params = req.body;
+
+            APP.SPOTIFY.addArtistImage(artistId, params).then(artist => {
+                res.json({
+                    message: 'add image for artist',
                     data: artist
                 });
             });

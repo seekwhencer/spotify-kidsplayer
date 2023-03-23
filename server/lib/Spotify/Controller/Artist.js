@@ -65,56 +65,30 @@ export default class SpotifyArtist extends SpotifyController {
     }
 
     update(artistId, params) {
-
-        let imageHash = false;
         let artist = false;
 
         return this.model
             .getById(artistId)
             .then(data => {
-                artist = data;
-
-                if (!artist)
+                if (!data)
                     return Promise.resolve(false);
 
+                artist = data;
+                artist.name = params.name;
                 return this.model.update(artistId, {
                     name: params.name,
                     dt_update: nowDateTime()
                 });
             })
-            .then(() => {
-                if (params.imageUrl) {
-                    imageHash = this.createHash(`${artist.id}${params.imageUrl}`);
-                    return this.storage.image.getBy('hash', imageHash, 'artist_image');
-                }
-                return Promise.resolve(false);
-            }).then(exists => {
-                if (exists[0])
-                    return Promise.resolve(false);
+            .then(updated => {
+                if (!params.posterImageId)
+                    return Promise.resolve(artist);
 
-                return this.storage.image
-                    .downloadImage(params.imageUrl, imageHash)
-                    .then(() => Promise.resolve(true))
-                    .catch(err => {
-                        LOG(this.label, 'IMAGE DOWNLOAD ERROR', err.code, ':', err.input);
-                        return Promise.resolve(false);
-                    });
+                return this.storage.image.setPoster('artist', params.posterImageId);
             })
-            .then(is_downloaded => {
-                if (!is_downloaded)
-                    return Promise.resolve(false);
-
-                return this.storage.image.create({
-                    artist_id: artist.id,
-                    url: params.imageUrl,
-                    height: 640,
-                    width: 640,
-                    hash: imageHash,
-                    is_poster: 1
-                }, 'artist');
-            })
-            .then(created => {
-                return Promise.resolve(true);
+            .then(updated => {
+                LOG(this.label, 'POSTER IMAGE UPDATED', updated, '');
+                return Promise.resolve(artist);
             });
     }
 
@@ -168,6 +142,78 @@ export default class SpotifyArtist extends SpotifyController {
             }).then(insert => {
                 return this.model.getOne(id)
             });
+    }
+
+    addImage(artistId, params) {
+
+        let imageHash = false;
+        let artist = false;
+        let imageData = false;
+
+        return this.model
+            .getById(artistId)
+            .then(data => {
+                if (!data)
+                    return Promise.resolve(false);
+
+                artist = data;
+                return Promise.resolve(true);
+            })
+            .then(artistExists => {
+                if (!artistExists)
+                    return Promise.resolve(false);
+
+                if (params.imageUrl) {
+                    imageHash = this.createHash(`${artist.id}${params.imageUrl}`);
+                    return this.storage.image.getBy('hash', imageHash, 'artist_image');
+                }
+
+            }).then(imageExists => {
+                if (!imageExists)
+                    return Promise.resolve(false);
+
+                if (imageExists[0])
+                    return Promise.resolve(false);
+
+                return this.storage.image
+                    .downloadImage(params.imageUrl, imageHash)
+                    .then(() => Promise.resolve(true))
+                    .catch(err => {
+                        LOG(this.label, 'IMAGE DOWNLOAD ERROR', err.code, ':', err.input);
+                        return Promise.resolve(false);
+                    });
+            })
+            .then(downloaded => {
+                LOG(this.label, 'WAS DOWNLOADED', downloaded);
+
+                if (!downloaded)
+                    return Promise.resolve(false);
+
+                imageData = {
+                    artist_id: artist.id,
+                    url: params.imageUrl,
+                    height: 640,
+                    width: 640,
+                    hash: imageHash,
+                    is_poster: 0
+                };
+
+                return this.storage.image.create(imageData, 'artist');
+            })
+            .then(id => {
+                if (!id)
+                    return Promise.resolve(false);
+
+                imageData.id = id;
+                return Promise.resolve(imageData);
+            });
+    }
+
+    setPosterImage(artistId, params) {
+        //@TODO set all other images is_poster = 0
+        //@TODO set the image to is_poster = 1
+
+        return Promise.resolve({artist_id: artistId, ...params});
     }
 
 
