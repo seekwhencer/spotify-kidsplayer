@@ -82,12 +82,11 @@ export default class SpotifyArtist extends SpotifyController {
             })
             .then(updated => {
                 if (!params.posterImageId)
-                    return Promise.resolve(artist);
+                    return Promise.resolve(false);
 
                 return this.storage.image.setPoster('artist', params.posterImageId);
             })
             .then(updated => {
-                LOG(this.label, 'POSTER IMAGE UPDATED', updated, '');
                 return Promise.resolve(artist);
             });
     }

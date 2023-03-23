@@ -84,6 +84,10 @@ export default class Album extends MODULECLASS {
         this.app.speech.speak(this.data.name);
     }
 
+    play() {
+        this.app.player.playAlbum(this.data.id);
+    }
+
     highlight() {
         this.target.classList.add('playing');
     }

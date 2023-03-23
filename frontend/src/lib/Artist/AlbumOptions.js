@@ -16,7 +16,8 @@ export default class AlbumOptions extends MODULECLASS {
                     hide: this.app.icons.eye(),
                     edit: this.app.icons.pen(),
                     read: this.app.icons.mouth(),
-                    like: this.app.icons.heart()
+                    like: this.app.icons.heart(),
+                    play: this.app.icons.play()
                 },
                 ...this.album.data
             }
@@ -30,6 +31,7 @@ export default class AlbumOptions extends MODULECLASS {
         this.buttonEdit = this.target.querySelector('[data-button-edit]');
 
         this.buttonRead = this.target.querySelector('[data-button-read]');
+        this.buttonPlay = this.target.querySelector('[data-button-play]');
         this.buttonLike = this.target.querySelector('[data-button-like]');
 
         this.buttonAudiobook.onclick = () => this.album.toggleType('audiobook');
@@ -37,8 +39,11 @@ export default class AlbumOptions extends MODULECLASS {
         this.buttonPodcast.onclick = () => this.album.toggleType('podcast');
         this.buttonHide.onclick = () => this.album.toggleHidden();
         this.buttonEdit.onclick = () => this.album.edit();
+
         this.buttonRead.onclick = () => this.album.read();
+        this.buttonPlay.onclick = () => this.album.play();
         this.buttonLike.onclick = () => this.album.toggleLiked();
+
         this.album.target.append(this.target);
     }
 

@@ -145,8 +145,14 @@ export default class Player extends MODULECLASS {
         track.highlightPlaying(true);
     }
 
-    nextAlbum() {
-
+    playAlbum(albumId) {
+        LOG(this.label, 'PLAY ALBUM', albumId);
+        return this
+            .fetch(`${this.app.urlBase}/album/${albumId}`)
+            .then(data => {
+                LOG(this.label, 'PLAY GET ALBUM', albumId);
+                return this.play(data.data.tracks[0].id);
+            });
     }
 
     /**

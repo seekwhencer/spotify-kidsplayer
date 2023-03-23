@@ -52,11 +52,12 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 - hide artist and album options when parent mode is off
 - hide disabled albums, show disabled albums in parent mode
 - clean database endpoint at `api/clean` - that drops all empty and lost artists, albums and tracks
+- edit artist (name, image)
+- start playing album from album overview
 
 ## Roadmap
 
 - exit parent mode in setup tab
-- edit artist (name, image)
 - edit album (name, image, artist)
 - reorder (change position) the albums per drag and drop
 - album view with other albums as list or prev / next image
