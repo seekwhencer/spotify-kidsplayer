@@ -164,6 +164,8 @@
                                         top: 15px;
                                     }
                                 }
+
+
                             }
 
 
@@ -182,6 +184,14 @@
 
                             button {
                                 margin-right: 5px;
+
+                                &[data-button-play]{
+
+                                    svg{
+                                        width: 40px;
+                                        height: 40px;
+                                    }
+                                }
                             }
                         }
                     }

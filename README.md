@@ -4,6 +4,7 @@
 > This will be a simplified UI for kids to use spotify.
 
 ![alt text](../master/docs/screenshots/artists.png?raw=true "Screenshot Artists")
+![alt text](../master/docs/screenshots/artist-edit.png?raw=true "Screenshot Artist Edit")
 ![alt text](../master/docs/screenshots/artist.png?raw=true "Screenshot Artist")
 ![alt text](../master/docs/screenshots/album.png?raw=true "Screenshot Album")
 ![alt text](../master/docs/screenshots/setup-info.png?raw=true "Screenshot Setup Info")
