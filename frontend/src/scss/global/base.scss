@@ -9,8 +9,8 @@ html {
 
 body {
     font-size: $fs-m;
-    background-size: contain;
-    background-blend-mode: darken;
+    background-size: cover;
+    background-position: center;
 }
 
 html {

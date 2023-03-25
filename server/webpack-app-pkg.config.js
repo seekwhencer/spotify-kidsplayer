@@ -18,7 +18,7 @@ const config = {
         topLevelAwait: true,
     },
     plugins: [
-        new webpack.DefinePlugin({ "global.GENTLY": false }), // hack for formidable
+        //new webpack.DefinePlugin({ "global.GENTLY": false }), // hack for formidable
         {
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap('Complete', (compilation) => {
@@ -27,6 +27,7 @@ const config = {
             }
         }
     ],
+
     module: {
         rules: [
             {

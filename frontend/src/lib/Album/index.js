@@ -60,12 +60,14 @@ export default class Album extends Tab {
         this.playedElement.replaceChildren(this.played.target);
         this.tracksElement.replaceChildren(this.albumTracks.target);
 
+
         //this.albumsElement.replaceChildren(this.albums.target);
 
         // select the first track
         //this.albumTracks.tracks[0].select();
         //this.albums.addSlider();
         this.hideTrackDetails();
+        this.setBackgroundImage();
     }
 
     showTrackDetails(track) {
@@ -77,7 +79,7 @@ export default class Album extends Tab {
     }
 
     setBackgroundImage() {
-        //document.querySelector('body').style.backgroundImage = `url(${APP.mediaBaseUrl}/${this.raw.image}.jpg)`;
+        APP.background.set(`${APP.mediaBaseUrl}/${this.raw.image}.jpg`);
     }
 
     get raw() {

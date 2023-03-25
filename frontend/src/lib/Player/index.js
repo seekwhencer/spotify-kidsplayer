@@ -55,7 +55,6 @@ export default class Player extends MODULECLASS {
         this.on('progress', () => {
             //LOG(this.label, 'GOT PROGRESS', this.progress, this.progressPercent);
             this.drawProgress();
-            this.nextAlbum();
         });
 
         this.on('track', () => {

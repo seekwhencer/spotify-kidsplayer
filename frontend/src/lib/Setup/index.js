@@ -76,6 +76,8 @@ export default class Setup extends Tab {
     }
 
     draw() {
+        APP.background.remove();
+
         if (this.parentMode === true) {
             this.groups = this.flattenGroups();
             this.navi = new SetupNavi(this);

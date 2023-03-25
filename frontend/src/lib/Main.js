@@ -13,6 +13,7 @@ import Album from './Album/index.js';
 import Music from './Music/index.js';
 import Audiobooks from './Audiobooks/index.js';
 import Setup from './Setup/index.js';
+import Background from './Background/index.js';
 
 export default class Main extends MODULECLASS {
     constructor(options) {
@@ -54,6 +55,7 @@ export default class Main extends MODULECLASS {
             });
 
             // things
+            this.background = new Background(this);
             this.navigation = new Navigation(this);
             this.player = new Player(this);
             this.speech = new Speech(this);

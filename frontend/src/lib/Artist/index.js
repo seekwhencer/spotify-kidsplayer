@@ -13,6 +13,14 @@ export default class Artist extends Tab {
         this.tab = 'artist';
         this.filter = [];
 
+        this.data = new Proxy(this.raw, {
+            get: (target, prop, receiver) => target[prop] || this.raw[prop],
+            set: (target, prop, value) => {
+                target[prop] = value;
+                return true;
+            }
+        });
+
         this.target = this.toDOM(LayoutTemplate({
             scope: {}
         }));
@@ -23,26 +31,16 @@ export default class Artist extends Tab {
         this.playedElement = this.target.querySelector('[data-artist-played]');
         this.albumsElement = this.target.querySelector('[data-artist-albums]');
 
-        this.on('raw', () => this.populate());
         this.parent.on('parent-mode', parentMode => this.toggleParentMode(parentMode));
 
     }
 
     show(id) {
-        if (!this.raw) {
-            this.getArtist(id);
+        if (this.data.id !== id) {
+            this.getArtist(id).then(() => this.draw(true));
         } else {
-            if (this.raw.id !== id) {
-                this.getArtist(id);
-            }
-        } // @TODO
-        super.show();
-        this.app.navigation.clearFilter();
-
-        if(!this.albums)
-            return;
-
-        this.app.navigation.draw(this.albums.filter);
+            this.draw(false);
+        }
     }
 
     hide() {
@@ -50,26 +48,34 @@ export default class Artist extends Tab {
     }
 
     getArtist(id) {
-        this.fetch(`${this.app.urlBase}/artist/${id}`).then(raw => this.raw = raw.data);
+        return this.fetch(`${this.app.urlBase}/artist/${id}`).then(raw => {
+            this.raw = raw.data;
+            return Promise.resolve(true);
+        });
     }
 
-    populate() {
-        this.played = new ArtistPlayed(this, this.raw);
-        this.details = new ArtistDetails(this, this.raw);
-        this.albums = new ArtistAlbums(this, this.raw);
-        this.options = new ArtistOptions(this, this.raw);
+    draw(full) {
+        if (full) {
+            this.played = new ArtistPlayed(this, this.raw);
+            this.details = new ArtistDetails(this, this.raw);
+            this.albums = new ArtistAlbums(this, this.raw);
+            //this.options = new ArtistOptions(this, this.raw);
 
-        this.draw();
-    }
+            this.detailsElement.replaceChildren(this.details.target[0], this.details.target[1]);
+            this.playedElement.replaceChildren(this.played.target);
+            this.albumsElement.replaceChildren(this.albums.target[0], this.albums.target[1]);
+            //this.optionsElement.replaceChildren(this.options.target);
 
-    draw() {
-        this.detailsElement.replaceChildren(this.details.target[0], this.details.target[1]);
-        this.optionsElement.replaceChildren(this.options.target);
-        this.playedElement.replaceChildren(this.played.target);
-        this.albumsElement.replaceChildren(this.albums.target[0], this.albums.target[1]);
-        this.albumsElement.scroll(0,0);
-        this.app.emit('filter', 'audiobook'); // chose the audiobook filter
-        this.toggleParentMode();
+            this.albumsElement.scroll(0, 0);
+            this.app.navigation.clearFilter();
+            this.toggleParentMode();
+
+            this.app.emit('filter', 'audiobook'); // chose the audiobook filter
+        }
+
+        this.setBackgroundImage();
+        this.app.navigation.draw(this.albums.filter);
+        super.show();
     }
 
     toggleFilter(filter) {
@@ -82,7 +88,7 @@ export default class Artist extends Tab {
     }
 
     setBackgroundImage() {
-        //document.querySelector('body').style.backgroundImage = `url(${APP.mediaBaseUrl}/${this.raw.image}.jpg)`;
+        APP.background.set(`${APP.mediaBaseUrl}/${this.raw.image}.jpg`);
     }
 
     showAdmin() {
@@ -96,12 +102,11 @@ export default class Artist extends Tab {
     }
 
     get raw() {
-        return this._raw;
+        return this._raw || {};
     }
 
     set raw(data) {
         this._raw = data;
-        this.emit('raw');
     }
 
 }

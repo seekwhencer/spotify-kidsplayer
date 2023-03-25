@@ -15,34 +15,37 @@ export default class Artists extends Tab {
         this.parent.target.append(this.target);
         this.listingElement = this.target.querySelector('[data-listing]');
 
-        this.on('raw', () => this.populate());
-        this.on('data', () => this.draw());
+        this.app.player.on('artist', () => this.highlightPlaying());
         this.parent.on('parent-mode', parentMode => this.toggleParentMode(parentMode));
     }
 
     show() {
-        super.show();
-        this.getAll();
+        this.getArtists().then(() => this.draw());
     }
 
-    getAll() {
-        this.fetch(`${this.app.urlBase}/artists`).then(raw => this.raw = raw.data);
-    }
-
-    populate() {
-        const items = [];
-        this.raw.forEach(artist => items.push(new Artist(this, artist)));
-        this.items = items;
+    getArtists() {
+        return this.fetch(`${this.app.urlBase}/artists`).then(raw => {
+            this.raw = raw.data;
+            return Promise.resolve(true);
+        });
     }
 
     draw() {
+        const items = [];
+        this.raw.forEach(artist => items.push(new Artist(this, artist)));
+        this.items = items;
+
         this.listingElement.innerHTML = '';
         this.items.forEach(artist => this.listingElement.append(artist.target));
+
         this.app.navigation.disableFilter();
-        this.app.player.on('artist', () => this.highlightPlaying());
+
         this.highlightPlaying();
         this.toggleHidden();
         this.toggleParentMode();
+        APP.background.remove();
+
+        super.show();
     }
 
     blurAll(id) {
@@ -50,6 +53,8 @@ export default class Artists extends Tab {
     }
 
     highlightPlaying() {
+        LOG(this.label,'HIGHLIGHT PLAYING', Date.now());
+
         const playingArtist = this.items.filter(a => a.id === this.app.player.artist.id)[0];
 
         if (!playingArtist)
@@ -86,24 +91,6 @@ export default class Artists extends Tab {
     hideAdmin() {
         this.toggleHidden();
         this.items.forEach(artist => artist.hideAdmin());
-    }
-
-    get items() {
-        return this._items;
-    }
-
-    set items(data) {
-        this._items = data;
-        this.emit('data');
-    }
-
-    get raw() {
-        return this._raw;
-    }
-
-    set raw(data) {
-        this._raw = data;
-        this.emit('raw');
     }
 
 }

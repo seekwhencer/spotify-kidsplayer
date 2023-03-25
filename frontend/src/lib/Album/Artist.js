@@ -8,6 +8,7 @@ export default class Artist extends MODULECLASS {
         //LOG(this.label, options);
 
         this.id = options.id;
+        this.data = options;
 
         this.target = this.toDOM(ArtistTemplate({
             scope: {

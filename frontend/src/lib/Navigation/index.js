@@ -24,8 +24,14 @@ export default class Navigation extends MODULECLASS {
         this.menu = this.target.querySelectorAll('[data-navigation]');
         this.filter = this.target.querySelectorAll('[data-filter]');
 
-        this.menu.forEach(button => button.onclick = () => this.emit('tab', button.getAttribute('data-navigation')));
-        this.filter.forEach(button => button.onclick = () => this.emit('filter', button.getAttribute('data-filter')));
+        this.menu.forEach(button => button.onclick = () => {
+            button.blur();
+            this.emit('tab', button.getAttribute('data-navigation'))
+        });
+        this.filter.forEach(button => button.onclick = () => {
+            button.blur();
+            this.emit('filter', button.getAttribute('data-filter'))
+        });
 
         this.on('tab', tab => {
             this.app.emit('tab', tab);
@@ -67,7 +73,13 @@ export default class Navigation extends MODULECLASS {
         LOG(this.label, 'DRAW FILTER', filter);
         this.filter.forEach(button => {
             const filterName = button.getAttribute('data-filter');
-            filter[filterName] === true ? button.classList.add('active') : button.classList.remove('active');
+            button.classList.remove('disabled');
+
+            if (filter[filterName] === true) {
+                button.classList.add('active');
+            } else {
+                button.classList.remove('active');
+            }
         });
     }
 
