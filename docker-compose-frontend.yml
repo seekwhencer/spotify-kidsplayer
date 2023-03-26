@@ -9,7 +9,8 @@ services:
     image: ${PROJECT_NAME}_frontend
     working_dir: /kidsplayer/frontend
     #command: 'npm run dev'
-    command: 'tail -f /dev/null'
+    #command: 'tail -f /dev/null'
+    command: "--experimental-modules --experimental-json-modules config/WebpackConfigDev.js"
     container_name: ${PROJECT_NAME}-frontend
     volumes:
       - .:/kidsplayer
