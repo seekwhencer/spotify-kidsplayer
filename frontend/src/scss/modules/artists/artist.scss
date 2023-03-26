@@ -1,75 +1,316 @@
 .artists {
-    &--listing {
-        display: flex;
-        flex-direction: row;
-        flex-wrap: wrap;
-        align-items: stretch;
-        justify-content: center;
-        height: calc(100% - 120px);
-        overflow-y: auto;
+
+    .artists--listing {
+        $artist-margin: 10px;
+        $artist-border: 4px;
+        text-align: center;
+        overflow-Y: scroll;
+        overflow-X: hidden;
+        height: calc(100% - 60px);
         margin-top: 60px;
-        padding-bottom: 60px;
-    }
+        padding: 0 100px;
 
-    .artist {
-        height: calc(100vw / 10);
-        width: calc(100vw / 10);
-        position: relative;
-        transition: all ease-in-out 0.5s;
-        display: inline-block;
-        margin: 10px 10px 40px 10px;
-        cursor: pointer;
-        border-radius: 25px;
+        .artist {
+            height: fit-content;
+            position: relative;
+            transition: all ease-in-out 0.5s;
+            opacity: 1;
+            display: inline-block;
 
-        &.hidden {
-            display: none;
-        }
+            &.loaded {
+                opacity: 1;
+            }
 
-        &.disabled {
-            outline: 2px dotted $color-primary;
+            &.hidden {
+                display: none;
+            }
 
-            .artist--image {
-                opacity: 0.25;
-                filter: blur(2px);
+            &.disabled {
+                .artist--body {
+                    border-style: dotted;
+                }
+
+                .artist--image {
+                    filter: blur(2px);
+                    opacity: 0.25;
+                }
+            }
+
+            &--body {
+                margin: $artist-margin $artist-margin 50px $artist-margin;
+                border: $artist-border solid $color-primary;
+                position: relative;
+                transition: all ease-in-out 0.5s;
+                border-radius: 20px;
+            }
+
+
+            &--name {
+                color: white;
+                position: absolute;
+                display: block;
+                bottom: -35px;
+                transform-origin: bottom;
+                font-size: $fs-xxs;
+                text-align: center;
+                background: rgba(255, 255, 255, 0.1);
+                opacity: 0;
+                border-radius: 5px;
+                width: 100%;
+                padding: 5px 0;
+
+            }
+
+            &--image {
+                display: block;
+                overflow: hidden;
+                width: 100%;
+                background-color: transparent;
+                background-size: cover;
+                background-position: center;
+                border-radius: 15px;
+            }
+
+            &:hover {
+                cursor: pointer;
+                transition: all ease-in-out 0.1s;
+                z-index: 100;
+                transform-origin: center;
+
+                .artist--name {
+                    opacity: 1;
+                    z-index: 100;
+                    background: rgba(0, 0, 0, 0.7);
+                }
+            }
+
+            &--options {
+
+                button {
+                    cursor: pointer;
+
+                    &:hover, &.active {
+                        background-color: $color-primary-dark;
+                        transform: scale(1.2);
+                        transition: all ease-in-out 0.1s;
+
+                        svg {
+                            path {
+                                color: white;
+                            }
+                        }
+                    }
+
+
+                }
+
+                &__group {
+                    &.options-type {
+                        position: absolute;
+                        left: 20px;
+                        top: 50px;
+                        display: flex;
+                        flex-direction: column;
+                        flex-wrap: wrap;
+                        align-items: stretch;
+                        justify-content: center;
+
+                        button {
+                            margin-bottom: 5px;
+                        }
+                    }
+
+                    &.options-edit {
+                        position: absolute;
+                        right: 20px;
+                        top: 50px;
+                        display: flex;
+                        flex-direction: column;
+                        flex-wrap: wrap;
+                        align-items: stretch;
+                        justify-content: center;
+
+                        button {
+                            margin-bottom: 5px;
+
+                            &[data-button-hide].active {
+                                background-color: $color-primary-dark;
+
+                                &:before {
+                                    content: '';
+                                    position: absolute;
+                                    transform: rotate(45deg);
+                                    width: 100%;
+                                    height: 2px;
+                                    background-color: white;
+                                    left: 0;
+                                    top: 15px;
+                                }
+
+                                &:after {
+                                    content: '';
+                                    position: absolute;
+                                    transform: rotate(-45deg);
+                                    width: 100%;
+                                    height: 2px;
+                                    background-color: white;
+                                    left: 0;
+                                    top: 15px;
+                                }
+                            }
+
+
+                        }
+
+
+                    }
+
+                    &.options-public {
+                        position: absolute;
+                        width: 100%;
+                        left: 0;
+                        bottom: 60px;
+                        display: flex;
+                        flex-direction: row;
+                        flex-wrap: wrap;
+                        align-items: stretch;
+                        justify-content: center;
+
+                        button {
+                            margin-right: 5px;
+
+                            &[data-button-play] {
+
+                                svg {
+                                    width: 40px;
+                                    height: 40px;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            &.playing {
+                .artist--body {
+                    border-color: $color-splash;
+                    box-shadow: 0 0 50px $color-splash;
+                    animation: 1s ease-in-out 0s infinite playing;
+
+                    .artist--image {
+                        background-color: $color-splash;
+
+                        img {
+                            animation: 1s ease-in-out 0s infinite playing-image;
+                        }
+                    }
+                }
             }
         }
 
-        &--name {
-            position: absolute;
-            padding: 5px 0;
-            display: block;
-            bottom: -40px;
-            transform-origin: bottom;
-            font-size: $fs-xxs;
-            width: 100%;
-            text-align: center;
-            background: rgba(255, 255, 255, 0.1);
+        &.per-row-1 {
+            .artist {
+                width: calc(50vw);
+
+                &--body {
+
+                }
+
+                &--image {
+                    height: calc(100vh - 300px);
+                }
+            }
         }
 
-        &--image {
-            display: block;
-            overflow: hidden;
-            height: 100%;
-            width: 100%;
-            border-radius: 25px;
-            background-position: center;
-            background-size: cover;
+        &.per-row-2 {
+            .artist {
+                width: calc(100vw / 2.2);
+
+                &--image {
+                    height: calc(calc(100vw / 2.5));
+                }
+            }
         }
 
-        &.playing {
-            border-color: $color-splash;
-            box-shadow: 0 0 50px $color-splash;
-            z-index: 200;
-            animation: 1s ease-in-out 0s infinite playing;
+        &.per-row-3 {
+            .artist {
+                width: calc(100% / 3);
 
-            .artist--image {
-                background-color: $color-splash;
+                &--image {
+                    height: calc(calc(100vw / 3) - 50px);
+                }
+            }
+        }
 
-                img {
-                    animation: 1s ease-in-out 0s infinite playing-image;
+        &.per-row-4 {
+            .artist {
+                width: calc(100% / 4);
+
+                &--image {
+                    height: calc(calc(100vw / 4) - 50px);
+                }
+            }
+        }
+
+        &.per-row-5 {
+            .artist {
+                width: calc(100% / 5);
+
+                &--image {
+                    height: calc(calc(100vw / 5) - 50px);
+                }
+            }
+        }
+
+        &.per-row-6 {
+            .artist {
+                width: calc(100% / 6);
+
+                &--image {
+                    height: calc(calc(100vw / 6) - 50px);
+                }
+            }
+        }
+
+        &.per-row-7 {
+            .artist {
+                width: calc(100% / 7);
+
+                &--image {
+                    height: calc(calc(100vw / 7) - 50px);
+                }
+            }
+        }
+
+        &.per-row-8 {
+            .artist {
+                width: calc(100% / 8);
+
+                &--image {
+                    height: calc(calc(100vw / 8) - 50px);
+                }
+            }
+        }
+
+        &.per-row-9 {
+            .artist {
+                width: calc(100% / 9);
+
+                &--image {
+                    height: calc(calc(100vw / 9) - 50px);
+                }
+            }
+        }
+
+        &.per-row-10 {
+            .artist {
+                width: calc(100% / 10);
+
+                &--image {
+                    height: calc(calc(100vw / 10) - 50px);
                 }
             }
         }
     }
-
 }
+

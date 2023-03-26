@@ -59,13 +59,12 @@ export default class Album extends Tab {
         this.artistElement.replaceChildren(this.artist.target[0], this.artist.target[1]);
         this.playedElement.replaceChildren(this.played.target);
         this.tracksElement.replaceChildren(this.albumTracks.target);
-
-
         //this.albumsElement.replaceChildren(this.albums.target);
 
         // select the first track
         //this.albumTracks.tracks[0].select();
         //this.albums.addSlider();
+
         this.hideTrackDetails();
         this.setBackgroundImage();
     }

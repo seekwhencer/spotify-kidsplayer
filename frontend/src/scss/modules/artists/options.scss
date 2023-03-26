@@ -5,6 +5,12 @@
         button {
             cursor: pointer;
 
+            svg {
+                width: 40px;
+                height: 40px;
+                color: $color-gray-c;
+            }
+
             &:hover, &.active {
                 background-color: $color-primary-dark;
                 transform: scale(1.2);

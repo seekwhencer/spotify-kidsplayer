@@ -1,4 +1,7 @@
 <li class="artist ${is_hidden ? 'disabled' : ''}" data-artist-id="${id}">
-    <div class="artist--name">${name}</div>
-    <div class="artist--image" data-artist-image style="background-image:url(${APP.mediaBaseUrl}/${image}.jpg)"></div>
+    <div class="artist--body">
+        <div class="artist--name">${name}</div>
+        <div class="artist--image" data-artist-image
+             style="background-image:url(${APP.mediaBaseUrl}/${image}.jpg)"></div>
+    </div>
 </li>

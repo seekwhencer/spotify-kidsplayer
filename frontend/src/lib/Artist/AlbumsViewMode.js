@@ -28,8 +28,7 @@ export default class AlbumsViewMode extends MODULECLASS {
         this.buttons = this.target.querySelectorAll('[data-button-viewmode]');
         this.buttons.forEach(button => button.onclick = () => this.select(button.dataset.buttonViewmode));
 
-
-        this.parent.albums.length < this.default ? this.mode = this.parent.albums.length : this.mode = this.default;
+        this.app.tabs.setup.data.UI_ALBUMS_PER_ROW ? this.mode = parseInt(this.app.tabs.setup.data.UI_ALBUMS_PER_ROW) : this.mode = this.default;
     }
 
     select(mode) {

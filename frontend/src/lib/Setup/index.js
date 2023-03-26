@@ -42,6 +42,8 @@ export default class Setup extends Tab {
                 return true;
             }
         });
+
+        this.getData();
     }
 
     show() {

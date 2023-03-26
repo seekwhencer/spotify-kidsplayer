@@ -1,7 +1,7 @@
 import Tab from '../Tab.js';
 import Artist from './Artist.js';
 
-import ArtistsTemplate from "./Templates/artists.html";
+import LayoutTemplate from "./Templates/layout.html";
 
 export default class Artists extends Tab {
     constructor(parent, options) {
@@ -9,7 +9,7 @@ export default class Artists extends Tab {
         this.label = 'ARTISTS'
         this.tab = 'artists';
 
-        this.target = this.toDOM(ArtistsTemplate({
+        this.target = this.toDOM(LayoutTemplate({
             scope: {}
         }));
         this.parent.target.append(this.target);
@@ -44,6 +44,11 @@ export default class Artists extends Tab {
         this.toggleHidden();
         this.toggleParentMode();
         APP.background.remove();
+
+        const prefix = 'per-row-'
+        const regx = new RegExp('\\b' + prefix + '[^ ]*[ ]?\\b', 'g');
+        this.listingElement.className = this.listingElement.className.replace(regx, '');
+        this.listingElement.classList.add(`per-row-${this.app.tabs.setup.data.UI_ARTISTS_PER_ROW}`);
 
         super.show();
     }
