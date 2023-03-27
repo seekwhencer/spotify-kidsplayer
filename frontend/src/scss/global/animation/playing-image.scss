@@ -1,12 +1,14 @@
 @keyframes playing-image {
     0% {
-        filter: grayscale(0) contrast(100%);
+        opacity: 1;
+        filter: saturate(100%);
     }
     50% {
-        filter: grayscale(1) contrast(200%);
-        opacity: 0.8;
+        opacity: 0.5;
+        filter: saturate(0%);
     }
     100% {
-        filter: grayscale(0) contrast(100%);
+        opacity: 1;
+        filter: saturate(100%);
     }
 }

@@ -15,8 +15,8 @@ services:
     restart: always
     container_name: ${PROJECT_NAME}_server
     working_dir: /kidsplayer/server
-    #command: 'tail -f /dev/null'
-    command: "node --experimental-modules --experimental-json-modules index.js"
+    command: 'tail -f /dev/null'
+    #command: "node --experimental-modules --experimental-json-modules index.js"
     user: root
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"

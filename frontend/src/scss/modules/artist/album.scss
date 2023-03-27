@@ -35,7 +35,7 @@
                         border-style: dotted;
                     }
 
-                    .album--image  {
+                    .album--image {
                         filter: blur(2px);
                         opacity: 0.25;
                     }
@@ -90,19 +90,15 @@
                 }
 
 
-
                 &.playing {
                     .album--body {
                         border-color: $color-splash;
                         box-shadow: 0 0 50px $color-splash;
                         animation: 1s ease-in-out 0s infinite playing;
+                        background-color: $color-splash-dark;
 
                         .album--image {
-                            background-color: $color-splash;
-
-                            img {
-                                animation: 1s ease-in-out 0s infinite playing-image;
-                            }
+                            animation: 1s ease-in-out 0s infinite playing-image;
                         }
                     }
                 }

@@ -88,14 +88,11 @@
                 .artist--body {
                     border-color: $color-splash;
                     box-shadow: 0 0 50px $color-splash;
+                    background-color: $color-splash-dark;
                     animation: 1s ease-in-out 0s infinite playing;
 
                     .artist--image {
-                        background-color: $color-splash;
-
-                        img {
-                            animation: 1s ease-in-out 0s infinite playing-image;
-                        }
+                        animation: 1s ease-in-out 0s infinite playing-image;
                     }
                 }
             }
