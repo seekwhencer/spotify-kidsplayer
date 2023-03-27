@@ -1,0 +1,23 @@
+import Translations from './Translations.js';
+import { I18n } from "i18n-js";
+
+
+
+export default class Locale extends MODULECLASS {
+    constructor(parent) {
+        super(parent);
+
+        this.i18n = new I18n();
+
+        Object.keys(Translations).forEach(locale => this.i18n.store({
+            [locale] : Translations[locale]
+        }));
+
+        this.i18n.locale = 'de';
+
+        // map it globally
+        window._T = text => this.i18n.t(text);
+
+        LOG('###', _T("Hello"));
+    }
+}

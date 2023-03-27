@@ -1,4 +1,6 @@
 import './Global/Globals.js';
+
+import Locale from'./Locale/index.js';
 import * as Icons from './Icons/index.js';
 
 import Navigation from './Navigation/index.js';
@@ -55,6 +57,7 @@ export default class Main extends MODULECLASS {
             });
 
             // things
+            this.locale = new Locale(this);
             this.background = new Background(this);
             this.navigation = new Navigation(this);
             this.player = new Player(this);

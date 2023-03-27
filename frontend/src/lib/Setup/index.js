@@ -78,7 +78,8 @@ export default class Setup extends Tab {
     }
 
     draw() {
-        APP.background.remove();
+        this.app.background.remove();
+        this.app.navigation.disableFilter();
 
         if (this.parentMode === true) {
             this.groups = this.flattenGroups();

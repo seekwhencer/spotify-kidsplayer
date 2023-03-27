@@ -58,6 +58,7 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 
 ## Roadmap
 
+- translation
 - exit parent mode in setup tab
 - edit album (name, image, artist)
 - reorder (change position) the albums per drag and drop
