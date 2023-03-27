@@ -68,7 +68,7 @@ export default class Artists extends MODULECLASS {
             this.modal = new Modal(this, {
                 ...response.data,
 
-                title: 'Edit',
+                title: '',
 
                 // if true, then call "this.modal.open()" to show it
                 silent: true,

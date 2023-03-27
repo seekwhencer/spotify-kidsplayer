@@ -42,7 +42,10 @@ export default class AlbumOptions extends MODULECLASS {
 
         this.buttonRead.onclick = () => this.album.read();
         this.buttonPlay.onclick = () => this.album.play();
-        this.buttonLike.onclick = () => this.album.toggleLiked();
+        this.buttonLike.onclick = () => {
+            this.buttonLike.blur();
+            this.album.toggleLiked();
+        }
 
         this.album.target.append(this.target);
     }

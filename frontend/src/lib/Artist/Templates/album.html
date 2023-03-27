@@ -1,7 +1,8 @@
 <li class="album ${is_hidden ? 'disabled' : ''}" data-album-id="${id}">
     <div class="album--body">
         <div class="album--name">${name}</div>
-        <div class="album--image"><img src="${APP.mediaBaseUrl}/${image}.jpg">
+        <div class="album--image" data-artist-image
+             style="background-image:url(${APP.mediaBaseUrl}/${image}.jpg)"></div>
         </div>
     </div>
 </li>

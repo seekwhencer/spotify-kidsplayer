@@ -18,10 +18,10 @@ export default class Album extends MODULECLASS {
 
         parent.listElement.append(this.target);
 
-        this.image = this.target.querySelector('img');
+        this.image = this.target.querySelector('[data-artist-image]');
         this.image.onclick = () => this.select();
-        this.image.onload = () => this.target.classList.add('loaded');
-        this.image.onerror = () => this.target.classList.add('hidden');
+        //this.image.onload = () => this.target.classList.add('loaded');
+        //this.image.onerror = () => this.target.classList.add('hidden');
 
         this.albumOptions = new AlbumOptions(this);
     }

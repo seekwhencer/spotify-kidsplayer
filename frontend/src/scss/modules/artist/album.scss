@@ -13,12 +13,13 @@
             overflow-X: hidden;
             height: 100%;
             margin-top: 60px;
+            padding: 0 100px;
 
             .album {
                 height: fit-content;
                 position: relative;
                 transition: all ease-in-out 0.5s;
-                opacity: 0;
+                opacity: 1;
                 display: inline-block;
 
                 &.loaded {
@@ -31,12 +32,12 @@
 
                 &.disabled {
                     .album--body {
-                        border: 4px dotted $color-primary;
+                        border-style: dotted;
                     }
 
-                    img {
-                        opacity: 0.25;
+                    .album--image  {
                         filter: blur(2px);
+                        opacity: 0.25;
                     }
                 }
 
@@ -44,8 +45,8 @@
                     margin: $album-margin $album-margin 50px $album-margin;
                     border: $album-border solid $color-primary;
                     position: relative;
-                    border-radius: 30px;
                     transition: all ease-in-out 0.5s;
+                    border-radius: 20px;
                 }
 
 
@@ -69,20 +70,17 @@
                     display: block;
                     overflow: hidden;
                     width: 100%;
-                    border-radius: 25px;
                     background-color: transparent;
-
-                    img {
-                        width: 100%;
-                        display: block;
-                    }
+                    background-size: cover;
+                    background-position: center;
+                    border-radius: 15px;
                 }
 
                 &:hover {
-                    transform: scale(1.05);
                     cursor: pointer;
                     transition: all ease-in-out 0.1s;
                     z-index: 100;
+                    transform-origin: center;
 
                     .album--name {
                         opacity: 1;
@@ -91,116 +89,7 @@
                     }
                 }
 
-                &--options {
 
-                    button {
-                        cursor: pointer;
-
-                        svg {
-                            width: 40px;
-                            height: 40px;
-                        }
-
-                        &:hover, &.active {
-                            background-color: $color-primary-dark;
-                            transform: scale(1.2);
-                            transition: all ease-in-out 0.1s;
-
-                            svg {
-                                path {
-                                    color: white;
-                                }
-                            }
-                        }
-
-
-                    }
-
-                    &__group {
-                        &.options-type {
-                            position: absolute;
-                            left: 20px;
-                            top: 50px;
-                            display: flex;
-                            flex-direction: column;
-                            flex-wrap: wrap;
-                            align-items: stretch;
-                            justify-content: center;
-
-                            button {
-                                margin-bottom: 5px;
-                            }
-                        }
-
-                        &.options-edit {
-                            position: absolute;
-                            right: 20px;
-                            top: 50px;
-                            display: flex;
-                            flex-direction: column;
-                            flex-wrap: wrap;
-                            align-items: stretch;
-                            justify-content: center;
-
-                            button {
-                                margin-bottom: 5px;
-
-                                &[data-button-hide].active {
-                                    background-color: $color-primary-dark;
-
-                                    &:before {
-                                        content: '';
-                                        position: absolute;
-                                        transform: rotate(45deg);
-                                        width: 100%;
-                                        height: 2px;
-                                        background-color: white;
-                                        left: 0;
-                                        top: 15px;
-                                    }
-                                    &:after {
-                                        content: '';
-                                        position: absolute;
-                                        transform: rotate(-45deg);
-                                        width: 100%;
-                                        height: 2px;
-                                        background-color: white;
-                                        left: 0;
-                                        top: 15px;
-                                    }
-                                }
-
-
-                            }
-
-
-                        }
-
-                        &.options-public {
-                            position: absolute;
-                            width: 100%;
-                            left: 0;
-                            bottom: 60px;
-                            display: flex;
-                            flex-direction: row;
-                            flex-wrap: wrap;
-                            align-items: stretch;
-                            justify-content: center;
-
-                            button {
-                                margin-right: 5px;
-
-                                &[data-button-play]{
-
-                                    svg{
-                                        width: 40px;
-                                        height: 40px;
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
 
                 &.playing {
                     .album--body {
@@ -219,22 +108,27 @@
                 }
             }
 
+
             &.per-row-1 {
                 .album {
-                    width: 90vh;
+                    width: calc(40vw);
 
                     &--body {
 
+                    }
+
+                    &--image {
+                        height: calc(40vw);
                     }
                 }
             }
 
             &.per-row-2 {
                 .album {
-                    width: calc(100% / 2);
+                    width: calc(100vw / 3);
 
-                    &--body {
-
+                    &--image {
+                        height: calc(calc(100vw / 3));
                     }
                 }
             }
@@ -243,8 +137,8 @@
                 .album {
                     width: calc(100% / 3);
 
-                    &--body {
-
+                    &--image {
+                        height: calc(calc(100vw / 3) - 200px);
                     }
                 }
             }
@@ -252,42 +146,70 @@
             &.per-row-4 {
                 .album {
                     width: calc(100% / 4);
+
+                    &--image {
+                        height: calc(calc(100vw / 4) - 150px);
+                    }
                 }
             }
 
             &.per-row-5 {
                 .album {
                     width: calc(100% / 5);
+
+                    &--image {
+                        height: calc(calc(100vw / 5) - 120px);
+                    }
                 }
             }
 
             &.per-row-6 {
                 .album {
                     width: calc(100% / 6);
+
+                    &--image {
+                        height: calc(calc(100vw / 6) - 100px);
+                    }
                 }
             }
 
             &.per-row-7 {
                 .album {
                     width: calc(100% / 7);
+
+                    &--image {
+                        height: calc(calc(100vw / 7) - 100px);
+                    }
                 }
             }
 
             &.per-row-8 {
                 .album {
                     width: calc(100% / 8);
+
+                    &--image {
+                        height: calc(calc(100vw / 8) - 80px);
+                    }
                 }
             }
 
             &.per-row-9 {
                 .album {
                     width: calc(100% / 9);
+
+                    &--image {
+                        height: calc(calc(100vw / 9) - 80px);
+                    }
                 }
             }
 
             &.per-row-10 {
                 .album {
                     width: calc(100% / 10);
+
+                    &--image {
+                        height: calc(calc(100vw / 10) - 80px);
+                    }
                 }
             }
         }
