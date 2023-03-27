@@ -1,8 +1,6 @@
 import Translations from './Translations.js';
 import { I18n } from "i18n-js";
 
-
-
 export default class Locale extends MODULECLASS {
     constructor(parent) {
         super(parent);
@@ -18,6 +16,5 @@ export default class Locale extends MODULECLASS {
         // map it globally
         window._T = text => this.i18n.t(text);
 
-        LOG('###', _T("Hello"));
     }
 }
