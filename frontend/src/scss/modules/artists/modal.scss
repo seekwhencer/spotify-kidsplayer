@@ -1,13 +1,18 @@
 .modal {
+    text-align:center;
+
     &--body {
-        height: 100%;
+        margin-top: 10px;
         text-align: center;
+        display: block;
+        overflow: hidden;
+        height: 100%;
 
         .artist--data {
             width: 100%;
             display: block;
-            overflow: hidden;
             margin-top: 10vh;
+            position: relative;
         }
 
         .artist--input {
@@ -37,11 +42,12 @@
             background-position: center;
             display: block;
             position: absolute;
-            top: 15vh;
+            top: 0;
             left: 50%;
             transform: translateX(calc(-20vw - 50px));
             border-radius: 10px;
             overflow: hidden;
+            z-index: 10000;
         }
 
         .artist--images {
@@ -49,7 +55,7 @@
             height: 20vw;
             display: block;
             position: absolute;
-            top: 15vh;
+            top: 0;
             left: 50%;
             transform: translateX(calc(50px));
             text-align: left;
@@ -108,6 +114,10 @@
     button {
         &[data-button="submit"] {
             bottom: 15vh;
+            width: initial;
+            padding: 0 20px;
+            position: absolute;
+            right: 27vw;
         }
     }
 }

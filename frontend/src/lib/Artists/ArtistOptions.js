@@ -26,8 +26,14 @@ export default class ArtistOptions extends MODULECLASS {
         this.buttonEdit = this.target.querySelector('[data-button-edit]');
         this.buttonRead = this.target.querySelector('[data-button-read]');
 
-        this.buttonHide.onclick = () => this.artist.toggleHidden();
-        this.buttonEdit.onclick = () => this.artist.edit();
+        this.buttonHide.onclick = () => {
+            this.buttonHide.blur();
+            this.artist.toggleHidden()
+        };
+        this.buttonEdit.onclick = () => {
+            this.buttonEdit.blur();
+            this.artist.edit();
+        }
         this.buttonRead.onclick = () => this.artist.read();
 
         this.artist.target.append(this.target);

@@ -37,8 +37,14 @@ export default class AlbumOptions extends MODULECLASS {
         this.buttonAudiobook.onclick = () => this.album.toggleType('audiobook');
         this.buttonMusic.onclick = () => this.album.toggleType('music');
         this.buttonPodcast.onclick = () => this.album.toggleType('podcast');
-        this.buttonHide.onclick = () => this.album.toggleHidden();
-        this.buttonEdit.onclick = () => this.album.edit();
+        this.buttonHide.onclick = () => {
+            this.buttonHide.blur();
+            this.album.toggleHidden();
+        }
+        this.buttonEdit.onclick = () => {
+            this.buttonEdit.blur();
+            this.album.edit();
+        }
 
         this.buttonRead.onclick = () => this.album.read();
         this.buttonPlay.onclick = () => this.album.play();
