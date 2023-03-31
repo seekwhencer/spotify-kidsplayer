@@ -46,9 +46,8 @@ export default class Setup extends SetupModel {
                 }
             });
 
-            this.feedFromConfig();
-
             this.getAll().then(() => {
+                this.feedFromConfig();
                 resolve(this);
             });
         });
@@ -62,14 +61,14 @@ export default class Setup extends SetupModel {
         });
     }
 
-    flattenTypes() {
+    /*flattenTypes() {
         this.types = {};
         Object.keys(APP.CONFIG.types).forEach(type => {
             APP.CONFIG.types[type].forEach(prop => {
                 this.types[prop] = type;
             });
         });
-    }
+    }*/
 
     convertTypeRead(value, property) {
         if (value === undefined)
