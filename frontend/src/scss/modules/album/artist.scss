@@ -14,15 +14,12 @@
             border-radius: 25px;
             width: 18vh;
             height: 18vh;
-            box-shadow: 0 0 150px #b500ff;
+            box-shadow: 0 0 250px 50px $color-primary;
             border: 4px solid $color-primary;
             cursor: pointer;
             transition: all ease-in-out 0.4s;
-
-            img {
-                width: 100%;
-                display: block;
-            }
+            background-size: cover;
+            background-position: center;
 
             &:hover {
                 transform-origin: right;
@@ -36,7 +33,7 @@
             display: block;
             overflow: hidden;
             height: 30px;
-            opacity: 0.2;
+            opacity: 0.5;
             margin-top: 10px;
         }
     }

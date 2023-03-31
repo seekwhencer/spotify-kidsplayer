@@ -1,18 +1,19 @@
 $color-pink: rgb(181, 0, 255);
 $color-ocean: #01172f;
 $color-terra: #4c212a;
-$color-leaf: #00635d;
+$color-leaf: #008e86;
 $color-cloud: #0077bd;
-$color-splash: #446df6;
+$color-splash: #126df6;
 $color-warn: #770000;
 
-$color-primary: $color-pink;
+$color-primary: $color-leaf;
 $color-text: #999;
 $color-bg: #ddd;
 
 // dark, bright
 $color-primary-dark: desaturate(darken($color-primary, 10%), 10%);
 $color-primary-darkest: desaturate(darken($color-primary, 30%), 5%);
+$color-primary-blackhole: desaturate(darken($color-primary, 50%), 5%);
 $color-primary-bright: desaturate(lighten($color-primary, 3%), 3%);
 
 $color-ocean-dark: desaturate(darken($color-ocean, 5%), 5%);
@@ -31,6 +32,7 @@ $color-cloud-dark: desaturate(darken($color-cloud, 5%), 5%);
 $color-cloud-bright: desaturate(lighten($color-cloud, 5%), 5%);
 
 $color-splash-dark: desaturate(darken($color-splash, 3%), 3%);
+$color-splash-blackhole: desaturate(darken($color-splash, 50%), 5%);
 $color-splash-bright: desaturate(lighten($color-splash, 3%), 3%);
 
 

@@ -119,13 +119,22 @@ export default class Player extends MODULECLASS {
 
     drawAlbum() {
         this.targets.albumName.replaceChildren(this.album.name);
-        this.targets.albumImage.src = `${APP.mediaBaseUrl}/${this.album.image}.jpg`;
+
+        const url = encodeURI(`${APP.mediaBaseUrl}/${this.album.image}.jpg`);
+        this.targets.albumImage.removeAttribute('style');
+        this.targets.albumImage.setAttribute('style', `background-image:url(${url})`);
+
+        //this.targets.albumImage.src = `${APP.mediaBaseUrl}/${this.album.image}.jpg`;
         this.targets.albumImage.onclick = () => this.app.tabs.album.show(this.album.id);
     }
 
     drawArtist() {
         this.targets.artistName.replaceChildren(this.artist.name);
-        this.targets.artistImage.src = `${APP.mediaBaseUrl}/${this.artist.image}.jpg`;
+
+        const url = encodeURI(`${APP.mediaBaseUrl}/${this.artist.image}.jpg`);
+        this.targets.artistImage.removeAttribute('style');
+        this.targets.artistImage.setAttribute('style', `background-image:url(${url})`);
+
         this.targets.artistImage.onclick = () => this.app.tabs.artist.show(this.artist.id);
     }
 

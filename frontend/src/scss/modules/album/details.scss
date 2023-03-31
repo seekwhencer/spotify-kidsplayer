@@ -4,8 +4,9 @@
         position: fixed;
         right: 20vw;
         top: 11vh;
-        width: 45vh;
-        height: 45vh;
+        width: 50vh;
+        height: 50vh;
+        perspective: 1000px;
 
         .album--image {
             text-align: center;
@@ -13,12 +14,11 @@
             overflow: hidden;
             border-radius: 25px;
             height: 100%;
-            box-shadow: 0 0 250px #b500ff;
-
-            img {
-                width: 100%;
-                display: block;
-            }
+            box-shadow: 0 0 250px 50px $color-primary;
+            background-size: cover;
+            background-position: center;
+            transform-origin: left center;
+            transform: rotateY(-15deg) rotateX(3deg);
         }
 
         .album--name {
@@ -26,9 +26,11 @@
             display: block;
             overflow: hidden;
             width: 100%;
-            opacity: 0.2;
+            opacity: 0.5;
             margin-top: 10px;
             font-size: $fs-xs;
+            transform-origin: left center;
+            transform: rotateY(-15deg) rotateX(3deg);
         }
     }
 }

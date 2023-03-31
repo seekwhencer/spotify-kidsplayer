@@ -2,8 +2,8 @@
 
     &--details {
         position: fixed;
-        left: 1vw;
-        top: 10px;
+        left: 70px;
+        top: 200px;
 
         .artist--image {
             text-align: center;
@@ -13,11 +13,9 @@
             width: 14vw;
             height: 14vw;
             margin-top: 20px;
+            background-size: cover;
+            background-position: center;
 
-            img {
-                width: 100%;
-                display: block;
-            }
         }
 
         .artist--name {
@@ -26,6 +24,8 @@
             width: 14vw;
             overflow: hidden;
             height: 30px;
+            opacity: 0.5;
+            margin-top: 20px;
         }
     }
 }
