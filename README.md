@@ -11,8 +11,6 @@
 git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 ```
 
-> BEWARE: actually it's in development ! 
-
 ## Ingredients
 - [Raspberry Pi 4](https://geizhals.de/raspberry-pi-4-modell-b-v54547.html)
 - [Desktop Image](https://www.raspberrypi.com/software/operating-systems/)
