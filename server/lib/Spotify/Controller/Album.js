@@ -91,16 +91,31 @@ export default class SpotifyAlbum extends SpotifyController {
     }
 
     update(albumId, params) {
+        let album = false;
+
+        LOG('>>>>>>>>>>>', albumId, params, '');
+
         return this.model
             .getById(albumId)
-            .then(album => {
-                if (!album)
+            .then(data => {
+                if (!data)
                     return Promise.resolve(false);
 
+                album = data;
+                album.name = params.name;
                 return this.model.update(albumId, {
                     name: params.name,
                     dt_update: nowDateTime()
                 });
+            })
+            .then(updated => {
+                if (!params.posterImageId)
+                    return Promise.resolve(false);
+
+                return this.storage.image.setPoster('album', params.posterImageId);
+            })
+            .then(updated => {
+                return Promise.resolve(album);
             });
     }
 
@@ -182,6 +197,10 @@ export default class SpotifyAlbum extends SpotifyController {
             })
             .then(tracks => {
                 album.tracks = tracks;
+                return this.storage.image.getBy('album_id', album.id, 'album_image');
+            })
+            .then(images => {
+                album.images = images;
                 return Promise.resolve(album);
             });
     }
@@ -300,6 +319,71 @@ export default class SpotifyAlbum extends SpotifyController {
             });
 
 
+    }
+
+    addImage(albumId, params) {
+
+        let imageHash = false;
+        let album = false;
+        let imageData = false;
+
+        return this.model
+            .getById(albumId)
+            .then(data => {
+                if (!data)
+                    return Promise.resolve(false);
+
+                album = data;
+                return Promise.resolve(true);
+            })
+            .then(albumExists => {
+                if (!albumExists)
+                    return Promise.resolve(false);
+
+                if (params.imageUrl) {
+                    imageHash = this.createHash(`${album.id}${params.imageUrl}`);
+                    return this.storage.image.getBy('hash', imageHash, 'album_image');
+                }
+
+            }).then(imageExists => {
+                if (!imageExists)
+                    return Promise.resolve(false);
+
+                if (imageExists[0])
+                    return Promise.resolve(false);
+
+                return this.storage.image
+                    .downloadImage(params.imageUrl, imageHash)
+                    .then(() => Promise.resolve(true))
+                    .catch(err => {
+                        LOG(this.label, 'IMAGE DOWNLOAD ERROR', err.code, ':', err.input);
+                        return Promise.resolve(false);
+                    });
+            })
+            .then(downloaded => {
+                LOG(this.label, 'WAS DOWNLOADED', downloaded);
+
+                if (!downloaded)
+                    return Promise.resolve(false);
+
+                imageData = {
+                    album_id: album.id,
+                    url: params.imageUrl,
+                    height: 640,
+                    width: 640,
+                    hash: imageHash,
+                    is_poster: 0
+                };
+
+                return this.storage.image.create(imageData, 'album');
+            })
+            .then(id => {
+                if (!id)
+                    return Promise.resolve(false);
+
+                imageData.id = id;
+                return Promise.resolve(imageData);
+            });
     }
 
     // ---------------

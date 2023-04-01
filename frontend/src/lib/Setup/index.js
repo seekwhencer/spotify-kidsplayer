@@ -88,7 +88,7 @@ export default class Setup extends Tab {
             this.navi.summary();
         } else {
             this.lock = new SetupLock(this);
-            //this.lock.unlock(); // @TODO remove it!
+            this.lock.unlock(); // @TODO remove it!
         }
     }
 

@@ -143,6 +143,19 @@ export default class extends Route {
             });
         });
 
+        this.router.post('/album/:id/image/add', this.jsonParser);
+        this.router.post('/album/:id/image/add', (req, res) => {
+            const albumId = req.params.id;
+            const params = req.body;
+
+            APP.SPOTIFY.addAlbumImage(albumId, params).then(album => {
+                res.json({
+                    message: 'add image for album',
+                    data: album
+                });
+            });
+        });
+
 
         return this.router;
     }

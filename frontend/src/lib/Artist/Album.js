@@ -1,10 +1,13 @@
 import AlbumTemplate from './Templates/album.html';
 import AlbumOptions from './AlbumOptions.js';
+import AlbumModalEdit from './AlbumModalEdit.js';
+
 
 export default class Album extends MODULECLASS {
     constructor(parent, options) {
         super(parent);
         this.label = 'ARTIST ALBUM';
+        this.artist = parent;
 
         this.data = options;
         this.id = options.id;
@@ -20,9 +23,6 @@ export default class Album extends MODULECLASS {
 
         this.image = this.target.querySelector('[data-artist-image]');
         this.image.onclick = () => this.select();
-        //this.image.onload = () => this.target.classList.add('loaded');
-        //this.image.onerror = () => this.target.classList.add('hidden');
-
         this.albumOptions = new AlbumOptions(this);
     }
 
@@ -77,7 +77,8 @@ export default class Album extends MODULECLASS {
     }
 
     edit() {
-
+        this.modal = new AlbumModalEdit(this);
+        this.modal.edit();
     }
 
     read() {
@@ -103,4 +104,5 @@ export default class Album extends MODULECLASS {
     showAdmin() {
         this.albumOptions.showAdmin();
     }
+
 }

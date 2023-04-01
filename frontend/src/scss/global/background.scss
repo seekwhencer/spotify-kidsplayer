@@ -8,4 +8,5 @@
     filter: blur(3px) saturate(0) contrast(100%);
     opacity: 0.3;
     mix-blend-mode: overlay;
+    transform: rotateY(180deg);
 }

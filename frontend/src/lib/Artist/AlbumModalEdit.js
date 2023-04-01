@@ -1,65 +1,20 @@
-import ArtistTemplate from "./Templates/artist.html";
-import ArtistOptions from "./ArtistOptions.js";
+import ModalEditBody from "./Templates/album-edit.html";
 import Modal from "../Modal/index.js";
-import ModalEditBody from "./Templates/artist-edit.html";
 
-export default class Artists extends MODULECLASS {
+export default class AlbumModalEdit extends MODULECLASS {
     constructor(parent, options) {
         super(parent);
-        this.label = 'ARTIST'
 
-        this.data = options;
-        this.id = this.data.id;
+        this.label = 'ARTIST ALBUM MODAL EDIT'
+        this.album = parent;
 
-        this.target = this.toDOM(ArtistTemplate({
-            scope: this.data
-        }));
-        this.image = this.target.querySelector('[data-artist-image]');
-        this.image.onclick = () => this.select();
-
-        this.options = new ArtistOptions(this);
-
-    }
-
-    select() {
-        LOG(this.label, this.id);
-        this.app.tabs.artist.show(this.id);
-    }
-
-    highlight() {
-        this.target.classList.add('playing');
-    }
-
-    blur() {
-        this.target.classList.remove('playing');
-    }
-
-    show() {
-        this.target.classList.remove('hidden');
-    }
-
-    hide() {
-        this.target.classList.add('hidden');
-    }
-
-    toggleHidden() {
-        LOG(this.label, 'TOGGLE VISIBILITY FOR ID', this.id);
-        return this.fetch(`${this.app.urlBase}/artist/${this.id}/toggle-visibility`).then(response => {
-            this.data = response.data;
-            if (this.data.is_hidden === 1) {
-                this.options.buttonHide.classList.add('active');
-                this.target.classList.add('disabled');
-            } else {
-                this.options.buttonHide.classList.remove('active');
-                this.target.classList.remove('disabled');
-            }
-        });
+        options ? this.options = options : this.options = {};
     }
 
     edit() {
-        LOG(this.label, 'EDIT', this.id, this.data.name);
+        LOG(this.label, 'EDIT', this.album.id, this.album.data.name);
 
-        return this.fetch(`${this.app.urlBase}/artist/${this.id}`).then(response => {
+        return this.fetch(`${this.app.urlBase}/album/${this.album.id}`).then(response => {
 
             const modalBody = toDOM(ModalEditBody({
                 scope: response.data
@@ -68,7 +23,7 @@ export default class Artists extends MODULECLASS {
             this.modal = new Modal(this, {
                 ...response.data,
 
-                title: _T("Edit artist"),
+                title: _T("Edit album"),
 
                 // if true, then call "this.modal.open()" to show it
                 silent: true,
@@ -88,7 +43,7 @@ export default class Artists extends MODULECLASS {
     }
 
     openModal() {
-        LOG(this.label, 'MODAL OPENED FINALLY');
+        LOG(this.label, 'OPENED FINALLY');
 
         // stuff when the modal is open
         const inputElement = this.modal.target.querySelector('[data-input="name"]');
@@ -100,8 +55,8 @@ export default class Artists extends MODULECLASS {
         downloadButton.onclick = () => this.downloadImage();
 
         // images
-        const imageElements = this.modal.target.querySelectorAll('[data-artist-image]');
-        imageElements.forEach(image => image.onclick = () => this.setPoster(image.dataset.artistImage));
+        const imageElements = this.modal.target.querySelectorAll('[data-album-image]');
+        imageElements.forEach(image => image.onclick = () => this.setPoster(image.dataset.albumImage));
     }
 
     submitModal() {
@@ -109,13 +64,12 @@ export default class Artists extends MODULECLASS {
             LOG(this.label, 'SUBMIT');
 
             const inputName = this.modal.target.querySelector('[data-input="name"]');
-
             const postData = {
                 name: inputName.value,
                 posterImageId: this.posterImageId
             }
 
-            return this.fetch(`${this.app.urlBase}/artist/update/${this.id}`, {
+            return this.fetch(`${this.app.urlBase}/album/update/${this.album.id}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
@@ -130,7 +84,7 @@ export default class Artists extends MODULECLASS {
 
     closeModal() {
         this.removeModal();
-        this.parent.show();
+        this.app.tabs.artist.refresh();
     }
 
     removeModal() {
@@ -139,12 +93,12 @@ export default class Artists extends MODULECLASS {
 
     downloadImage() {
         const inputImageUrl = this.modal.target.querySelector('[data-input="image_url"]');
-        const imagesElement = this.modal.target.querySelector('[data-artist-images]');
+        const imagesElement = this.modal.target.querySelector('[data-album-images]');
         const postData = {
             imageUrl: inputImageUrl.value
         }
 
-        return this.fetch(`${this.app.urlBase}/artist/${this.id}/image/add`, {
+        return this.fetch(`${this.app.urlBase}/album/${this.album.id}/image/add`, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json'
@@ -163,8 +117,8 @@ export default class Artists extends MODULECLASS {
 
                 // @TODO this is dirty ... use a template
                 this.modal.options.images.push(imageData);
-                imagesElement.append(toDOM(`<div data-artist-image="${imageData.id}" class="artist--images__image" style="background-image: url(${APP.mediaBaseUrl}/${imageData.hash}.jpg)"></div>`));
-                imagesElement.querySelector(`[data-artist-image="${imageData.id}"]`).onclick = () => this.setPoster(imageData.id);
+                imagesElement.append(toDOM(`<div data-album-image="${imageData.id}" class="album--images__image" style="background-image: url(${APP.mediaBaseUrl}/${imageData.hash}.jpg)"></div>`));
+                imagesElement.querySelector(`[data-album-image="${imageData.id}"]`).onclick = () => this.setPoster(imageData.id);
             });
     }
 
@@ -173,22 +127,10 @@ export default class Artists extends MODULECLASS {
         this.posterImageId = imageId;
 
         const image = this.modal.options.images.filter(i => i.id === parseInt(imageId))[0];
-        const posterImage = this.modal.target.querySelector('[data-artist-poster-image]');
+        const posterImage = this.modal.target.querySelector('[data-album-poster-image]');
         posterImage.removeAttribute('style');
         const url = encodeURI(`${APP.mediaBaseUrl}/${image.hash}.jpg`);
         posterImage.setAttribute('style', `background-image:url(${url})`);
-    }
-
-    read() {
-        this.app.speech.speak(this.data.name);
-    }
-
-    hideAdmin() {
-        this.options.hideAdmin();
-    }
-
-    showAdmin() {
-        this.options.showAdmin();
     }
 
 }

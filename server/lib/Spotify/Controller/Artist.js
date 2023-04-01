@@ -208,14 +208,6 @@ export default class SpotifyArtist extends SpotifyController {
             });
     }
 
-    setPosterImage(artistId, params) {
-        //@TODO set all other images is_poster = 0
-        //@TODO set the image to is_poster = 1
-
-        return Promise.resolve({artist_id: artistId, ...params});
-    }
-
-
     // ---------------
 
     get album() {

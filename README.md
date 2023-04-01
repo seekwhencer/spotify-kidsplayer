@@ -55,16 +55,25 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 - clean database endpoint at `api/clean` - that drops all empty and lost artists, albums and tracks
 - edit artist (name, image)
 - start playing album from album overview
+- translation / localisation
 
 ## Roadmap
 
-- translation
-- exit parent mode in setup tab
+### Todo
+
 - edit album (name, image, artist)
+- exit parent mode in setup tab
+- loading indicator when adding artist (future request: with one by one output via websockets)
+- one play button on album view
+
+### Feature requests
+
 - reorder (change position) the albums per drag and drop
 - album view with other albums as list or prev / next image
-- loading indicator when adding artist (future request: with one by one output via websockets)
 - drop artist recursive with images
 - drop album recursive with images
+- bundling the app as binary (actually not working, because
 
-> At the moment: it is a working pre alpha ;)
+### Bugs / Refactoring
+
+- ...

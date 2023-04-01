@@ -192,7 +192,7 @@ export default class StorageImage extends StorageClass {
 
                 const query = `UPDATE ${table}_image
                              SET is_poster = 0
-                             WHERE ${table}_id = ${posterImage.artist_id}`;
+                             WHERE ${table}_id = ${posterImage[`${table}_id`]}`;
 
                 return this.query(query).then(() => {
                     const query = `UPDATE ${table}_image

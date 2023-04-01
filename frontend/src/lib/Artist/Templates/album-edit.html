@@ -1,0 +1,20 @@
+<form>
+    <div class="album--data">
+        <div class="album--image" data-album-poster-image style="background-image: url(${APP.mediaBaseUrl}/${image}.jpg)"></div>
+        <div class="album--images" data-album-images>
+            ${images.map(img => `
+            <div data-album-image="${img.id}" class="album--images__image"
+                 style="background-image: url(${APP.mediaBaseUrl}/${img.hash}.jpg)"></div>
+            `).join('')}
+        </div>
+    </div>
+    <div class="album--input__name">
+        <input type="text" data-input="name" value="${name}" autocomplete="off"
+               placeholder="Name">
+    </div>
+    <div class="album--input__image-url">
+        <input type="text" data-input="image_url" value="" autocomplete="off"
+               placeholder="${_T('Image url placeholder')}">
+        <button data-button="download" type="button">${_T('Download')}</button>
+    </div>
+</form>

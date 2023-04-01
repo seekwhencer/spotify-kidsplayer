@@ -160,6 +160,10 @@ export default class Spotify extends MODULECLASS {
         return this.album.getOne(id);
     }
 
+    updateAlbum(albumId, data) {
+        return this.album.update(albumId, data);
+    }
+
     setAlbumType(id, type) {
         return this.album.setType(id, type);
     }
@@ -186,5 +190,9 @@ export default class Spotify extends MODULECLASS {
 
     setArtistPosterImage(artistId, params) {
         return this.artist.setPosterImage(artistId, params);
+    }
+
+    addAlbumImage(albumId, data) {
+        return this.album.addImage(albumId, data);
     }
 }

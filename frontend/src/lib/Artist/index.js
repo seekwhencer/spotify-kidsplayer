@@ -47,6 +47,10 @@ export default class Artist extends Tab {
         super.hide();
     }
 
+    refresh() {
+        this.getArtist(this.data.id).then(() => this.draw(true));
+    }
+
     getArtist(id) {
         return this.fetch(`${this.app.urlBase}/artist/${id}`).then(raw => {
             this.raw = raw.data;

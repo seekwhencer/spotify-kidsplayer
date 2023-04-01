@@ -1,24 +1,34 @@
 import webpack from 'webpack';
 import path from "path";
 
+import TerserPlugin from "terser-webpack-plugin";
+
+console.log();
+console.log('... BUNDLING ...');
+console.log();
+
 const config = {
+
     target: "node",
     mode: 'production',
     entry: './index.js',
+
     output: {
         filename: 'dist/app.js',
         path: path.resolve(process.env.PWD),
         publicPath: '/',
     },
+
     node: {
         __dirname: false,
         __filename: false
     },
+
     experiments: {
         topLevelAwait: true,
     },
+
     plugins: [
-        //new webpack.DefinePlugin({ "global.GENTLY": false }), // hack for formidable
         {
             apply: (compiler) => {
                 compiler.hooks.afterEmit.tap('Complete', (compilation) => {
@@ -32,7 +42,7 @@ const config = {
         rules: [
             {
                 test: /\.js$/,
-                exclude: /(node_modules|bower_components)/,
+                exclude: /(node_modules)/,
                 use: {
                     loader: "babel-loader",
                     options: {
