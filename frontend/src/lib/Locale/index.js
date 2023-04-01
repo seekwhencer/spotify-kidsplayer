@@ -18,4 +18,8 @@ export default class Locale extends MODULECLASS {
         window._L = (to, value) => this.i18n.l(to, value);
 
     }
+
+    setLocale(key) {
+        this.i18n.locale = key;
+    }
 }

@@ -26,6 +26,9 @@ export default class Setup extends Tab {
         this.on('property', (prop, value) => this.setProp(prop, value));
         this.on('parent-mode', parentMode => this.parent.emit('parent-mode', parentMode));
 
+        // events per key ;)
+        this.on('UI_LOCALE', value => this.app.locale.setLocale(value));
+
         // all (!) setup properties
         this.dataSource = {};
         this.data = new Proxy(this.dataSource, {
@@ -39,6 +42,7 @@ export default class Setup extends Tab {
                 LOG(this.label, 'PROP SET', prop, value);
                 target[prop] = value;
                 this.emit('property', prop, value);
+                this.emit(prop, value);
                 return true;
             }
         });
@@ -80,6 +84,7 @@ export default class Setup extends Tab {
     draw() {
         this.app.background.remove();
         this.app.navigation.disableFilter();
+        this.app.locale.setLocale(this.data.UI_LOCALE);
 
         if (this.parentMode === true) {
             this.groups = this.flattenGroups();
