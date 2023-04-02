@@ -30,6 +30,9 @@ export default class Setup extends SetupModel {
                     // emit prop event
                     this.emit(prop, value);
 
+                    // emit prop group event
+                    this.emit(prop.split('_')[0], prop, value);
+
                     // override global config vars
                     global[prop] = this.convertTypeRead(target[prop], prop);
 
@@ -65,6 +68,8 @@ export default class Setup extends SetupModel {
         this.on('SPOTIFY_ID', () => APP.SPOTIFY.recreateApi());
         this.on('SPOTIFY_SECRET', () => APP.SPOTIFY.recreateApi());
         this.on('SPOTIFY_REDIRECT_URI', () => APP.SPOTIFY.recreateApi());
+
+        this.on('SPOTIFYD', (prop, value) => APP.SPOTIFYD.writeConfig());
     }
 
     feedFromConfig() {

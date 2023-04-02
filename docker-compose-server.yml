@@ -20,7 +20,6 @@ services:
     user: root
     ports:
       - "${SERVER_PORT}:${SERVER_PORT}"
-    #network_mode: host
     extra_hosts:
       - "${MQTT_HOST}:${MQTT_HOST_IP}"
     volumes:

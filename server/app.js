@@ -5,6 +5,7 @@ import Setup from './lib/Setup/index.js';
 import WebServer from './lib/Server/index.js';
 import Mqtt from './lib/Mqtt/index.js';
 import Spotify from './lib/Spotify/index.js';
+import Spotifyd from './lib/Spotifyd/index.js';
 import TTS from './lib/TextToSpeech/index.js';
 
 export default class App extends MODULECLASS {
@@ -36,6 +37,10 @@ export default class App extends MODULECLASS {
             })
             .then(spotify => {
                 global.APP.SPOTIFY = spotify;
+                return new Spotifyd(this);
+            })
+            .then(spotifyd => {
+                global.APP.SPOTIFYD = spotifyd;
                 return Promise.resolve(this);
             });
     }

@@ -20,6 +20,7 @@ export default class SetupForm extends MODULECLASS {
         this.parent.targets.form.replaceChildren(this.target);
 
         const props = this.getProps(group);
+
         props.forEach(prop => {
             const input = this.toDOM(FormElementInputTemplate({
                 scope: {
@@ -39,7 +40,7 @@ export default class SetupForm extends MODULECLASS {
 
     getProps(group) {
         if (group !== 'GLOBAL')
-            return this.parent.allowedProps.filter(g => g.substring(0, group.length) === group);
+            return this.parent.allowedProps.filter(g => g.split('_')[0] === group);
 
         return this.parent.allowedProps.filter(g => g.split('_').length === 1);
     }
@@ -150,11 +151,11 @@ export default class SetupForm extends MODULECLASS {
             this.addArtistButton.disabled = false;
             this.addArtistInput.value = '';
 
-            if(!response.data)
-               return;
+            if (!response.data)
+                return;
 
-            if(!response.data.name)
-               return;
+            if (!response.data.name)
+                return;
 
             this.addArtistComplete.append(response.data.name);
         });

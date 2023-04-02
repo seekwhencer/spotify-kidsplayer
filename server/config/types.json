@@ -1,13 +1,16 @@
 {
   "boolean": [
     "DEBUG",
-    "MQTT_ENABLE"
+    "MQTT_ENABLE",
+    "SPOTIFYD_VOLUME_NORMALISATION"
   ],
   "int": [
     "VERBOSE",
     "SERVER_PORT",
     "MQTT_PORT",
     "UI_ARTISTS_PER_ROW",
-    "UI_ALBUMS_PER_ROW"
+    "UI_ALBUMS_PER_ROW",
+    "SPOTIFYD_BITRATE",
+    "SPOTIFYD_NORMALISATION_PREGAIN"
   ]
 }
