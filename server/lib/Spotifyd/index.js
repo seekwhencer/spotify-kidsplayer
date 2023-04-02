@@ -73,7 +73,9 @@ export default class Spotifyd extends MODULECLASS {
             process.stdout.on('end', () => resolve(data));
         }).then(data => {
             LOG(this.label, 'RESTARTED', data);
-            return Promise.resolve(true);
+
+            // wait because the daemon must start ...
+            return new Promise((resolve, reject) => setTimeout(() => resolve(), 2000));
         });
     }
 

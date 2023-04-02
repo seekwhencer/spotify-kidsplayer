@@ -52,8 +52,8 @@ export default class Spotify extends MODULECLASS {
              * Events
              */
             this.on('auth', () => {
-                this
-                    .getDevices()
+                APP.SPOTIFYD.restart()
+                    .then(() => this.getDevices())
                     .then((() => this.useDevice()))
                     .then((() => this.shuffle()));
             });
@@ -105,7 +105,7 @@ export default class Spotify extends MODULECLASS {
             .then(data => {
                 this.availableDevices = data.body.devices;
                 LOG(this.label, 'DEVICES', data.body.devices, '');
-                return this.useDevice();
+                return Promise.resolve();
             })
             .catch(error => {
                 if (!error)
@@ -124,6 +124,9 @@ export default class Spotify extends MODULECLASS {
 
         if (!this.device)
             return Promise.resolve(false);
+
+        // set the device id
+        this.config.deviceId = this.device.id;
 
         return this.api
             .transferMyPlayback([this.device.id])

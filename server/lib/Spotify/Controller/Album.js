@@ -93,8 +93,6 @@ export default class SpotifyAlbum extends SpotifyController {
     update(albumId, params) {
         let album = false;
 
-        LOG('>>>>>>>>>>>', albumId, params, '');
-
         return this.model
             .getById(albumId)
             .then(data => {
