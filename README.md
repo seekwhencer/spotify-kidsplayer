@@ -51,6 +51,8 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 - start playing album from album overview
 - translation / localisation
 - configure spotifyd per setup ui
+- icons speak page (home)
+- restarting spotifyd on server start
 
 ## Roadmap
 
@@ -59,9 +61,6 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 - exit parent mode in setup tab
 - loading indicator when adding artist (future request: with one by one output via websockets)
 - one play button on album view
-- home screen
-- icons speak page
-- restart spotifyd per ui
 
 ### Feature requests
 

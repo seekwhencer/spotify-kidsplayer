@@ -1,0 +1,7 @@
+<div class="home" data-tab="home">
+    <div class="home--buttons">
+        ${ Object.keys(icons).map(icon => `
+        <button type="button" class="home--buttons__button" data-button="${icon}">${icons[icon]()}</button>
+        `).join('') }
+    </div>
+</div>
