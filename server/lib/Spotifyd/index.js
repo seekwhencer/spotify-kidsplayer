@@ -1,5 +1,5 @@
 import {writeFile} from 'node:fs';
-
+import {spawn} from 'child_process';
 
 export default class Spotifyd extends MODULECLASS {
     constructor(parent, options) {
@@ -53,12 +53,28 @@ export default class Spotifyd extends MODULECLASS {
 
             if (type === 'int' || type === 'boolean')
                 configFile += `${prop} = ${this.config[prop]}` + "\n";
-
         });
 
-        return writeFile(this.filePath, configFile, (err) => {
+        return writeFile(this.filePath, configFile, err => {
             if (err) throw err;
             LOG(this.label, 'CONFIG HAS BEEN SAVED');
+            this.restart();
         });
     }
+
+    restart() {
+        return new Promise((resolve, reject) => {
+            const params = ['restart', 'kidsplayer_spotifyd'];
+            LOG(this.label, 'COMMAND', '/usr/bin/docker', JSON.stringify(params));
+
+            let data = '';
+            const process = spawn('/usr/bin/docker', params);
+            process.stdout.on('data', chunk => data += chunk);
+            process.stdout.on('end', () => resolve(data));
+        }).then(data => {
+            LOG(this.label, 'RESTARTED', data);
+            return Promise.resolve(true);
+        });
+    }
+
 }

@@ -50,6 +50,7 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 - edit album (name, image, artist)
 - start playing album from album overview
 - translation / localisation
+- configure spotifyd per setup ui
 
 ## Roadmap
 
@@ -60,6 +61,7 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 - one play button on album view
 - home screen
 - icons speak page
+- restart spotifyd per ui
 
 ### Feature requests
 
