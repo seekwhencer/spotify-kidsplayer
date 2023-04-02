@@ -53,6 +53,15 @@ This url must not be reachable for spotify. The url must be reachable four you i
   
 The **Redirect URI** can be changed per in app setup or per config file as `SPOTIFY_REDIRECT_URI`.
 
+When you created the app, just copy the **Client ID** and **Client Secret** in your `server/config/default.conf`
+
+```
+SPOTIFY_CLIENT_ID=
+SPOTIFY_CLIENT_SECRET=
+```
+
+Now restart the server app.
+
 > Now authenticate with the api to create an access and refresh token.  
 > You have to be logged in here: https://developer.spotify.com  
 > Open in your browser:

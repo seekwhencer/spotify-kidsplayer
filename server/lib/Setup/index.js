@@ -11,6 +11,8 @@ export default class Setup extends SetupModel {
             this.table = 'setup';
             this.types = APP.CONFIG.types;
 
+            this.registerPropEvents();
+
             /**
              * if this.data.PROPERTY will be set, update setup DB automatically
              */
@@ -24,6 +26,9 @@ export default class Setup extends SetupModel {
 
                     // store the db converted value
                     target[prop] = valueWrite;
+
+                    // emit prop event
+                    this.emit(prop, value);
 
                     // override global config vars
                     global[prop] = this.convertTypeRead(target[prop], prop);
@@ -51,7 +56,15 @@ export default class Setup extends SetupModel {
                 resolve(this);
             });
         });
+    }
 
+    registerPropEvents() {
+        // testing
+        this.on('UI_LOCALE', () => APP.SPOTIFY.recreateApi());
+
+        this.on('SPOTIFY_ID', () => APP.SPOTIFY.recreateApi());
+        this.on('SPOTIFY_SECRET', () => APP.SPOTIFY.recreateApi());
+        this.on('SPOTIFY_REDIRECT_URI', () => APP.SPOTIFY.recreateApi());
     }
 
     feedFromConfig() {
@@ -60,15 +73,6 @@ export default class Setup extends SetupModel {
                 this.data[prop] = APP.CONFIG.configData[prop];
         });
     }
-
-    /*flattenTypes() {
-        this.types = {};
-        Object.keys(APP.CONFIG.types).forEach(type => {
-            APP.CONFIG.types[type].forEach(prop => {
-                this.types[prop] = type;
-            });
-        });
-    }*/
 
     convertTypeRead(value, property) {
         if (value === undefined)

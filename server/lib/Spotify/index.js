@@ -1,5 +1,6 @@
 import SpotifyWebApi from 'spotify-web-api-node';
 import SpotifyWebApiServer from 'spotify-web-api-node/src/server-methods.js';
+
 SpotifyWebApi._addMethods = function (methods) {
     for (let i in methods) {
         if (methods.hasOwnProperty(i)) {
@@ -61,12 +62,7 @@ export default class Spotify extends MODULECLASS {
                 this.auth.emit('access-token-expired');
             });
 
-            // the api
-            this.api = new SpotifyWebApi({
-                clientId: this.config.clientId,
-                clientSecret: this.config.clientSecret,
-                redirectUri: this.config.redirectUri,
-            });
+            this.createApi();
 
             // storage
             this.storage = new SpotifyStorage(this);
@@ -87,6 +83,22 @@ export default class Spotify extends MODULECLASS {
         });
     }
 
+    createApi() {
+        LOG(this.label, 'CREATE API');
+
+        // the api
+        this.api = new SpotifyWebApi({
+            clientId: this.config.clientId,
+            clientSecret: this.config.clientSecret,
+            redirectUri: this.config.redirectUri,
+        });
+    }
+
+    recreateApi() {
+        this.createApi();
+        new SpotifyAuth(this).then(auth => this.auth = auth);
+    }
+
     getDevices() {
         return this.api
             .getMyDevices()
@@ -96,10 +108,10 @@ export default class Spotify extends MODULECLASS {
                 return this.useDevice();
             })
             .catch(error => {
-                if(!error)
+                if (!error)
                     return;
 
-                if(!error.body.error)
+                if (!error.body.error)
                     return;
 
                 if (error.body.error.status === 401)
@@ -180,7 +192,7 @@ export default class Spotify extends MODULECLASS {
         return this.filter.save(artistId, data);
     }
 
-    toggleArtistHidden(id){
+    toggleArtistHidden(id) {
         return this.artist.toggleHidden(id);
     }
 
