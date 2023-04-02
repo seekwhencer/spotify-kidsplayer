@@ -137,7 +137,7 @@ export default class SpotifyAuth extends MODULECLASS {
     receiveCode(code) {
         this.session.code = code;
 
-        this
+        return this
             .grantCode()
             .then(() => {
                 if (this.session.accessToken && this.session.refreshToken) {
