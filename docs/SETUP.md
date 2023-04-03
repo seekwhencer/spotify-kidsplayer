@@ -14,25 +14,24 @@ chmod +x ./setup.sh
 - create persistent docker volumes
 
 ## Config files
-### `.env`
+- ### `.env`
+Used by docker-compose, bash scripts and the server app.
 ```bash
 cp .env.example .env
 nano .env
 ````
 
-### `server/config/default.conf`
+- ### `server/config/default.conf`
+Used by the server app.
 ```bash
 cp server/config/example.conf server/config/default.conf
 nano server/config/default.conf
 ```
 > All properties from the `config/default.conf` can be changed with the in-app setup and will be stored in the database.
 
-
-### `spotifyd/spotifyd.conf`
-```bash
-cp spotifyd/spotifyd.default.conf spotifyd/spotifyd.conf
-nano spotifyd/spotifyd.conf
-```
+- ### `spotifyd/spotifyd.conf`
+This file will be generated.
+Just edit the `server/config/default.conf`
 
 ## Database
 
