@@ -38,29 +38,30 @@ nano spotifyd/spotifyd.conf
 
 [Database Setup](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/docs/DATABASE.md)
 
-## Spotify Developer
+## Spotify
 
-To use the spotify API, login here:
-### https://developer.spotify.com
-
+- Login here: https://developer.spotify.com
 - Create app
-- **Redirect URI** is:
-  
-### `http://kidsplayer:3000/api/auth/code`
+- **Redirect URI** is: 
+    ```
+    http://kidsplayer:3000/api/auth/code
+    ```
 
-Replace the `kidsplayer` hostname with your own hostname of your raspberry pi. 
-This url must not be reachable for spotify. The url must be reachable four you in the browser.
+- Replace the `kidsplayer` hostname with your own hostname of your raspberry pi. 
+  This url must not be reachable for spotify. The url must be reachable four you in the browser.
   
 The **Redirect URI** can be changed per in app setup or per config file as `SPOTIFY_REDIRECT_URI`.
 
 When you created the app, just copy the **Client ID** and **Client Secret** in your `server/config/default.conf`
 
 ```
-SPOTIFY_CLIENT_ID=
-SPOTIFY_CLIENT_SECRET=
+SPOTIFY_ID=
+SPOTIFY_SECRET=
 ```
 
-Now restart the server app.
+Now restart the server app. After that, you can change the credentials with the in app setup.
+
+![alt text](../../master/docs/screenshots/setup-spotify.png?raw=true "Screenshot Setup spotify")
 
 > Now authenticate with the api to create an access and refresh token.  
 > You have to be logged in here: https://developer.spotify.com  
