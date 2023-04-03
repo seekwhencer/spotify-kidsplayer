@@ -1,6 +1,6 @@
 import './Global/Globals.js';
 
-import Locale from'./Locale/index.js';
+import Locale from './Locale/index.js';
 import * as Icons from './Icons/index.js';
 
 import Navigation from './Navigation/index.js';
@@ -40,7 +40,10 @@ export default class Main extends MODULECLASS {
             LOG(this.label, 'API BASE URL:', this.urlBase);
 
             // this class
-            this.on('ready', () => resolve(this));
+            this.on('ready', () => {
+                this.showTab('artists');
+                resolve(this)
+            });
 
             // on a tab change
             this.on('tab', tab => {
