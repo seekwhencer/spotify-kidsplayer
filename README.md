@@ -22,6 +22,7 @@ git clone https://github.com/seekwhencer/spotify-kidsplayer.git
 ## Docs
 - [Setup](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/docs/SETUP.md)
 - [Database](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/docs/DATABASE.md)
+- [spotify](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/docs/SPOTIFY.md)
 - [spotifyd](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/docs/SPOTIFYD.md)
 - [Server](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/docs/SERVER.md)
 - [Frontend](https://github.com/seekwhencer/spotify-kidsplayer/blob/master/docs/FRONTEND.md)
